@@ -1,17 +1,18 @@
-import './App.css';
 import {Provider} from "react-redux";
+import store from "./redux/redux";
+import BattleField from "./components/BattleField/BattleField";
+import "./App.scss"
 
-function App() {
+const App = () => {
   return (
     <Provider store={store}>
-      <div>
-        <div>
-          <button>Один игрок</button>
-          <button>Два игрока</button>
-        </div>
+      <div className={"App"}>
+        {/*<Main />*/}
+        <BattleField/>
       </div>
     </Provider>
   );
 }
 
 export default App;
+
