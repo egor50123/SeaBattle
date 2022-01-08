@@ -3,6 +3,7 @@
   height: 30px;
   width: 30px;
   border: 1px solid red;
+  white-space: nowrap;
 
   &--ship {
     background-color: rgba(0, 0, 0, 0.43);
@@ -11,14 +12,21 @@
   &--death {
     background-color: rgba(0, 255, 255, 0.55);
   }
+
+  &--dndSuccess {
+    background-color: rgba(127, 255, 0, 0.83);
+  }
+
+  &--dndUnsuccessful {
+    background-color: rgba(255, 0, 0, 0.87);
+  }
 }
 
 .field {
+  min-width: 400px;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  width: 400px;
-  height: 400px;
   align-items: center;
   border: 2px solid black;
 }

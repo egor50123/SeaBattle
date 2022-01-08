@@ -3,28 +3,45 @@ const FIELD_DATA = "FIELD_DATA";
 const FIELD_DEATH_ZONE = "FIELD_DEATH_ZONE";
 const FIELD_SHIPS_ZONE ="FIELD_SHIPS_ZONE";
 const FIELD_EMPTY_ZONE = "FIELD_EMPTY_ZONE";
-const CLEAR_FIELD = "CLEAR_FIELD"
+const CLEAR_FIELD = "CLEAR_FIELD";
+const DND_SETTINGS = "DND_SETTINGS";
+const DND_SETTINGS_POTENTIAL_SHIP = 'DND_SETTINGS_POTENTIAL_SHIP';
+const CLEAR_DND = "CLEAR_DND";
+const DND_STATUS = "DND_STATUS";
+const DND_DROP_COORDINATES = "DND_DROP_COORDINATES"
+
 
 const initialState = {
-  //emptySquares: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100],
+  squares: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100],
   a:1,
-  ships: {
-    quadruple: 1,
-    triple: 2,
-    double: 3,
-    single: 4,
-  },
+  ships: [{id:1,key:1,size:4,},
+    {id:2,key:2,size:3,},
+    {id:3,key:3,size:3,},
+    {id:4,key:4,size:2,},
+    {id:5,key:5,size:2,},
+    {id:6,key:6,size:2,},
+    {id:7,key:7,size:1,},
+    {id:8,key:8,size:1,},
+    {id:9,key:9,size:1,},
+    {id:10,key:10,size:1,}],
+
   shipField: [],
   deathField: [],
+  notEmptySquares: [],
+
+  dndSettings: {
+    currentPart:null,
+    shipSize: null,
+    successShip: null,
+    unsuccessfulShip: null,
+    status:null,
+    x:null,
+    y:null,
+  }
 }
 
 const battleFieldReducer = (state = initialState, action) => {
   switch (action.type) {
-    case '1':
-      return {
-        ...state,
-        a:action.test,
-      }
     case FIELD_DATA:
       return {
         ...state,
@@ -36,12 +53,18 @@ const battleFieldReducer = (state = initialState, action) => {
     case FIELD_DEATH_ZONE:
       return {
         ...state,
-        deathField: [...action.field]
+        deathField: [...state.deathField,...action.field],
+        notEmptySquares: [...state.notEmptySquares,...action.field]
       }
     case FIELD_SHIPS_ZONE:
+      let shipArray = [];
+      for (let i = 0; i < action.field.length; i++) {
+        shipArray = [...shipArray,...action.field[i]]
+      }
       return {
         ...state,
-        shipField: [...state.shipField,...action.field]
+        shipField: [...state.shipField,...action.field],
+        notEmptySquares: [...state.notEmptySquares,...shipArray]
       }
     case FIELD_EMPTY_ZONE:
       let notEmpty = [...action.death]
@@ -60,18 +83,67 @@ const battleFieldReducer = (state = initialState, action) => {
         ...state,
         shipField: [],
         deathField: [],
+        notEmptySquares: []
+      }
+    case DND_SETTINGS:
+      return {
+        ...state,
+        dndSettings: {
+          currentPart: action.currentPart,
+          shipSize: action.shipSize
+        }
+      }
+    case DND_SETTINGS_POTENTIAL_SHIP:
+      return {
+        ...state,
+        dndSettings: {
+          ...state.dndSettings,
+          successShip: action.isPossible ? action.ship : null,
+          unsuccessfulShip: !action.isPossible ? action.ship : null
+        }
+      }
+    case CLEAR_DND:
+      return {
+        ...state,
+        dndSettings: {
+          currentPart:null,
+          shipSize: null,
+          successShip: null,
+          unsuccessfulShip: null,
+        }
       }
 
+    case DND_STATUS:
+      return {
+        ...state,
+        dndSettings: {
+          ...state.dndSettings,
+          status: true,
+        }
+      }
+    case DND_DROP_COORDINATES:
+      return  {
+        ...state,
+        dndSettings: {
+          ...state.dndSettings,
+          x:action.x,
+          y:action.y,
+        }
+      }
     default: return state
   }
 }
 
 //action для клеточек с корабликами
 export const changeFieldData = (id,status) => ({type: FIELD_DATA, id, status, })
-export const testAction = (test) => ({type: TEST, test })
 export const setDeathSquares = (field) => ({type: FIELD_DEATH_ZONE, field})
 export const setShipSquares = (field) => ({type:FIELD_SHIPS_ZONE, field})
 export const setEmptySquares = (death,ships) => ({type:FIELD_EMPTY_ZONE, death, ships})
 export const clearField = () => ({type: CLEAR_FIELD })
+export const setDndSettings = (currentPart,shipSize) => ({type:DND_SETTINGS,currentPart,shipSize})
+export const setDndPotentialShip = (ship,isPossible) => ({type: DND_SETTINGS_POTENTIAL_SHIP,ship,isPossible})
+export const clearDndSettings = () => ({type: CLEAR_DND})
+export const setDndStatus = () => ({type: DND_STATUS})
+export const dndDropCoordinates = (x,y) => ({type:DND_DROP_COORDINATES,x,y})
 
 export default battleFieldReducer

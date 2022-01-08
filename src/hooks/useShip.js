@@ -1,10 +1,8 @@
 import {useRandomSquare} from "./useRandomSquare";
 
-export const useShip = () => {
+export const useShip = (dnd = false) => {
   const getRandomSquare = useRandomSquare()
-  return {
-    createShip: (squareId,size,direction,emptySquares) => {
-      console.log("square - " + squareId + ' ___direction - ' + direction)
+  return function createShip (squareId,size,direction,emptySquares = []) {
       if (size === 1) return [squareId];
       let shipsId = [];
       let step = 0;
@@ -48,7 +46,7 @@ export const useShip = () => {
         if (!emptySquares.includes(squareId - j)) isLeftEmpty = false
       }
 
-      for (let i = 1; i<=size;i++) {
+    for (let i = 1; i<=size;i++) {
         shipsId.push(squareId+step)
         //если по вертикали - делаем корабль от начального id вверх, если места мало - вниз
         if(direction === 0) {
@@ -60,13 +58,13 @@ export const useShip = () => {
             return  [squareId-10,squareId,squareId+10]
           } else {
             console.log('here V')
-            return this.createShip(getRandomSquare(emptySquares),size,direction,emptySquares)
+            return createShip(getRandomSquare(emptySquares),size,direction,emptySquares)
           }
         }
         // если по горизонтали - делаем коробль от начального id вправо, если места мало - влево
         else {
           let checkNeighbor = emptySquares.includes(squareId - 1) && emptySquares.includes(squareId + 1) &&
-              !!!leftBorder.find(row => row[0] === squareId) && !!!rightBorder.find(row => row[row.length-1] === squareId)
+                !!!leftBorder.find(row => row[0] === squareId) && !!!rightBorder.find(row => row[row.length-1] === squareId)
 
           if ( !!!rightBorder.find(row => row.includes(squareId)) && isRightEmpty ) {
             step++
@@ -76,12 +74,11 @@ export const useShip = () => {
             return  [squareId-1,squareId,squareId+1]
           } else {
             console.log('here H')
-            return this.createShip(getRandomSquare(emptySquares),size,direction,emptySquares)
+            return createShip(getRandomSquare(emptySquares),size,direction,emptySquares)
           }
         }
       }
       return shipsId
     }
-  }
 }
 

@@ -5,7 +5,6 @@ import {useEffect} from "react";
 import {useRandomPlacement} from "../../hooks/useRandomPlacement";
 
 const BattleField = () => {
-
   const {doRandomPlacement} = useRandomPlacement()
   const makeField = () => {
     const rowsTotal = 10;
@@ -25,17 +24,18 @@ const BattleField = () => {
   }
   
 
-  useEffect( () => {
-    doRandomPlacement()
-  },[doRandomPlacement])
+  // useEffect( () => {
+  //   doRandomPlacement()
+  // },[doRandomPlacement])
 
+  console.log("RENDER_FIELD")
   return (
       <div className={'field'}>
         <div>
           {makeField()}
         </div>
         <div>
-          <button onClick={() => doRandomPlacement()}>Рандом</button>
+          <button onClick={() => doRandomPlacement()}>Случайная расстановка</button>
         </div>
       </div>
   )

@@ -1,0 +1,46 @@
+.shipsField {
+  padding: 20px;
+  min-width: 400px;
+  height: 100%;
+  background-color: rgba(139, 0, 0, 0.59);
+}
+
+.shipWrapper {
+  //position: relative;
+  $defaultWidth: 30px;
+  margin: 10px;
+  height: 28px;
+  background-color: coral;
+  &--1{
+    width: $defaultWidth;
+  }
+  &--2{
+    width: $defaultWidth*2;
+  }
+  &--3{
+    width: $defaultWidth*3;
+  }
+  &--4{
+    width: $defaultWidth *4;
+  }
+}
+
+.ship {
+  position: absolute;
+  color: white;
+  $defaultWidth: 30px;
+  height: 30px;
+  background-color: black;
+  &--1{
+    width: $defaultWidth;
+  }
+  &--2{
+    width: $defaultWidth*2 ;
+  }
+  &--3{
+    width: $defaultWidth*3;
+  }
+  &--4{
+    width: $defaultWidth *4;
+  }
+}
