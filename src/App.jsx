@@ -5,11 +5,10 @@ import Container from "./components/Container/Container";
 import {createRef} from "react";
 
 const App = () => {
-  window.onclick = (e) => {
-    console.log("mouse - x" + e.pageX)
-    console.log("mouse - y" + e.pageY)
-  }
-  //const ref = createRef()
+  // window.onclick = (e) => {
+  //   console.log("mouse - x" + e.pageX)
+  //   console.log("mouse - y" + e.pageY)
+  // }
   return (
     <Provider store={store}>
       <div className={"App"}>

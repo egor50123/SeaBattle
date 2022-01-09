@@ -2,34 +2,39 @@ import "./ShipsField.scss"
 import React, {useRef} from 'react';
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {clearDndSettings, setDndSettings} from "../../redux/battleFieldReducer";
+import {clearDndSettings, deleteDeathZone, deleteShipFromField, setDndSettings} from "../../redux/battleFieldReducer";
 import {useDndCurrentPart} from "../../hooks/useDndCurrentPart";
 
 const ShipsField = React.forwardRef((props,ref) => {
 
   const dispatch = useDispatch()
   const dndStatus  = useSelector( state => state.battleField.dndSettings.status)
-  const shipsInit = useSelector( state => state.battleField.ships)
+  const ships = useSelector( state => state.battleField.ships)
   const x = useSelector( state => state.battleField.dndSettings.x)
   const y = useSelector( state => state.battleField.dndSettings.y)
   const currentPart = useSelector( state => state.battleField.dndSettings.currentPart)
   //const shipField = useSelector(state => state.battleField.shipField)
 
-  const [ships,setShips] = useState(shipsInit)
 
   //const [currentShip,setCurrentShip] = useState(null)
   const findCurrent = useDndCurrentPart()
 
   function dragStartHandler(e,shipsList) {
     let target = e.target
+    let currentId =  target.id
     console.log(target.id)
-    let shipSize = shipsList.find(item => +item.id === +target.id).size
+    let shipSize = shipsList.find(item => +item.id === +currentId).size
     let currentPart = findCurrent(e)
     target.style.background = "yellow"
     setTimeout(() => target.style.display = "none",0)
     //setCurrentShip(target.id)
-    //console.log(currentShip)
-    dispatch(setDndSettings(currentPart,shipSize,target.id))
+    if (shipsList[currentId-1].hasOwnProperty('shipSquares')) {
+      console.log("Есть свойство")
+      dispatch(deleteShipFromField(shipsList[currentId-1].shipSquares))
+      dispatch(deleteDeathZone(shipsList[currentId-1].shipSquares))
+    }
+
+    dispatch(setDndSettings(currentPart,shipSize,currentId))
   }
 
   function dragEndHandler(e) {

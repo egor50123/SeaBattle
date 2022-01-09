@@ -8,7 +8,9 @@ const DND_SETTINGS = "DND_SETTINGS";
 const DND_SETTINGS_POTENTIAL_SHIP = 'DND_SETTINGS_POTENTIAL_SHIP';
 const CLEAR_DND = "CLEAR_DND";
 const DND_STATUS = "DND_STATUS";
-const DND_DROP_COORDINATES = "DND_DROP_COORDINATES"
+const DND_DROP_COORDINATES = "DND_DROP_COORDINATES";
+const DELETE_SHIP = "DELETE_SHIP";
+const DELETE_DEATH_ZONE = "DELETE_DEATH_ZONE";
 
 
 const initialState = {
@@ -115,14 +117,11 @@ const battleFieldReducer = (state = initialState, action) => {
           unsuccessfulShip: null,
         }
       }
-
     case DND_STATUS:
       let newShips = state.ships.slice()
       for (let i = 0; i< newShips.length; i++) {
-        //console.log(newShips[i].id)
-        console.log(state.dndSettings.currentShip)
         if (+newShips[i].id === +state.dndSettings.currentShip) {
-          newShips[i].ship = action.ship
+          newShips[i].shipSquares = action.ship
         }
       }
       return {
@@ -142,6 +141,35 @@ const battleFieldReducer = (state = initialState, action) => {
           y:action.y,
         }
       }
+    case DELETE_SHIP: {
+      let updateShips = state.shipField.filter(item => !item.includes(action.ship[0]))
+      let newNotEmptySquares = state.notEmptySquares.filter(item => !action.ship.includes(item))
+      return {
+        ...state,
+        shipField: updateShips,
+        notEmptySquares: newNotEmptySquares,
+      }
+    }
+
+    case DELETE_DEATH_ZONE: {
+      let sortShip = action.ship.sort((a,b) => a-b)
+      let shipDeathZone = [];
+      let newDeathZone = [];
+      let newNotEmptySquares = [];
+      for( let i = 0; i<sortShip.length;i++) {
+        shipDeathZone.push(sortShip[i]+10)
+        shipDeathZone.push(sortShip[i]-10)
+      }
+      shipDeathZone = [...shipDeathZone,sortShip[0]-11,sortShip[0]-1,sortShip[0]+9,sortShip[sortShip.length -1]+11,sortShip[sortShip.length -1]+1,sortShip[sortShip.length -1]-9]
+      newDeathZone = state.deathField.filter(item => !shipDeathZone.includes(item))
+      newNotEmptySquares = state.notEmptySquares.filter(item => !shipDeathZone.includes(item))
+      return {
+        ...state,
+        deathField: newDeathZone,
+        notEmptySquares: newNotEmptySquares,
+      }
+    }
+
     default: return state
   }
 }
@@ -151,6 +179,9 @@ export const changeFieldData = (id,status) => ({type: FIELD_DATA, id, status, })
 export const setDeathSquares = (field) => ({type: FIELD_DEATH_ZONE, field})
 export const setShipSquares = (field) => ({type:FIELD_SHIPS_ZONE, field})
 export const clearField = () => ({type: CLEAR_FIELD })
+export const deleteShipFromField = (ship) => ({type: DELETE_SHIP, ship})
+export const deleteDeathZone = (ship) => ({type: DELETE_DEATH_ZONE, ship})
+
 export const setDndSettings = (currentPart,shipSize,currentShip) => ({type:DND_SETTINGS,currentPart,shipSize,currentShip})
 export const setDndPotentialShip = (ship,isPossible) => ({type: DND_SETTINGS_POTENTIAL_SHIP,ship,isPossible})
 export const clearDndSettings = () => ({type: CLEAR_DND})

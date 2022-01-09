@@ -6,11 +6,11 @@ import {
   setShipSquares
 } from "../../../redux/battleFieldReducer";
 import {useDeathZone} from "../../../hooks/useDeathZone";
-import {useDndCurrentPart} from "../../../hooks/useDndCurrentPart";
+import {useEffect, useRef} from "react";
 
 const Square = (props) => {
   const {id} = {...props}
-
+  const ref = useRef(null)
   const dispatch = useDispatch()
   const createDeathZone = useDeathZone(true)
 
@@ -26,7 +26,7 @@ const Square = (props) => {
 
   let shipClass,deathClass,successShipClass,unsuccessfulShipClass
 
-  //const findCurrent = useDndCurrentPart()
+
 
   if(shipField.length > 0) {
     shipClass = shipField.find( ship => ship.find( num => num === id)) ? "square--ship" : ''
@@ -34,8 +34,17 @@ const Square = (props) => {
   }
   if (DNDSuccessShip) successShipClass = DNDSuccessShip.includes(id) ? "square--dndSuccess" : '';
   if (DNDUnsuccessfulShip) unsuccessfulShipClass = DNDUnsuccessfulShip.includes(id) ? "square--dndUnsuccessful" : '';
-
-
+  //make for vertical ship
+  for (let i = 0; i<shipField.length; i++) {
+    let sortShip = shipField[i].sort((a,b) => a-b)
+    if (sortShip[0] === id) {
+      let x = ref.current.getBoundingClientRect().left
+      let y = ref.current.getBoundingClientRect().top
+      console.log(x)
+      console.log(y)
+      //dispatch(setSquareCoordinates())
+    }
+  }
 
   function dragOverHandler(e,currentPart,shipSize) {
     e.preventDefault();
@@ -77,23 +86,11 @@ const Square = (props) => {
     }
   }
 
-  function dragStartHandler(e) {
-    // let currentPart = null
-    // let currentShip = null
-    // for (let i = 0; i<shipField.length; i++) {
-    //   let ship = shipField[i]
-    //   if (!ship.includes(+e.target.id)) return;
-    //   currentShip = shipField.find(ship => ship.includes(+e.target.id))
-    //   break
-    // }
-  }
-
   //console.log("RENDER")
   return (
-      <span className={`square ${deathClass} ${shipClass} ${successShipClass} ${unsuccessfulShipClass}`} id={id} key={id}
+      <span ref={ref} className={`square ${deathClass} ${shipClass} ${successShipClass} ${unsuccessfulShipClass}`} id={id} key={id}
             onDragOver={(e) => dragOverHandler(e,currentPart,shipSize)}
-            onDrop={(e)=> dropHandler(e,DNDSuccessShip,shipSize)}
-            onDragStart={(e) => dragStartHandler(e)}>{id}</span>
+            onDrop={(e)=> dropHandler(e,DNDSuccessShip,shipSize)}>{id}</span>
   )
 }
 
