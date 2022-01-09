@@ -1,7 +1,7 @@
 import Square from "./Square/Square";
 import Row from "./Row/Row";
 import "./BattleField.scss"
-import {useEffect} from "react";
+import {useEffect, useRef} from "react";
 import {useRandomPlacement} from "../../hooks/useRandomPlacement";
 
 const BattleField = () => {
@@ -22,7 +22,6 @@ const BattleField = () => {
     }
     return field
   }
-  
 
   // useEffect( () => {
   //   doRandomPlacement()

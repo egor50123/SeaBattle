@@ -1,85 +1,66 @@
 import "./ShipsField.scss"
+import React, {useRef} from 'react';
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {clearDndSettings, setDndSettings} from "../../redux/battleFieldReducer";
+import {useDndCurrentPart} from "../../hooks/useDndCurrentPart";
 
-const ShipsField = () => {
+const ShipsField = React.forwardRef((props,ref) => {
+
   const dispatch = useDispatch()
   const dndStatus  = useSelector( state => state.battleField.dndSettings.status)
   const shipsInit = useSelector( state => state.battleField.ships)
   const x = useSelector( state => state.battleField.dndSettings.x)
   const y = useSelector( state => state.battleField.dndSettings.y)
+  const currentPart = useSelector( state => state.battleField.dndSettings.currentPart)
+  //const shipField = useSelector(state => state.battleField.shipField)
 
   const [ships,setShips] = useState(shipsInit)
 
-  const [currentShip,setCurrentShip] = useState(null)
+  //const [currentShip,setCurrentShip] = useState(null)
+  const findCurrent = useDndCurrentPart()
 
   function dragStartHandler(e,shipsList) {
     let target = e.target
+    console.log(target.id)
     let shipSize = shipsList.find(item => +item.id === +target.id).size
-    let shiftX = e.pageX - e.target.getBoundingClientRect().left
-    let currentPart = null;
-
-    if ( shiftX <= 30 ) {
-      currentPart = 1
-    } else if(shiftX > 30 && shiftX <= 60) {
-      currentPart = 2
-    } else if ( shiftX > 60 && shiftX <= 90 ) {
-      currentPart = 3
-    } else if ( shiftX <= 120 ) {
-      currentPart = 4
-    }
-
+    let currentPart = findCurrent(e)
     target.style.background = "yellow"
     setTimeout(() => target.style.display = "none",0)
-    dispatch(setDndSettings(currentPart,shipSize))
-    setCurrentShip(target.id)
-  }
-
-  function dragOverHandler(e) {
-    return undefined;
+    //setCurrentShip(target.id)
+    //console.log(currentShip)
+    dispatch(setDndSettings(currentPart,shipSize,target.id))
   }
 
   function dragEndHandler(e) {
+    let container = e.target.closest('.container')
+    let shiftX = container.getBoundingClientRect().left;
+    let shiftY = container.getBoundingClientRect().top;
     let target = e.target
     target.style.background = "black"
     target.style.display = "block"
     if (dndStatus) {
+      //target.style.display = "none"
       //setShips( () => ships.filter(item => +item.id !== +currentShip) )
-      target.style.top = 500 + 'px'
-      target.style.left = 270 + 'px';
+      target.style.top = y - shiftY + 'px'
+      target.style.left = x - shiftX - (currentPart-1)*30 + 'px';
     }
     dispatch(clearDndSettings())
   }
 
-  function dragLeaveHandler(e) {
-    return undefined;
-  }
-
-  function dropHandler(e) {
-    return undefined;
-  }
-
-  function dragOverWrapper(e) {
-    //console.log(e.currentTarget)
-    //e.currentTarget.style.zIndex = "15"
-  }
 
   return (
       <div className={"shipsField"}>
         {ships.map(item => {
-          return <div id={item.id} key={item.id} className={`shipWrapper shipWrapper--${item.size}`} onDragOver={(e) => dragOverWrapper(e)}>
+          return <div id={item.id} key={item.id} className={`shipWrapper shipWrapper--${item.size}`}>
             <div id={item.id} key={item.id} draggable={true} className={`ship ship--${item.size}`}
                  onDragStart={ (e) => dragStartHandler(e,ships)}
-                 onDragOver={ (e) => dragOverHandler(e) }
                  onDragEnd={ (e) => dragEndHandler(e) }
-                 onDragLeave={ (e) => dragLeaveHandler(e) }
-                 onDrop={ (e) => dropHandler(e) }
             >{item.id}</div>
           </div>
         })}
       </div>
   )
-}
+})
 
 export default ShipsField

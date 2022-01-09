@@ -32,6 +32,7 @@ const initialState = {
   dndSettings: {
     currentPart:null,
     shipSize: null,
+    currentShip:null,
     successShip: null,
     unsuccessfulShip: null,
     status:null,
@@ -89,8 +90,10 @@ const battleFieldReducer = (state = initialState, action) => {
       return {
         ...state,
         dndSettings: {
+          ...state.dndSettings,
           currentPart: action.currentPart,
-          shipSize: action.shipSize
+          shipSize: action.shipSize,
+          currentShip: action.currentShip
         }
       }
     case DND_SETTINGS_POTENTIAL_SHIP:
@@ -114,8 +117,17 @@ const battleFieldReducer = (state = initialState, action) => {
       }
 
     case DND_STATUS:
+      let newShips = state.ships.slice()
+      for (let i = 0; i< newShips.length; i++) {
+        //console.log(newShips[i].id)
+        console.log(state.dndSettings.currentShip)
+        if (+newShips[i].id === +state.dndSettings.currentShip) {
+          newShips[i].ship = action.ship
+        }
+      }
       return {
         ...state,
+        ships: newShips,
         dndSettings: {
           ...state.dndSettings,
           status: true,
@@ -138,12 +150,11 @@ const battleFieldReducer = (state = initialState, action) => {
 export const changeFieldData = (id,status) => ({type: FIELD_DATA, id, status, })
 export const setDeathSquares = (field) => ({type: FIELD_DEATH_ZONE, field})
 export const setShipSquares = (field) => ({type:FIELD_SHIPS_ZONE, field})
-export const setEmptySquares = (death,ships) => ({type:FIELD_EMPTY_ZONE, death, ships})
 export const clearField = () => ({type: CLEAR_FIELD })
-export const setDndSettings = (currentPart,shipSize) => ({type:DND_SETTINGS,currentPart,shipSize})
+export const setDndSettings = (currentPart,shipSize,currentShip) => ({type:DND_SETTINGS,currentPart,shipSize,currentShip})
 export const setDndPotentialShip = (ship,isPossible) => ({type: DND_SETTINGS_POTENTIAL_SHIP,ship,isPossible})
 export const clearDndSettings = () => ({type: CLEAR_DND})
-export const setDndStatus = () => ({type: DND_STATUS})
+export const setDndStatus = (ship) => ({type: DND_STATUS,ship})
 export const dndDropCoordinates = (x,y) => ({type:DND_DROP_COORDINATES,x,y})
 
 export default battleFieldReducer
