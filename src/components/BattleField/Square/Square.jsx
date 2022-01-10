@@ -2,27 +2,28 @@ import {useDispatch, useSelector} from "react-redux";
 import {
   dndDropCoordinates,
   setDeathSquares,
-  setDndPotentialShip, setDndStatus,
-  setShipSquares
+  setDndPotentialShip, setDndPrevSquare, setDndStatus,
+  setShipSquares, setStartShipData, setStartShipDataCoordinates
 } from "../../../redux/battleFieldReducer";
 import {useDeathZone} from "../../../hooks/useDeathZone";
 import {useEffect, useRef} from "react";
 
 const Square = (props) => {
   const {id} = {...props}
-  const ref = useRef(null)
+  const ref = useRef(id)
   const dispatch = useDispatch()
   const createDeathZone = useDeathZone(true)
 
   const shipField = useSelector(state => state.battleField.shipField)
   const deathField = useSelector(state => state.battleField.deathField)
   const notEmptySquares = useSelector(state => state.battleField.notEmptySquares)
+  const startSquareOfShip = useSelector(state => state.battleField.startSquareOfShip)
 
-  const dndSettings = useSelector( state => state.battleField.dndSettings)
-  const DNDSuccessShip = dndSettings.successShip
-  const DNDUnsuccessfulShip = dndSettings.unsuccessfulShip
-  const currentPart = dndSettings.currentPart
-  const shipSize = dndSettings.shipSize
+  const DNDSuccessShip = useSelector( state => state.battleField.dndSettings.successShip)
+  const DNDUnsuccessfulShip = useSelector( state => state.battleField.dndSettings.unsuccessfulShip)
+  const currentPart = useSelector( state => state.battleField.dndSettings.currentPart)
+  const shipSize = useSelector( state => state.battleField.dndSettings.shipSize)
+  const prevSquare = useSelector( state => state.battleField.dndSettings.prevSquare)
 
   let shipClass,deathClass,successShipClass,unsuccessfulShipClass
 
@@ -34,19 +35,19 @@ const Square = (props) => {
   }
   if (DNDSuccessShip) successShipClass = DNDSuccessShip.includes(id) ? "square--dndSuccess" : '';
   if (DNDUnsuccessfulShip) unsuccessfulShipClass = DNDUnsuccessfulShip.includes(id) ? "square--dndUnsuccessful" : '';
-  //make for vertical ship
-  for (let i = 0; i<shipField.length; i++) {
-    let sortShip = shipField[i].sort((a,b) => a-b)
-    if (sortShip[0] === id) {
-      let x = ref.current.getBoundingClientRect().left
-      let y = ref.current.getBoundingClientRect().top
-      console.log(x)
-      console.log(y)
-      //dispatch(setSquareCoordinates())
+
+
+  if (startSquareOfShip.length === 10) {
+    for (let i = 0; i<10; i++) {
+      if (startSquareOfShip[i].squareID === +ref.current.id) {
+        let x = ref.current.getBoundingClientRect().left;
+        let y = ref.current.getBoundingClientRect().top;
+        dispatch(setStartShipDataCoordinates(x,y,startSquareOfShip[i].shipId))
+      }
     }
   }
 
-  function dragOverHandler(e,currentPart,shipSize) {
+  function dragOverHandler(e,currentPart,shipSize,prevSquare) {
     e.preventDefault();
 
     function createPotentialShip(currentPart,shipSize,currentSquare) {
@@ -69,7 +70,11 @@ const Square = (props) => {
         break;
       }
     }
-    dispatch(setDndPotentialShip(potentialShip,isPossibleToPlacement))
+    if ( currentSquare !== prevSquare) {
+      dispatch(setDndPrevSquare(currentSquare))
+      dispatch(setDndPotentialShip(potentialShip,isPossibleToPlacement))
+    }
+
   }
 
   function dropHandler(e,successShip,shipSize) {
@@ -86,10 +91,10 @@ const Square = (props) => {
     }
   }
 
-  //console.log("RENDER")
+  //console.log("RENDER Square")
   return (
       <span ref={ref} className={`square ${deathClass} ${shipClass} ${successShipClass} ${unsuccessfulShipClass}`} id={id} key={id}
-            onDragOver={(e) => dragOverHandler(e,currentPart,shipSize)}
+            onDragOver={(e) => dragOverHandler(e,currentPart,shipSize,prevSquare)}
             onDrop={(e)=> dropHandler(e,DNDSuccessShip,shipSize)}>{id}</span>
   )
 }

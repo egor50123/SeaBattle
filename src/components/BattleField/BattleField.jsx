@@ -1,11 +1,13 @@
 import Square from "./Square/Square";
 import Row from "./Row/Row";
 import "./BattleField.scss"
-import {useEffect, useRef} from "react";
 import {useRandomPlacement} from "../../hooks/useRandomPlacement";
+import {useDispatch} from "react-redux";
+import {setDndPotentialShip, setStartShipData} from "../../redux/battleFieldReducer";
 
 const BattleField = () => {
   const {doRandomPlacement} = useRandomPlacement()
+  const dispatch = useDispatch()
   const makeField = () => {
     const rowsTotal = 10;
     const columnsTotal = 10;
@@ -23,6 +25,12 @@ const BattleField = () => {
     return field
   }
 
+  function onClickHandler() {
+    doRandomPlacement()
+    dispatch(setStartShipData())
+    //dispatch(setDndPotentialShip(potentialShip,isPossibleToPlacement))
+  }
+
   // useEffect( () => {
   //   doRandomPlacement()
   // },[doRandomPlacement])
@@ -34,7 +42,7 @@ const BattleField = () => {
           {makeField()}
         </div>
         <div>
-          <button onClick={() => doRandomPlacement()}>Случайная расстановка</button>
+          <button onClick={onClickHandler}>Случайная расстановка</button>
         </div>
       </div>
   )
