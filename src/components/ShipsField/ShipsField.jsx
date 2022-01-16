@@ -1,12 +1,12 @@
 import "./ShipsField.scss"
-import React, {useEffect, useRef} from 'react';
+import React from 'react';
 import {useSelector} from "react-redux";
 import Ship from "./Ship/Ship";
 
 const ShipsField = () => {
   const ships = useSelector( state => state.battleField.ships)
 
-  //console.log("RENDER ShipsField")
+  console.log("RENDER ShipsField")
   return (
       <div className={"shipsField"}>
         {ships.map(item => {

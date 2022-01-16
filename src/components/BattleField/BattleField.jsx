@@ -3,7 +3,7 @@ import Row from "./Row/Row";
 import "./BattleField.scss"
 import {useRandomPlacement} from "../../hooks/useRandomPlacement";
 import {useDispatch} from "react-redux";
-import {setDndPotentialShip, setStartShipData} from "../../redux/battleFieldReducer";
+import {updateShipData} from "../../redux/battleFieldReducer";
 
 const BattleField = () => {
   const {doRandomPlacement} = useRandomPlacement()
@@ -27,13 +27,10 @@ const BattleField = () => {
 
   function onClickHandler() {
     doRandomPlacement()
-    dispatch(setStartShipData())
+    dispatch(updateShipData())
     //dispatch(setDndPotentialShip(potentialShip,isPossibleToPlacement))
   }
 
-  // useEffect( () => {
-  //   doRandomPlacement()
-  // },[doRandomPlacement])
 
   console.log("RENDER_FIELD")
   return (

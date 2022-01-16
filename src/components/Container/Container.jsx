@@ -2,18 +2,21 @@ import ShipsField from "../ShipsField/ShipsField";
 import BattleField from "../BattleField/BattleField";
 import "./container.scss"
 import React, {useEffect, useRef} from 'react';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setContainerCoordinates} from "../../redux/battleFieldReducer";
 
 
 const Container = () => {
+  const isRandom = useSelector(state => state.battleField.isRandom)
   const ref = useRef(null)
   const dispatch = useDispatch()
   useEffect(()=> {
     let x = ref.current.getBoundingClientRect().left
     let y = ref.current.getBoundingClientRect().top
     dispatch(setContainerCoordinates(x,y))
-  },[])
+  },[isRandom])
+
+  console.log("RENDER CONTAINER")
 
   return (
       <div ref={ref} className={"container"}>
@@ -22,5 +25,4 @@ const Container = () => {
       </div>
   )
 }
-
 export default Container

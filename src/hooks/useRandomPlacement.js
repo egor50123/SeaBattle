@@ -1,4 +1,4 @@
-import {clearField, setDeathSquares, setShipSquares} from "../redux/battleFieldReducer";
+import {clearField, iSRandom, setDeathSquares, setShipSquares} from "../redux/battleFieldReducer";
 import {useShip} from "./useShip";
 import {useDispatch} from "react-redux";
 import {useDeathZone} from "./useDeathZone";
@@ -55,6 +55,7 @@ export const useRandomPlacement = (squares) => {
       dispatch(clearField());
       dispatch(setShipSquares(shipsSquares));
       dispatch(setDeathSquares(deathZone));
+      dispatch( iSRandom())
     }
   }
 }

@@ -26,7 +26,6 @@ const Ship = (props) => {
 
   if(ships[0].hasOwnProperty("x")) {
     for ( let i =0; i<ships.length;i++) {
-      console.log(yShips)
       ref.current.style.top = yShips - containerY + "px"
       ref.current.style.left = xShips - containerX + "px"
     }

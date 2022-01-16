@@ -3,7 +3,7 @@ import {
   dndDropCoordinates,
   setDeathSquares,
   setDndPotentialShip, setDndPrevSquare, setDndStatus,
-  setShipSquares, setStartShipData, setStartShipDataCoordinates
+  setShipSquares, setStartShipDataCoordinates
 } from "../../../redux/battleFieldReducer";
 import {useDeathZone} from "../../../hooks/useDeathZone";
 import {useEffect, useRef} from "react";
@@ -17,13 +17,15 @@ const Square = (props) => {
   const shipField = useSelector(state => state.battleField.shipField)
   const deathField = useSelector(state => state.battleField.deathField)
   const notEmptySquares = useSelector(state => state.battleField.notEmptySquares)
-  const startSquareOfShip = useSelector(state => state.battleField.startSquareOfShip)
+  //const startSquareOfShip = useSelector(state => state.battleField.startSquareOfShip)
 
   const DNDSuccessShip = useSelector( state => state.battleField.dndSettings.successShip)
   const DNDUnsuccessfulShip = useSelector( state => state.battleField.dndSettings.unsuccessfulShip)
   const currentPart = useSelector( state => state.battleField.dndSettings.currentPart)
   const shipSize = useSelector( state => state.battleField.dndSettings.shipSize)
   const prevSquare = useSelector( state => state.battleField.dndSettings.prevSquare)
+
+  const ships = useSelector( state => state.battleField.ships)
 
   let shipClass,deathClass,successShipClass,unsuccessfulShipClass
 
@@ -37,15 +39,29 @@ const Square = (props) => {
   if (DNDUnsuccessfulShip) unsuccessfulShipClass = DNDUnsuccessfulShip.includes(id) ? "square--dndUnsuccessful" : '';
 
 
-  if (startSquareOfShip.length === 10) {
-    for (let i = 0; i<10; i++) {
-      if (startSquareOfShip[i].squareID === +ref.current.id) {
-        let x = ref.current.getBoundingClientRect().left;
-        let y = ref.current.getBoundingClientRect().top;
-        dispatch(setStartShipDataCoordinates(x,y,startSquareOfShip[i].shipId))
+  useEffect(() => {
+    // if (startSquareOfShip.length === 10) {
+    //   for (let i = 0; i<10; i++) {
+    //     if (startSquareOfShip[i].squareID === +ref.current.id) {
+    //       let x = ref.current.getBoundingClientRect().left;
+    //       let y = ref.current.getBoundingClientRect().top;
+    //       dispatch(setStartShipDataCoordinates(x,y,startSquareOfShip[i].shipId))
+    //     }
+    //   }
+    // }
+    //if (startSquareOfShip.length === 10) {
+      for (let i = 0; i<10; i++) {
+        if (ships[i].shipSquares && ships[i].shipSquares[0] === +ref.current.id) {
+          let x = ref.current.getBoundingClientRect().left;
+          let y = ref.current.getBoundingClientRect().top;
+          //console.log(ships[i].shipSquares[0])
+          dispatch(setStartShipDataCoordinates(x,y,ships[i].id))
+          break;
+        }
       }
-    }
-  }
+    //}
+  },[shipField])
+
 
   function dragOverHandler(e,currentPart,shipSize,prevSquare) {
     e.preventDefault();
