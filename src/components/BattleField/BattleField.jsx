@@ -35,7 +35,7 @@ const BattleField = () => {
   //console.log("RENDER_FIELD")
   return (
       <div className={'field'}>
-        <div>
+        <div >
           {makeField()}
         </div>
         <div>

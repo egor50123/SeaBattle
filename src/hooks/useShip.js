@@ -34,7 +34,7 @@ export const useShip = (dnd = false) => {
       let rightBorder = rightBorderDefault.map(item => item.slice(-(size-1)))
       let leftBorder = leftBorderDefault.map(item => item.slice(0,(size-1)))
 
-      let isTopEmpty = true
+    let isTopEmpty = true
       let isBottomEmpty = true
       let isRightEmpty = true
       let isLeftEmpty = true

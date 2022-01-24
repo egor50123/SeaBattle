@@ -1,5 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {
+  deleteDndPrevPotentialShip,
   dndDropCoordinates,
   setDeathSquares,
   setDndPotentialShip, setDndPrevSquare, setDndStatus,
@@ -39,6 +40,7 @@ const Square = (props) => {
 
 
   useEffect(() => {
+    // Если номер квадррата соответсвует первой клетке корабля , то диспатчим координаты квадата для последующего размещения кораблей
       for (let i = 0; i<10; i++) {
         if (ships[i].shipSquares && ships[i].shipSquares[0] === +ref.current.id) {
           let x = ref.current.getBoundingClientRect().left;
@@ -50,7 +52,7 @@ const Square = (props) => {
   },[shipField])
 
 
-  function dragOverHandler(e,currentPart,shipSize,prevSquare) {
+  function dragOverHandler(e,currentPart,shipSize,prevSquare,prevSuccessShip,prevUnsuccessfulShip) {
     e.preventDefault();
 
     function createPotentialShip(currentPart,shipSize,currentSquare) {
@@ -63,53 +65,64 @@ const Square = (props) => {
       }
       return ship
     }
-    // function isShipAboveTheField (currentPart,shipSize,currentSquare) {
-    //   const rightBorderDefault = [
-    //     [8,9,10],
-    //     [18,19,20],
-    //     [28,29,30],
-    //     [38,39,40],
-    //     [48,49,50],
-    //     [58,59,60],
-    //     [68,69,70],
-    //     [78,79,80],
-    //     [88,89,90],
-    //     [98,99,100],
-    //   ]
-    //   const leftBorderDefault = [
-    //     [1,2,3],
-    //     [11,12,13],
-    //     [21,22,23],
-    //     [31,32,33],
-    //     [41,42,43],
-    //     [51,52,53],
-    //     [61,62,63],
-    //     [71,72,73],
-    //     [81,82,83],
-    //     [91,92,93],
-    //   ]
-    //   let rightBorder = rightBorderDefault.map(item => item.slice(-(shipSize-currentPart)))
-    //   let leftBorder = leftBorderDefault.map(item => item.slice(0,(shipSize-currentPart)))
-    //
-    //   if (rightBorder.find(item => item.includes(currentSquare)) && rightBorder.find(item => item[item.length-1].includes(currentSquare))) {
-    //     return true
-    //   } else if (leftBorder.find(item => item.includes(currentSquare)) && leftBorder.find(item => item[0].includes(currentSquare))) {}
-    // }
 
     let currentSquare = +e.target.id
 
+    // если корабль был передвинут на другую клетку то выполняем блок
     if ( currentSquare !== prevSquare) {
-      let potentialShip = createPotentialShip(currentPart,shipSize,currentSquare)
       let isPossibleToPlacement = true;
+      let isShipAboveTheField = true
+      let potentialShip
 
-      for( let i = 0; i<potentialShip.length;i++) {
-        if ( notEmptySquares.includes(potentialShip[i]) ) {
-          isPossibleToPlacement = !notEmptySquares.includes(potentialShip[i])
-          break;
+      const rightBorder = [
+        [7,8,9,10],
+        [17,18,19,20],
+        [27,28,29,30],
+        [37,38,39,40],
+        [47,48,49,50],
+        [57,58,59,60],
+        [67,68,69,70],
+        [77,78,79,80],
+        [87,88,89,90],
+        [97,98,99,100],
+      ].map(item => item.slice(-(shipSize-currentPart+1)))
+      const leftBorder = [
+        [1,2,3,4],
+        [11,12,13,14],
+        [21,22,23,24],
+        [31,32,33,34],
+        [41,42,43,44],
+        [51,52,53,54],
+        [61,62,63,64],
+        [71,72,73,74],
+        [81,82,83,84],
+        [91,92,93,94],
+      ].map(item => item.slice(0,currentPart))
+
+      // Проверяем вмещается ли полностью перетаскиваемый корабль на поле
+      if ( rightBorder.find(item => item.includes(currentSquare)) || leftBorder.find(item => item.includes(currentSquare))) {
+          isShipAboveTheField = !!rightBorder.find( item => item[0] === currentSquare) || !!leftBorder.find( item => item[item.length-1] === currentSquare)
+      }
+
+      if (isShipAboveTheField) {
+        potentialShip = createPotentialShip(currentPart,shipSize,currentSquare)
+        // Проверяем можно ли дропнуть потенциальный корабль на поле
+        for( let i = 0; i<potentialShip.length;i++) {
+          if ( notEmptySquares.includes(potentialShip[i]) ) {
+            isPossibleToPlacement = !notEmptySquares.includes(potentialShip[i])
+            break;
+          }
         }
       }
-      dispatch(setDndPrevSquare(currentSquare))
-      dispatch(setDndPotentialShip(potentialShip,isPossibleToPlacement))
+
+
+      if (isShipAboveTheField) {
+        dispatch(setDndPrevSquare(currentSquare))
+        dispatch(setDndPotentialShip(potentialShip,isPossibleToPlacement))
+
+      } else if (prevSuccessShip || prevUnsuccessfulShip){
+        dispatch(deleteDndPrevPotentialShip())
+      }
     }
 
   }
@@ -122,15 +135,21 @@ const Square = (props) => {
       dispatch(setShipSquares([successShip]))
       dispatch(setDeathSquares([shipDeathZone]))
       dispatch(dndDropCoordinates(x,y))
+      //!!!!!!!!!
       dispatch(setDndStatus(successShip))
 
     }
   }
 
+  function dragLeaveHandler() {
+    dispatch(deleteDndPrevPotentialShip())
+  }
+
   //console.log("RENDER Square")
   return (
       <span ref={ref} className={`square ${deathClass} ${shipClass} ${successShipClass} ${unsuccessfulShipClass}`} id={id}
-            onDragOver={(e) => dragOverHandler(e,currentPart,shipSize,prevSquare)}
+            onDragLeave={dragLeaveHandler}
+            onDragOver={(e) => dragOverHandler(e,currentPart,shipSize,prevSquare,DNDSuccessShip,DNDUnsuccessfulShip)}
             onDrop={(e)=> dropHandler(e,DNDSuccessShip)}>{id}</span>
   )
 }

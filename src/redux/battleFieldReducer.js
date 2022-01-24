@@ -10,12 +10,14 @@ const DND_STATUS = "DND_STATUS";
 const DND_DROP_COORDINATES = "DND_DROP_COORDINATES";
 const DELETE_SHIP = "DELETE_SHIP";
 const DELETE_DEATH_ZONE = "DELETE_DEATH_ZONE";
+const SAVE_PREV_SHIP_PLACEMENT = "SAVE_PREV_SHIP_PLACEMENT";
 const DND_PREV_SQUARE = "DND_PREV_SQUARE";
 const START_SHIP_DATA = "START_SHIP_DATA";
 const START_SHIP_DATA_COORDINATES = "START_SHIP_DATA_COORDINATES";
 const CONTAINER_COORDINATES = "CONTAINER_COORDINATES";
 const UPDATE_SHIP_DATA = "UPDATE_SHIP_DATA";
 const IS_RANDOM = "IS_RANDOM";
+const DELETE_DND_PREV_POTENTIAL_SHIP = "DELETE_DND_PREV_POTENTIAL_SHIP"
 
 
 const initialState = {
@@ -41,11 +43,11 @@ const initialState = {
   shipField: [],
   deathField: [],
   notEmptySquares: [],
-  //startSquareOfShip:[],
 
   dndSettings: {
     currentPart:null,
     shipSize: null,
+    prevShipPlacement:null,
     prevSquare: null,
     currentShip:null,
     successShip: null,
@@ -124,14 +126,30 @@ const battleFieldReducer = (state = initialState, action) => {
           unsuccessfulShip: !action.isPossible ? action.ship : null
         }
       }
+    case DELETE_DND_PREV_POTENTIAL_SHIP: {
+      return {
+        ...state,
+        dndSettings: {
+          ...state.dndSettings,
+          successShip: null,
+          unsuccessfulShip: null,
+        }
+      }
+    }
     case CLEAR_DND:
       return {
         ...state,
         dndSettings: {
           currentPart:null,
           shipSize: null,
+          prevShipPlacement:null,
+          prevSquare: null,
+          currentShip:null,
           successShip: null,
           unsuccessfulShip: null,
+          status:null,
+          x:null,
+          y:null,
         }
       }
     case DND_STATUS:
@@ -158,6 +176,15 @@ const battleFieldReducer = (state = initialState, action) => {
           y:action.y,
         }
       }
+    case SAVE_PREV_SHIP_PLACEMENT: {
+      return {
+        ...state,
+        dndSettings: {
+          ...state.dndSettings,
+          prevShipPlacement: action.ship
+        }
+      }
+    }
     case DELETE_SHIP: {
       let updateShips = state.shipField.filter(item => !item.includes(action.ship[0]))
       let newNotEmptySquares = state.notEmptySquares.filter(item => !action.ship.includes(item))
@@ -194,7 +221,6 @@ const battleFieldReducer = (state = initialState, action) => {
 
       newDeathZone = updateDZ(shipDeathZone,deathZone)
       newNotEmptySquares = newNotEmptySquares.concat(...newDeathZone,...state.shipField)
-      console.log(newNotEmptySquares)
 
       return {
         ...state,
@@ -260,6 +286,7 @@ export const setDeathSquares = (field) => ({type: FIELD_DEATH_ZONE, field})
 export const setShipSquares = (field) => ({type:FIELD_SHIPS_ZONE, field})
 export const clearField = () => ({type: CLEAR_FIELD })
 
+export const savePrevShipPlacement = (ship) => ({type:SAVE_PREV_SHIP_PLACEMENT, ship})
 export const deleteShipFromField = (ship) => ({type: DELETE_SHIP, ship})
 export const deleteDeathZone = (field) => ({type: DELETE_DEATH_ZONE, field})
 
@@ -267,6 +294,7 @@ export const setStartShipDataCoordinates = (x,y,shipId) => ({type: START_SHIP_DA
 
 export const setDndSettings = (currentPart,shipSize,currentShip) => ({type:DND_SETTINGS,currentPart,shipSize,currentShip})
 export const setDndPotentialShip = (ship,isPossible) => ({type: DND_SETTINGS_POTENTIAL_SHIP,ship,isPossible})
+export const deleteDndPrevPotentialShip = () => ({type: DELETE_DND_PREV_POTENTIAL_SHIP})
 export const clearDndSettings = () => ({type: CLEAR_DND})
 export const setDndStatus = (ship) => ({type: DND_STATUS,ship})
 export const dndDropCoordinates = (x,y) => ({type:DND_DROP_COORDINATES,x,y})

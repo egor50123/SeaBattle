@@ -3,14 +3,15 @@ import BattleField from "../BattleField/BattleField";
 import "./container.scss"
 import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {setContainerCoordinates} from "../../redux/battleFieldReducer";
+import {deleteDndPrevPotentialShip, setContainerCoordinates} from "../../redux/battleFieldReducer";
 
 
 const Container = () => {
-  //const isRandom = useSelector(state => state.battleField.isRandom)
   const shipField = useSelector( state => state.battleField.shipField)
   const ref = useRef(null)
   const dispatch = useDispatch()
+
+
 
   useEffect(()=> {
     let x = ref.current.getBoundingClientRect().left
