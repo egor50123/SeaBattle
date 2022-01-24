@@ -7,22 +7,24 @@ import {
 } from "../../../redux/battleFieldReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {useDndCurrentPart} from "../../../hooks/useDndCurrentPart";
+import {useDeathZone} from "../../../hooks/useDeathZone";
 
 const Ship = (props) => {
-  const ref = useRef(null);
-  const dispatch = useDispatch()
-  const findCurrent = useDndCurrentPart()
-  const {id, key, size } = {...props}
+  const ref = useRef(null),
+   dispatch = useDispatch(),
+   findCurrent = useDndCurrentPart(),
+   createDeathZone = useDeathZone(),
+   {id, key, size } = {...props}
 
-  const dndStatus  = useSelector( state => state.battleField.dndSettings.status)
-  const currentPart = useSelector( state => state.battleField.dndSettings.currentPart)
-  const ships = useSelector( state => state.battleField.ships)
-  const containerX = useSelector( state => state.battleField.containerCoordinates.x)
-  const containerY = useSelector( state => state.battleField.containerCoordinates.y)
-  const x = useSelector( state => state.battleField.dndSettings.x)
-  const y = useSelector( state => state.battleField.dndSettings.y)
-  const xShips = ships[id-1].x;
-  const yShips = ships[id-1].y;
+  const dndStatus  = useSelector( state => state.battleField.dndSettings.status),
+     currentPart = useSelector( state => state.battleField.dndSettings.currentPart),
+     ships = useSelector( state => state.battleField.ships),
+     containerX = useSelector( state => state.battleField.containerCoordinates.x),
+     containerY = useSelector( state => state.battleField.containerCoordinates.y),
+     x = useSelector( state => state.battleField.dndSettings.x),
+     y = useSelector( state => state.battleField.dndSettings.y),
+     xShips = ships[id-1].x,
+     yShips = ships[id-1].y
 
   if(ships[0].hasOwnProperty("x")) {
     for ( let i =0; i<ships.length;i++) {
@@ -40,9 +42,8 @@ const Ship = (props) => {
     setTimeout(() => target.style.display = "none",0)
     if (shipsList[currentId-1].hasOwnProperty('shipSquares')) {
       dispatch(deleteShipFromField(shipsList[currentId-1].shipSquares))
-      dispatch(deleteDeathZone(shipsList[currentId-1].shipSquares))
+      dispatch(deleteDeathZone(createDeathZone(shipsList[currentId-1].shipSquares,1)))
     }
-
     dispatch(setDndSettings(currentPart,shipSize,currentId))
   }
 
@@ -54,8 +55,6 @@ const Ship = (props) => {
     target.style.background = "black"
     target.style.display = "block"
     if (dndStatus) {
-      //target.style.display = "none"
-      //setShips( () => ships.filter(item => +item.id !== +currentShip) )
       target.style.top = y - shiftY + 'px'
       target.style.left = x - shiftX - (currentPart-1)*30 + 'px';
     }

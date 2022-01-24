@@ -67,10 +67,14 @@ const battleFieldReducer = (state = initialState, action) => {
         }
       }
     case FIELD_DEATH_ZONE:
+      let deathArray = []
+      for (let i = 0; i < action.field.length; i++) {
+        deathArray = [...deathArray,...action.field[i]]
+      }
       return {
         ...state,
         deathField: [...state.deathField,...action.field],
-        notEmptySquares: [...state.notEmptySquares,...action.field]
+        notEmptySquares: [...state.notEmptySquares,...deathArray]
       }
     case FIELD_SHIPS_ZONE:
       let shipArray = [];
@@ -164,17 +168,34 @@ const battleFieldReducer = (state = initialState, action) => {
       }
     }
     case DELETE_DEATH_ZONE: {
-      let sortShip = action.ship.sort((a,b) => a-b)
-      let shipDeathZone = [];
-      let newDeathZone = [];
-      let newNotEmptySquares = [];
-      for( let i = 0; i<sortShip.length;i++) {
-        shipDeathZone.push(sortShip[i]+10)
-        shipDeathZone.push(sortShip[i]-10)
+      const updateDZ = (x,y) => {
+        let newx = []
+        let newy =y.slice()
+        for (let i=0; i<y.length;i++) {
+          if (x.length !== y[i].length) continue
+          try {
+            newy[i].sort((a,b) => a-b)
+            newx = x.filter((item,index) => newy[i][index] === item)
+            if (newx.length === x.length) {
+              newy.splice(i,1);
+              break
+            }
+          } catch (err) {
+            debugger
+          }
+
+        }
+        return newy;
       }
-      shipDeathZone = [...shipDeathZone,sortShip[0]-11,sortShip[0]-1,sortShip[0]+9,sortShip[sortShip.length -1]+11,sortShip[sortShip.length -1]+1,sortShip[sortShip.length -1]-9]
-      newDeathZone = state.deathField.filter(item => !shipDeathZone.includes(item))
-      newNotEmptySquares = state.notEmptySquares.filter(item => !shipDeathZone.includes(item))
+      let deathZone = state.deathField.slice(),
+         shipDeathZone = action.field.sort((a,b) => a-b),
+         newDeathZone = [],
+         newNotEmptySquares = []
+
+      newDeathZone = updateDZ(shipDeathZone,deathZone)
+      newNotEmptySquares = newNotEmptySquares.concat(...newDeathZone,...state.shipField)
+      console.log(newNotEmptySquares)
+
       return {
         ...state,
         deathField: newDeathZone,
@@ -191,7 +212,7 @@ const battleFieldReducer = (state = initialState, action) => {
       }
     }
 
-  case UPDATE_SHIP_DATA: {
+    case UPDATE_SHIP_DATA: {
     let sortShips = state.shipField.sort((a,b) => a-b)
     return {
       ...state,
@@ -238,8 +259,9 @@ export const changeFieldData = (id,status) => ({type: FIELD_DATA, id, status, })
 export const setDeathSquares = (field) => ({type: FIELD_DEATH_ZONE, field})
 export const setShipSquares = (field) => ({type:FIELD_SHIPS_ZONE, field})
 export const clearField = () => ({type: CLEAR_FIELD })
+
 export const deleteShipFromField = (ship) => ({type: DELETE_SHIP, ship})
-export const deleteDeathZone = (ship) => ({type: DELETE_DEATH_ZONE, ship})
+export const deleteDeathZone = (field) => ({type: DELETE_DEATH_ZONE, field})
 
 export const setStartShipDataCoordinates = (x,y,shipId) => ({type: START_SHIP_DATA_COORDINATES,x,y,shipId})
 

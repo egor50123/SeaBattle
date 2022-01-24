@@ -6,7 +6,7 @@ import Ship from "./Ship/Ship";
 const ShipsField = () => {
   const ships = useSelector( state => state.battleField.ships)
 
-  console.log("RENDER ShipsField")
+  //console.log("RENDER ShipsField")
   return (
       <div className={"shipsField"}>
         {ships.map(item => {

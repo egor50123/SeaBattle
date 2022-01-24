@@ -17,10 +17,10 @@ const BattleField = () => {
     for ( let i = 1; i <=rowsTotal;  i++) {
       let row = [];
       for (let j = 1; j <= columnsTotal; j++) {
-        row.push(<Square id={currentId}/>)
+        row.push(<Square id={currentId} key={currentId}/>)
         currentId++;
       }
-      field.push(<Row row={row}/>)
+      field.push(<Row row={row} key={currentId}/>)
     }
     return field
   }
@@ -32,7 +32,7 @@ const BattleField = () => {
   }
 
 
-  console.log("RENDER_FIELD")
+  //console.log("RENDER_FIELD")
   return (
       <div className={'field'}>
         <div>

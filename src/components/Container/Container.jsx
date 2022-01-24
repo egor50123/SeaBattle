@@ -7,16 +7,18 @@ import {setContainerCoordinates} from "../../redux/battleFieldReducer";
 
 
 const Container = () => {
-  const isRandom = useSelector(state => state.battleField.isRandom)
+  //const isRandom = useSelector(state => state.battleField.isRandom)
+  const shipField = useSelector( state => state.battleField.shipField)
   const ref = useRef(null)
   const dispatch = useDispatch()
+
   useEffect(()=> {
     let x = ref.current.getBoundingClientRect().left
     let y = ref.current.getBoundingClientRect().top
     dispatch(setContainerCoordinates(x,y))
-  },[isRandom])
+  },[shipField])
 
-  console.log("RENDER CONTAINER")
+  //console.log("RENDER CONTAINER")
 
   return (
       <div ref={ref} className={"container"}>
