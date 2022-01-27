@@ -22,10 +22,9 @@ export const useRandomPlacement = (squares) => {
 
       for(let i=1; i<=10; i++) {
         let size
-        let deathZoneForShip
         let someSquare = getRandomSquare(emptySquares)
-        // let direction = Math.floor(Math.random() * 2);
-        let direction = 1
+        let direction = Math.floor(Math.random() * 2);
+        //let direction = 1
         switch (i) {
           case 1:
             size = 4;

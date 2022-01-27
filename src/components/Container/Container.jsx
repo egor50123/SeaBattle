@@ -3,7 +3,7 @@ import BattleField from "../BattleField/BattleField";
 import "./container.scss"
 import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {deleteDndPrevPotentialShip, setContainerCoordinates} from "../../redux/battleFieldReducer";
+import {setContainerCoordinates} from "../../redux/battleFieldReducer";
 
 
 const Container = () => {

@@ -4,11 +4,12 @@ import "./BattleField.scss"
 import {useRandomPlacement} from "../../hooks/useRandomPlacement";
 import {useDispatch} from "react-redux";
 import {updateShipData} from "../../redux/battleFieldReducer";
+import {useMemo} from "react";
 
 const BattleField = () => {
   const {doRandomPlacement} = useRandomPlacement()
   const dispatch = useDispatch()
-  const makeField = () => {
+  function makeField () {
     const rowsTotal = 10;
     const columnsTotal = 10;
 
@@ -24,19 +25,22 @@ const BattleField = () => {
     }
     return field
   }
+  const memoField = useMemo( () => makeField(),[])
+
+
+
 
   function onClickHandler() {
     doRandomPlacement()
     dispatch(updateShipData())
-    //dispatch(setDndPotentialShip(potentialShip,isPossibleToPlacement))
   }
 
 
-  //console.log("RENDER_FIELD")
+  //console.log("RENDER_BATTLEFIELD")
   return (
       <div className={'field'}>
-        <div >
-          {makeField()}
+        <div>
+          {memoField}
         </div>
         <div>
           <button onClick={onClickHandler}>Случайная расстановка</button>

@@ -8,6 +8,14 @@ import {
 } from "../../../redux/battleFieldReducer";
 import {useDeathZone} from "../../../hooks/useDeathZone";
 import {useEffect, useRef} from "react";
+import {
+  getDNDCurrentPart,
+  getDeathField,
+  getDNDSuccessShip,
+  getDNDUnsuccessfulShip,
+  getNotEmptySquares, getDNDPrevSquare,
+  getShipField, getDNDShipSize, getDNDDirection
+} from "../../../selectors/selectors";
 
 const Square = (props) => {
   const {id} = {...props},
@@ -15,19 +23,31 @@ const Square = (props) => {
      dispatch = useDispatch(),
      createDeathZone = useDeathZone(true)
 
-  const shipField = useSelector(state => state.battleField.shipField),
-     deathField = useSelector(state => state.battleField.deathField),
-     notEmptySquares = useSelector(state => state.battleField.notEmptySquares)
+  const shipField = useSelector(getShipField),
+     deathField = useSelector(getDeathField),
+     notEmptySquares = useSelector(getNotEmptySquares)
 
-  const DNDSuccessShip = useSelector( state => state.battleField.dndSettings.successShip),
-     DNDUnsuccessfulShip = useSelector( state => state.battleField.dndSettings.unsuccessfulShip),
-     currentPart = useSelector( state => state.battleField.dndSettings.currentPart),
-     shipSize = useSelector( state => state.battleField.dndSettings.shipSize),
-     prevSquare = useSelector( state => state.battleField.dndSettings.prevSquare)
+  const DNDSuccessShip = useSelector( getDNDSuccessShip),
+     DNDUnsuccessfulShip = useSelector( getDNDUnsuccessfulShip),
+     currentPart = useSelector( getDNDCurrentPart),
+     shipSize = useSelector( getDNDShipSize),
+     prevSquare = useSelector( getDNDPrevSquare),
+      direction = useSelector( getDNDDirection)
 
   const ships = useSelector( state => state.battleField.ships)
 
   let shipClass,deathClass,successShipClass,unsuccessfulShipClass
+
+  // const ships =  [{id:1,size:4,},
+  //   {id:2,size:3,},
+  //   {id:3,size:3,},
+  //   {id:4,size:2,},
+  //   {id:5,size:2,},
+  //   {id:6,size:2,},
+  //   {id:7,size:1,},
+  //   {id:8,size:1,},
+  //   {id:9,size:1,},
+  //   {id:10,size:1,}]
 
 
 
@@ -51,22 +71,35 @@ const Square = (props) => {
       }
   },[shipField])
 
+//   if (shipField.length > 0) {
+//   for (let i = 0; i < shipField.length; i++) {
+//     if (shipField[i][0] === +ref.current.id) {
+//       let x = ref.current.getBoundingClientRect().left;
+//       let y = ref.current.getBoundingClientRect().top;
+//       dispatch(setStartShipDataCoordinates(x, y, ships[i].id))
+//       break;
+//     }
+//   }
+// }
 
-  function dragOverHandler(e,currentPart,shipSize,prevSquare,prevSuccessShip,prevUnsuccessfulShip) {
+
+
+
+  function dragOverHandler(e,currentPart,shipSize,prevSquare,prevSuccessShip,prevUnsuccessfulShip,direction) {
     e.preventDefault();
-
-    function createPotentialShip(currentPart,shipSize,currentSquare) {
+    let currentSquare = +e.target.id
+    function createPotentialShip(currentPart,shipSize,currentSquare,direction) {
       let ship = []
       for ( let i = 1; i<currentPart;i++) {
-        ship.push(currentSquare-i)
+        if (direction === 1) ship.push(currentSquare-i)
+        if (direction === 0) ship.push(currentSquare-i*10)
       }
       for ( let i = 0; i<=shipSize-currentPart;i++) {
-        ship.push(currentSquare+i)
+        if (direction === 1) ship.push(currentSquare+i)
+        if (direction === 0) ship.push(currentSquare+i*10)
       }
       return ship
     }
-
-    let currentSquare = +e.target.id
 
     // если корабль был передвинут на другую клетку то выполняем блок
     if ( currentSquare !== prevSquare) {
@@ -99,13 +132,15 @@ const Square = (props) => {
         [91,92,93,94],
       ].map(item => item.slice(0,currentPart))
 
-      // Проверяем вмещается ли полностью перетаскиваемый корабль на поле
-      if ( rightBorder.find(item => item.includes(currentSquare)) || leftBorder.find(item => item.includes(currentSquare))) {
+      // Проверяем вмещается ли полностью перетаскиваемый корабль на поле (горизонтальный и вертикальный соответсвенно)
+      if ( direction === 1 && (rightBorder.find(item => item.includes(currentSquare)) || leftBorder.find(item => item.includes(currentSquare)))) {
           isShipAboveTheField = !!rightBorder.find( item => item[0] === currentSquare) || !!leftBorder.find( item => item[item.length-1] === currentSquare)
+      } else if ( direction === 0  && (currentSquare + (shipSize-currentPart)*10 > 100 || currentSquare - (currentPart-1)*10 <= 0)) {
+        isShipAboveTheField = false
       }
 
       if (isShipAboveTheField) {
-        potentialShip = createPotentialShip(currentPart,shipSize,currentSquare)
+        potentialShip = createPotentialShip(currentPart,shipSize,currentSquare,direction)
         // Проверяем можно ли дропнуть потенциальный корабль на поле
         for( let i = 0; i<potentialShip.length;i++) {
           if ( notEmptySquares.includes(potentialShip[i]) ) {
@@ -114,6 +149,8 @@ const Square = (props) => {
           }
         }
       }
+
+    //square + 4-3
 
 
       if (isShipAboveTheField) {
@@ -127,11 +164,11 @@ const Square = (props) => {
 
   }
 
-  function dropHandler(e,successShip) {
+  function dropHandler(e,successShip,direction) {
     if (successShip) {
       let x = e.target.getBoundingClientRect().left
       let y  = e.target.getBoundingClientRect().top
-      let shipDeathZone = createDeathZone(successShip,1)
+      let shipDeathZone = createDeathZone(successShip,direction)
       dispatch(setShipSquares([successShip]))
       dispatch(setDeathSquares([shipDeathZone]))
       dispatch(dndDropCoordinates(x,y))
@@ -149,8 +186,8 @@ const Square = (props) => {
   return (
       <span ref={ref} className={`square ${deathClass} ${shipClass} ${successShipClass} ${unsuccessfulShipClass}`} id={id}
             onDragLeave={dragLeaveHandler}
-            onDragOver={(e) => dragOverHandler(e,currentPart,shipSize,prevSquare,DNDSuccessShip,DNDUnsuccessfulShip)}
-            onDrop={(e)=> dropHandler(e,DNDSuccessShip)}>{id}</span>
+            onDragOver={(e) => dragOverHandler(e,currentPart,shipSize,prevSquare,DNDSuccessShip,DNDUnsuccessfulShip,direction)}
+            onDrop={(e)=> dropHandler(e,DNDSuccessShip,direction)}>{id}</span>
   )
 }
 
