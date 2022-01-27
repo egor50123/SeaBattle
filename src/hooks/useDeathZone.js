@@ -1,5 +1,6 @@
 export const useDeathZone = (dnd = false) => {
   return (
+      // напрвление нужно определять здесь
     function createDeathZone (ship,direction)  {
       function filterDefaultBorderValues (border,side) {
         return border.filter(item => !side.includes(item) && item<=100 && item > 0)

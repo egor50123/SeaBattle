@@ -1,7 +1,12 @@
-import {useRef} from "react";
-import React from 'react';
+import React, {useRef} from "react";
 import {
-  clearDndSettings, deleteDeathZone, deleteShipFromField, savePrevShipPlacement, setDeathSquares, setDndSettings, setShipSquares
+  clearDndSettings,
+  deleteDeathZone,
+  deleteShipFromField,
+  savePrevShipPlacement,
+  setDeathSquares,
+  setDndSettings,
+  setShipSquares, updateShipSquares
 } from "../../../redux/battleFieldReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {useDndCurrentPart} from "../../../hooks/useDndCurrentPart";
@@ -14,17 +19,19 @@ import {
   getDNDStatus,
   getDNDx,
   getDNDy,
+  getInitEmptySquares,
   getIsPossibleToPlacement,
   getNotEmptySquares
 } from "../../../selectors/selectors";
+import {useShip} from "../../../hooks/useShip";
 
 const Ship = React.memo((props) => {
   const ref = useRef(null),
-   dispatch = useDispatch(),
-      //!!!!!!!!!
-   findCurrent = useDndCurrentPart(),
-   createDeathZone = useDeathZone(),
-   {id, key, size } = {...props}
+        dispatch = useDispatch(),
+        findCurrent = useDndCurrentPart(),
+        createDeathZone = useDeathZone(),
+        createStrictShip = useShip(true),
+        {id, key, size } = {...props}
 
   const dndStatus  = useSelector( getDNDStatus),
         currentPart = useSelector( getDNDCurrentPart),
@@ -37,7 +44,8 @@ const Ship = React.memo((props) => {
         yShips = ships[id-1].y,
         prevShipPlacement = useSelector( getDNDPrevShipPlacement),
         isPossibleToPlacement = useSelector( getIsPossibleToPlacement),
-        notEmptySquares = useSelector( getNotEmptySquares )
+        notEmptySquares = useSelector( getNotEmptySquares ),
+        allSquares = useSelector( getInitEmptySquares )
 //////!!!!!!!
   // в отдельную функцию
   // let width = ref.current.getBoundingClientRect().width
@@ -55,6 +63,7 @@ const Ship = React.memo((props) => {
     let isHorizontalShip = Math.abs(ships[id-1].shipSquares[0]-ships[id-1].shipSquares[1]) === 1
     let isShipLengthMoreThenOne = ships[id-1].shipSquares.length !== 1
     //делаем корабль вертикальным если он еще не вертикальный
+    // В отдельную функцию (в кклике используется)
     if (isShipLengthMoreThenOne && isVerticalShip && width > height) {
       ref.current.style.width = height + "px"
       ref.current.style.height = width + "px"
@@ -111,37 +120,51 @@ const Ship = React.memo((props) => {
     dispatch(clearDndSettings())
   }
 
-  function clickHandler(e,notEmptySquares) {
-    function checkRotatable (notEmptySquares,direction,shipSquares) {
-      let newNotEmptySquares = notEmptySquares.indexOf(shipSquares[0]+10)
-      let isRotatable = true
-      for (let i=1; i<shipSquares.length;i++) {
-        if (direction === 1 && notEmptySquares.includes(shipSquares[0] + i)) {
-          isRotatable = false
-          break
-        }else if (direction === 0 && notEmptySquares.includes(shipSquares[0] + i*10)) {
-          isRotatable = false
-          break
-        }
-      }
-      return isRotatable
+  function clickHandler(e,notEmptySquares,allSquares) {
+    const id = e.target.id
+    const shipSquares = ships[id-1].shipSquares
+    if (shipSquares.length === 1) return
+
+    function createShip (notEmptySquares,direction,shipSquares) {
+      let notEmptySquaresCopy = notEmptySquares.slice()
+      notEmptySquaresCopy.splice(notEmptySquaresCopy.indexOf(shipSquares[0]),1)
+      if (direction ===1) notEmptySquaresCopy.splice(notEmptySquaresCopy.indexOf(shipSquares[0] + 10),1)
+      if (direction ===0) notEmptySquaresCopy.splice(notEmptySquaresCopy.indexOf(shipSquares[0] + 1),1)
+      const emptySquares = allSquares.filter(item => !notEmptySquaresCopy.includes(item))
+
+      let reverseDirection = direction === 1 ? 0 : 1
+
+      return createStrictShip(shipSquares[0], shipSquares.length, reverseDirection, emptySquares)
     }
+
     let width = ref.current.getBoundingClientRect().width,
         height = ref.current.getBoundingClientRect().height,
         direction = width > height ? 1 : 0
 
-    const id = e.target.id
-    const shipSquares = ships[id-1].shipSquares
     const deathZone = createDeathZone(shipSquares,direction)
-    const isRotatable = checkRotatable(notEmptySquares,direction,shipSquares)
+    const newShip = createShip(notEmptySquares,direction,shipSquares)
 
-    console.log(isRotatable)
+    if (newShip) {
+      let width = ref.current.getBoundingClientRect().width
+      let height = ref.current.getBoundingClientRect().height
+
+      ref.current.style.width = height + "px"
+      ref.current.style.height = width + "px"
+
+      let reverseDirection = direction === 1 ? 0 : 1
+      let newShipDeathZone = createDeathZone(newShip,reverseDirection)
+      dispatch(deleteShipFromField(shipSquares))
+      dispatch(deleteDeathZone(deathZone))
+      dispatch(setShipSquares([newShip]))
+      dispatch(setDeathSquares([newShipDeathZone]))
+      dispatch(updateShipSquares(id,newShip))
+    }
   }
 
   //console.log("render ship")
   return (
     <div ref={ref} id={id} key={key} draggable={true} className={`ship ship--${size}`}
-         onClick={(e) => clickHandler(e,notEmptySquares)}
+         onClick={(e) => clickHandler(e,notEmptySquares,allSquares)}
          onDragStart={ (e) => dragStartHandler(e,ships)}
          onDragEnd={ (e) => dragEndHandler(e) }>{id}
     </div>

@@ -65,8 +65,10 @@ const Square = (props) => {
         if (ships[i].shipSquares && ships[i].shipSquares[0] === +ref.current.id) {
           let x = ref.current.getBoundingClientRect().left;
           let y = ref.current.getBoundingClientRect().top;
+          // если координаты не изменились - выходим из функции
+          if (ships[i].x === x && ships[i].y === y) return
           dispatch(setStartShipDataCoordinates(x,y,ships[i].id))
-          break;
+          return;
         }
       }
   },[shipField])

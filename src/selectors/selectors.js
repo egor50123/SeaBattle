@@ -2,6 +2,7 @@
 export const getShipField = state => state.battleField.shipField
 export const getDeathField = state => state.battleField.deathField
 export const getNotEmptySquares = state => state.battleField.notEmptySquares
+export const getInitEmptySquares = state => state.battleField.squares
 
 // Селеторы для DND
 export const getDNDSuccessShip = state => state.battleField.dndSettings.successShip

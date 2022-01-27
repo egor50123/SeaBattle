@@ -1,6 +1,6 @@
 import {useRandomSquare} from "./useRandomSquare";
 
-export const useShip = (dnd = false) => {
+export const useShip = (strictMode = false) => {
   const getRandomSquare = useRandomSquare()
   return function createShip (squareId,size,direction,emptySquares = []) {
       if (size === 1) return [squareId];
@@ -54,11 +54,12 @@ export const useShip = (dnd = false) => {
             step -= 10
           } else if( squareId <= 100 - 10 * (size - 1) && isBottomEmpty) {
             step += 10
-          } else if(size === 3 && emptySquares.includes(squareId - 10) && emptySquares.includes(squareId + 10) && (squareId - 10)>0 && (squareId + 10)<=100){
+          } else if(!strictMode && size === 3 && emptySquares.includes(squareId - 10) && emptySquares.includes(squareId + 10) && (squareId - 10)>0 && (squareId + 10)<=100){
             return  [squareId-10,squareId,squareId+10]
-          } else {
-            console.log('here V')
+          } else if (!strictMode){
             return createShip(getRandomSquare(emptySquares),size,direction,emptySquares)
+          } else {
+            return null
           }
         }
         // если по горизонтали - делаем коробль от начального id вправо, если места мало - влево
@@ -70,11 +71,12 @@ export const useShip = (dnd = false) => {
             step++
           } else if( !!!leftBorder.find(row => row.includes(squareId)) && isLeftEmpty) {
             step--
-          } else if(size === 3 && checkNeighbor){
+          } else if(!strictMode && size === 3 && checkNeighbor){
             return  [squareId-1,squareId,squareId+1]
-          } else {
-            console.log('here H')
+          } else if(!strictMode){
             return createShip(getRandomSquare(emptySquares),size,direction,emptySquares)
+          } else{
+            return null
           }
         }
       }

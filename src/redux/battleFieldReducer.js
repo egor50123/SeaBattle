@@ -16,6 +16,7 @@ const START_SHIP_DATA = "START_SHIP_DATA";
 const START_SHIP_DATA_COORDINATES = "START_SHIP_DATA_COORDINATES";
 const CONTAINER_COORDINATES = "CONTAINER_COORDINATES";
 const UPDATE_SHIP_DATA = "UPDATE_SHIP_DATA";
+const UPDATE_SHIP_SQUARES = "UPDATE_SHIP_SQUARES"
 const IS_RANDOM = "IS_RANDOM";
 const DELETE_DND_PREV_POTENTIAL_SHIP = "DELETE_DND_PREV_POTENTIAL_SHIP"
 
@@ -240,8 +241,9 @@ const battleFieldReducer = (state = initialState, action) => {
         }
       }
     }
-
+    //????
     case UPDATE_SHIP_DATA: {
+      //???????
     let sortShips = state.shipField.sort((a,b) => a-b)
     return {
       ...state,
@@ -251,6 +253,19 @@ const battleFieldReducer = (state = initialState, action) => {
       })],
     }
   }
+    case UPDATE_SHIP_SQUARES: {
+      let newShips = state.ships.slice()
+      for(let i = 0; i<state.ships.length; i++) {
+        if (+state.ships[i].id === +action.shipId) {
+          state.ships[i].shipSquares = action.newSquares
+        }
+      }
+
+      return {
+        ...state,
+        ships: newShips
+      }
+    }
     case START_SHIP_DATA_COORDINATES: {
       return {
         ...state,
@@ -304,6 +319,7 @@ export const dndDropCoordinates = (x,y) => ({type:DND_DROP_COORDINATES,x,y})
 export const setDndPrevSquare = (prevSquare) => ({type:DND_PREV_SQUARE,prevSquare})
 
 export const updateShipData = () => ({type:UPDATE_SHIP_DATA})
+export const updateShipSquares = (shipId,newSquares) => ({type:UPDATE_SHIP_SQUARES,shipId,newSquares})
 export const iSRandom = () => ({type: IS_RANDOM})
 
 export const setContainerCoordinates = (x,y) => ({type:CONTAINER_COORDINATES,x,y})
