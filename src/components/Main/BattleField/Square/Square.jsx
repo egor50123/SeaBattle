@@ -5,8 +5,8 @@ import {
   setDeathSquares,
   setDndPotentialShip, setDndPrevSquare, setDndStatus,
   setShipSquares, setStartShipDataCoordinates
-} from "../../../redux/battleFieldReducer";
-import {useDeathZone} from "../../../hooks/useDeathZone";
+} from "../../../../redux/battleFieldReducer";
+import {useDeathZone} from "../../../../hooks/useDeathZone";
 import {useEffect, useRef} from "react";
 import {
   getDNDCurrentPart,
@@ -15,7 +15,7 @@ import {
   getDNDUnsuccessfulShip,
   getNotEmptySquares, getDNDPrevSquare,
   getShipField, getDNDShipSize, getDNDDirection
-} from "../../../selectors/selectors";
+} from "../../../../selectors/selectors";
 
 const Square = (props) => {
   const {id} = {...props},

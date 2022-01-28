@@ -1,0 +1,18 @@
+.btn-round {
+  font-size: 1.2em;
+  width: 100px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: crimson;
+  border: 2px solid black;
+
+  &--random {
+    background-color: aqua;
+  }
+  &--rotate {
+    background-color: aqua;
+  }
+  &--play {
+    background-color: #61d200;
+  }
+}

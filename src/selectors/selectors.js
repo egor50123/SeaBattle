@@ -23,13 +23,10 @@ export const getContainerY= state => state.battleField.containerCoordinates.y
 export const ship = (state,id) => state => state.battleField.ships[id-1]
 
 
+export const getCurrentPage = (state) => state.appInit.currentPage
 
 
-
-
-
-
-    // ship = useSelector( state => state.battleField.ships[id-1]),
+// ship = useSelector( state => state.battleField.ships[id-1]),
     // xShips = ship.x,
     // yShips = ship.y,
 

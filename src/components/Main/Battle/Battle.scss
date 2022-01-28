@@ -1,0 +1,11 @@
+.battleField-container {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  padding: 10px;
+  margin:0 auto;
+  min-height: 400px;
+  width: 1000px;
+  background-color: rgba(0, 0, 0, 0.2);
+}

@@ -1,0 +1,19 @@
+.menu {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 320px;
+  width: 400px;
+  background-color: rgba(31, 86, 100, 0.91);
+  border-radius: 6px;
+}
+
+.button-menu {
+  font-size: 2em;
+  border-radius: 20px;
+  height: 100px;
+  width: 300px;
+  background-color: #0cb90c;
+}

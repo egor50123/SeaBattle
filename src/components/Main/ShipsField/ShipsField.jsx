@@ -1,5 +1,5 @@
 import "./ShipsField.scss"
-import React, {useMemo} from 'react';
+import React from 'react';
 import Ship from "./Ship/Ship";
 
 const ShipsField = () => {

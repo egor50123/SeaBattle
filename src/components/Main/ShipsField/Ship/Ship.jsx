@@ -1,37 +1,33 @@
 import React, {useRef} from "react";
+
+import {useDispatch, useSelector} from "react-redux";
+import {useDndCurrentPart} from "../../../../hooks/useDndCurrentPart";
+import {useDeathZone} from "../../../../hooks/useDeathZone";
+import {useShip} from "../../../../hooks/useShip";
+import {
+  getContainerX,
+  getContainerY,
+  getDNDCurrentPart, getDNDPrevShipPlacement,
+  getDNDStatus,
+  getDNDx,
+  getDNDy, getInitEmptySquares, getIsPossibleToPlacement, getNotEmptySquares
+} from "../../../../selectors/selectors";
 import {
   clearDndSettings,
   deleteDeathZone,
   deleteShipFromField,
-  savePrevShipPlacement,
-  setDeathSquares,
-  setDndSettings,
-  setShipSquares, updateShipSquares
-} from "../../../redux/battleFieldReducer";
-import {useDispatch, useSelector} from "react-redux";
-import {useDndCurrentPart} from "../../../hooks/useDndCurrentPart";
-import {useDeathZone} from "../../../hooks/useDeathZone";
-import {
-  getContainerX,
-  getContainerY,
-  getDNDCurrentPart,
-  getDNDPrevShipPlacement,
-  getDNDStatus,
-  getDNDx,
-  getDNDy,
-  getInitEmptySquares,
-  getIsPossibleToPlacement,
-  getNotEmptySquares
-} from "../../../selectors/selectors";
-import {useShip} from "../../../hooks/useShip";
+  savePrevShipPlacement, setDeathSquares,
+  setDndSettings, setShipSquares, updateShipSquares
+} from "../../../../redux/battleFieldReducer";
+
 
 const Ship = React.memo((props) => {
+  const {id, key, size } = {...props}
   const ref = useRef(null),
         dispatch = useDispatch(),
         findCurrent = useDndCurrentPart(),
         createDeathZone = useDeathZone(),
-        createStrictShip = useShip(true),
-        {id, key, size } = {...props}
+        createStrictShip = useShip(true)
 
   const dndStatus  = useSelector( getDNDStatus),
         currentPart = useSelector( getDNDCurrentPart),

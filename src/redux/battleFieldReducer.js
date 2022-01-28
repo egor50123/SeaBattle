@@ -19,6 +19,7 @@ const UPDATE_SHIP_DATA = "UPDATE_SHIP_DATA";
 const UPDATE_SHIP_SQUARES = "UPDATE_SHIP_SQUARES"
 const IS_RANDOM = "IS_RANDOM";
 const DELETE_DND_PREV_POTENTIAL_SHIP = "DELETE_DND_PREV_POTENTIAL_SHIP"
+const CLEAR_SHIPS_DATA = "CLEAR_SHIPS_DATA"
 
 
 const initialState = {
@@ -293,7 +294,24 @@ const battleFieldReducer = (state = initialState, action) => {
         isRandom: !state.isRandom,
       }
     }
-
+    case CLEAR_SHIPS_DATA: {
+      return {
+        ...state,
+        ships: [{id:1,size:4,},
+          {id:2,size:3,},
+          {id:3,size:3,},
+          {id:4,size:2,},
+          {id:5,size:2,},
+          {id:6,size:2,},
+          {id:7,size:1,},
+          {id:8,size:1,},
+          {id:9,size:1,},
+          {id:10,size:1,}],
+        shipField: [],
+        deathField: [],
+        notEmptySquares: [],
+      }
+    }
     default: return state
   }
 }
@@ -321,6 +339,7 @@ export const setDndPrevSquare = (prevSquare) => ({type:DND_PREV_SQUARE,prevSquar
 export const updateShipData = () => ({type:UPDATE_SHIP_DATA})
 export const updateShipSquares = (shipId,newSquares) => ({type:UPDATE_SHIP_SQUARES,shipId,newSquares})
 export const iSRandom = () => ({type: IS_RANDOM})
+export const clearShipsData = () => ({type:CLEAR_SHIPS_DATA})
 
 export const setContainerCoordinates = (x,y) => ({type:CONTAINER_COORDINATES,x,y})
 
