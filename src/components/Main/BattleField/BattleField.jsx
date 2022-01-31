@@ -25,7 +25,7 @@ const BattleField = (props) => {
   }
   const memoField = useMemo( () => makeField(),[])
 
-  //console.log("RENDER_BATTLEFIELD")
+  console.log("RENDER_BATTLEFIELD " + fieldId)
   return (
     <div className={'field'}>
       {memoField}

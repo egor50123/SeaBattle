@@ -4,7 +4,7 @@ import "./container.scss"
 import "../../Common/RoundButton.scss"
 import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {getCurrentPage} from "../../../selectors/selectors";
+import {getCurrentPage, getFirstShipsField} from "../../../selectors/selectors";
 import {setContainerCoordinates, updateShipData} from "../../../redux/battleFieldReducer";
 import {useRandomPlacement} from "../../../hooks/useRandomPlacement";
 import {setCurrentPage} from "../../../redux/appInitReducer";
@@ -12,7 +12,7 @@ import {setCurrentPage} from "../../../redux/appInitReducer";
 
 
 const Container = () => {
-  const shipField = useSelector( state => state.battleField.shipField)
+  const firstShipField  = useSelector( getFirstShipsField)
   const ref = useRef(null)
   const dispatch = useDispatch()
   const currentPage = useSelector( getCurrentPage )
@@ -26,15 +26,16 @@ const Container = () => {
       let y = ref.current.getBoundingClientRect().top
       dispatch(setContainerCoordinates(x, y))
     }
-  },[shipField])
+  },[firstShipField,currentPage])
 
   function onClickRandom() {
-    doRandomPlacement()
+    doRandomPlacement(1)
     dispatch(updateShipData())
   }
 
   function onClickPlay() {
     dispatch(setCurrentPage("battleField"))
+    doRandomPlacement(2)
   }
 
   //console.log("RENDER CONTAINER")
@@ -51,8 +52,6 @@ const Container = () => {
             </div>
 
           </div>
-
-
       </div> : null
   )
 }

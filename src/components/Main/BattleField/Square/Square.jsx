@@ -14,7 +14,7 @@ import {
   getDNDSuccessShip,
   getDNDUnsuccessfulShip,
   getNotEmptySquares, getDNDPrevSquare,
-  getShipField, getDNDShipSize, getDNDDirection
+  getShipField, getDNDShipSize, getDNDDirection, getFirstShipsField, getFirstDeathField, getFirstNotEmptySquares
 } from "../../../../selectors/selectors";
 
 const Square = (props) => {
@@ -23,9 +23,9 @@ const Square = (props) => {
      dispatch = useDispatch(),
      createDeathZone = useDeathZone(true)
 
-  const shipField = useSelector(getShipField),
-     deathField = useSelector(getDeathField),
-     notEmptySquares = useSelector(getNotEmptySquares)
+  const shipField = useSelector(getFirstShipsField),
+     deathField = useSelector(getFirstDeathField),
+     notEmptySquares = useSelector(getFirstNotEmptySquares)
 
   const DNDSuccessShip = useSelector( getDNDSuccessShip),
      DNDUnsuccessfulShip = useSelector( getDNDUnsuccessfulShip),
@@ -179,7 +179,6 @@ const Square = (props) => {
 
     }
   }
-
   function dragLeaveHandler() {
     dispatch(deleteDndPrevPotentialShip())
   }
