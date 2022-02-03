@@ -1,11 +1,14 @@
 import Square from "./Square/Square";
 import Row from "./Row/Row";
 import "./BattleField.scss"
-import {useMemo} from "react";
+import {useCallback, useMemo} from "react";
 import SimpleSquare from "./SimpleSquare/SimpleSquare";
+import {useIsShipKilled} from "../../../hooks/useIsShipKilled";
 
 const BattleField = (props) => {
   const {isBattleForPlacement, id:fieldId} = {...props}
+  const botShoot = props.botShoot
+  const isShipKilled = useIsShipKilled(fieldId)
   function makeField () {
     const rowsTotal = 10;
     const columnsTotal = 10;
@@ -16,7 +19,7 @@ const BattleField = (props) => {
       let row = [];
       for (let j = 1; j <= columnsTotal; j++) {
         isBattleForPlacement && row.push(<Square id={currentId} key={currentId}/>)
-        !isBattleForPlacement && row.push(<SimpleSquare id={currentId} key={currentId} fieldId={fieldId}/>)
+        !isBattleForPlacement && row.push(<SimpleSquare id={currentId} key={currentId} fieldId={fieldId} botShoot={botShoot} isShipKilled={isShipKilled}/>)
         currentId++;
       }
       field.push(<Row row={row} key={currentId}/>)

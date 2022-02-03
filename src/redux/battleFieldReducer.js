@@ -67,6 +67,7 @@ const initialState = {
   },
   //true - ход первого игрока, false - второго
   currentPlayer: true,
+  killedShipsByBot: [],
 
   dndSettings: {
     currentPart:null,

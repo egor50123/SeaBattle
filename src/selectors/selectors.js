@@ -39,6 +39,8 @@ export const getFirstFieldNotEmptySquares = state => state.battleField.firstPlay
 export const getSecondFieldNotEmptySquares = state => state.battleField.secondPlayer.notEnemyEmptySquares
 export const getCurrentPlayer = state => state.battleField.currentPlayer
 
+export const getKilledShipsByBot = state => state.battleField.killedShipsByBot
+
 
 // ship = useSelector( state => state.battleField.ships[id-1]),
     // xShips = ship.x,
