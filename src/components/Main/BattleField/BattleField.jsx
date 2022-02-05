@@ -8,7 +8,7 @@ import {useIsShipKilled} from "../../../hooks/useIsShipKilled";
 const BattleField = (props) => {
   const {isBattleForPlacement, id:fieldId} = {...props}
   const botShoot = props.botShoot
-  const isShipKilled = useIsShipKilled(fieldId)
+  const currentDamagedShip = useIsShipKilled(fieldId)
   function makeField () {
     const rowsTotal = 10;
     const columnsTotal = 10;
@@ -19,7 +19,7 @@ const BattleField = (props) => {
       let row = [];
       for (let j = 1; j <= columnsTotal; j++) {
         isBattleForPlacement && row.push(<Square id={currentId} key={currentId}/>)
-        !isBattleForPlacement && row.push(<SimpleSquare id={currentId} key={currentId} fieldId={fieldId} botShoot={botShoot} isShipKilled={isShipKilled}/>)
+        !isBattleForPlacement && row.push(<SimpleSquare id={currentId} key={currentId} fieldId={fieldId} botShoot={botShoot} currentDamagedShip={currentDamagedShip}/>)
         currentId++;
       }
       field.push(<Row row={row} key={currentId}/>)
@@ -28,7 +28,7 @@ const BattleField = (props) => {
   }
   const memoField = useMemo( () => makeField(),[])
 
-  console.log("RENDER_BATTLEFIELD " + fieldId)
+  //console.log("RENDER_BATTLEFIELD " + fieldId)
   return (
     <div className={'field'}>
       {memoField}

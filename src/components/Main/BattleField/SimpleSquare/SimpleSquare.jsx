@@ -1,6 +1,6 @@
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {
-  getCurrentPlayer,
+  getCurrentPlayer, getDamagedShipsSquares,
   getFirstFieldDamagedSquares,
   getFirstFieldMissedSquares, getFirstFieldNotEmptySquares,
   getFirstShipsField, getInitEmptySquares,
@@ -8,7 +8,7 @@ import {
   getSecondFieldMissedSquares, getSecondFieldNotEmptySquares,
   getSecondShipsField
 } from "../../../../selectors/selectors";
-import {changePlayer, setHit, setMiss} from "../../../../redux/battleFieldReducer";
+import {changePlayer, setDamageShip, setHit, setMiss} from "../../../../redux/battleFieldReducer";
 import {useEffect, useRef, useState} from "react";
 import {useRandomSquare} from "../../../../hooks/useRandomSquare";
 import {useBotShooting} from "../../../../hooks/useBotShooting";
@@ -18,7 +18,7 @@ const SimpleSquare = (props) => {
   const dispatch = useDispatch()
   const getRandom = useRandomSquare()
   const botShoot = fieldId === 2 ? props.botShoot : null
-  const isShipKilled = props.isShipKilled
+  const currentDamagedShipFunc = props.currentDamagedShip
   const ref = useRef(null)
   let shipClass,missedClass,damagedClass
   // !!!!!!!!!!!!!НАЗВАНИЯ НОРМ СДЕЛАТЬ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -32,6 +32,8 @@ const SimpleSquare = (props) => {
   const firstFieldNotEmptySquares = useSelector(getSecondFieldNotEmptySquares)
   const currentPlayer = useSelector(getCurrentPlayer)
   let emptySquaresInit = useSelector(getInitEmptySquares,shallowEqual)
+
+  const damageShipSquares = useSelector(getDamagedShipsSquares)
 
   let [flag, setFlag] = useState(false)
   let [test, settest] = useState(0)
@@ -64,22 +66,31 @@ const SimpleSquare = (props) => {
     }
   }
 
-    function onBotClick(id,emptySquares,damagedSquares=0) {
-    let isHit = !!secondShipField.find(ship => ship.includes(id))
-    let total = damagedSquares
-    if (isHit) {
-      dispatch(setHit(id,1))
-      total++
-      let newEmptySquares = emptySquares.filter(item => item !==id)
-      settest(test++)
-      botShoot()
+    function onBotClick(id,emptySquares,damageShipSquares,isDestroyed = false) {
+    let isHit = !!firstShipField.find(ship => ship.includes(id))
+    let isShipDestroyed = isDestroyed
+    let newEmptySquares = emptySquares.filter(item => item !==id)
+    if (isHit && !isDestroyed) {
+      debugger
+      let square = null,
+          isDestroyed = false
+
+      console.log("hit")
+      if(damageShipSquares.length === 0) dispatch(setHit(id,1))
+      //dispatch(setDamageShip(id))
+      //let newEmptySquares = emptySquares.filter(item => item !==id)
       setTimeout(() => {
         if (emptySquares === 0) {
           alert("game over")
           return
         }
-        onBotClick(botShoot(newEmptySquares,id,isShipKilled), newEmptySquares, total)
+        [square,isDestroyed] = botShoot(newEmptySquares,id,currentDamagedShipFunc,damageShipSquares)
+        onBotClick(square, newEmptySquares,damageShipSquares,isDestroyed)
       },300)
+    } else if (isShipDestroyed) {
+      debugger
+      let [square] = botShoot(newEmptySquares,null,[],[])
+      onBotClick(square, newEmptySquares,damageShipSquares)
     } else {
       dispatch(setMiss(id,1))
       dispatch(changePlayer())
@@ -92,11 +103,17 @@ const SimpleSquare = (props) => {
       if (secondFieldDamagedSquares.length === 20) {
         alert("end")
       }
-      let emptySquares = secondShipField[0].filter( item => !firstFieldNotEmptySquares.includes(item))
-      //let emptySquares = emptySquaresInit.filter( item => !firstFieldNotEmptySquares.includes(item))
+      //let emptySquares = firstShipField[0].filter( item => !firstFieldNotEmptySquares.includes(item))
+      let emptySquares = emptySquaresInit.filter( item => !firstFieldNotEmptySquares.includes(item))
+      let square = null
+      if ( damageShipSquares.length !== 0 ) {
+        square = damageShipSquares[0]
+      } else {
+        [square] = botShoot(emptySquares,null,currentDamagedShipFunc,damageShipSquares)
+      }
       setTimeout ( () => {
-        onBotClick(botShoot(emptySquares),emptySquares)
-        //onBotClick(1,emptySquares)
+        //onBotClick(botShoot(emptySquares),emptySquares)
+        onBotClick(square,emptySquares,damageShipSquares)
         setFlag(false)
       },10)
     }
