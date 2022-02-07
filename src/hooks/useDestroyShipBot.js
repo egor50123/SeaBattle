@@ -4,19 +4,19 @@ import {setDamageShip} from "../redux/battleFieldReducer";
 export const useDestroyShipBot = () => {
   const dispatch = useDispatch()
   let damagedSquaresOfShip = []
-  let test = 0
+  let totalDestroyedShips = 0
+  let totalDestroyedShipsCopy = 0
   function findPotentialPlacement() {
+    let potentialPosition4 = [[1,1,0,1], [1,0,1,1], [0,1,1,1], [1,1,1,0]] // [ [1,1,hit,1], [1,hit,1,1], [hit,1,1,1], [1,1,1,hit]]
+    let potentialPosition3 = [[1,0,1], [1,1,0], [0,1,1]]
+    let potentialPosition2 = [[1,0],[0,1]]
+
 
   }
   return (hitId,emptySquares,damagedShipInit) => {
     if (damagedSquaresOfShip.length === 0) {
       damagedSquaresOfShip.push(hitId)
     }
-    // if (damageShipSquares.length !== 0) {
-    //   damagedSquaresOfShip = damageShipSquares.slice()
-    // } else {
-    //   damagedSquaresOfShip.push(hitId)
-    // }
     let nextHit = null
     let isDestroyed = null
     //условие - мусор
@@ -24,11 +24,11 @@ export const useDestroyShipBot = () => {
     let size = damagedShipInit.length;
 
       const initPosition = [[1,1,0,1], [1,0,1,1], [0,1,1,1], [1,1,1,0]]
-      let potentialPositionV = [[1,1,0,1], [1,0,1,1], [0,1,1,1], [1,1,1,0]] // [ [1,1,hit,1], [1,hit,1,1], [hit,1,1,1], [1,1,1,hit]]
 
       let potentialPositionH = [[1,1,0,1], [1,0,1,1], [0,1,1,1], [1,1,1,0]] // [ [1,1,hit,1], [1,hit,1,1], [hit,1,1,1], [1,1,1,hit]]
       let potentialPosition3H = [[1,0,1], [1,1,0], [0,1,1]]
       let potentialPosition2H = [[1,0],[0,1]]
+
 
       let isTopEmpty = true,
           isBottomEmpty = true,
@@ -160,12 +160,11 @@ export const useDestroyShipBot = () => {
           }
         }
       }
-      let positions =[]
-      let position = []
+
       //let direction = Math.floor(Math.random() * 2);
       let direction = 1
       if (direction === 1) {
-        try {
+        let positions =[]
           switch (size - damagedSquaresOfShip.length) {
             case 3:
               positions = potentialPositionH.filter(item => item !== false);
@@ -181,12 +180,8 @@ export const useDestroyShipBot = () => {
           }
 
           let positionIndex = Math.floor(Math.random() * positions.length);
-          if (test === 0) {
-            positionIndex = 1
-            test++
-          }
 
-          position = positions[positionIndex]
+          let position = positions[positionIndex]
           let indexOfPrevHit = position.indexOf(0)
 
           if (indexOfPrevHit !== 0 && indexOfPrevHit !== position.length - 1) {
@@ -210,17 +205,6 @@ export const useDestroyShipBot = () => {
               nextHit = damagedSquaresShipSort[0] - 1
             }
           }
-        } catch (err) {
-          console.log(err)
-          console.log("hit id " + hitId)
-          console.log(potentialPositionH)
-          console.log(potentialPosition3H)
-          console.log(potentialPosition2H)
-          console.log(positions)
-          console.log(damagedSquaresOfShip)
-          console.log("size " + size)
-          console.log(position)
-        }
       }
       //берем динамические границы из useShip
       //и прроверки свободны ли вверх и низ
@@ -232,9 +216,15 @@ export const useDestroyShipBot = () => {
       damagedSquaresOfShip.push(nextHit)
     }
 
-    if (isDestroyed) damagedSquaresOfShip = []
+    // Если корабль уничтожен - обнуляем массив поврежденных кораблей и фиксируем, что корбль был уничтожен
+    if (isDestroyed) {
+      damagedSquaresOfShip = []
+      totalDestroyedShips++
+    }
+
+    if (totalDestroyedShips === 6) totalDestroyedShipsCopy = totalDestroyedShips
 
     dispatch(setDamageShip(damagedSquaresOfShip))
-    return [nextHit,isDestroyed]
+    return [nextHit,isDestroyed,damagedShipInit,totalDestroyedShipsCopy]
   }
 }

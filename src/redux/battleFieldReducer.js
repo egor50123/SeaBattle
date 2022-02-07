@@ -384,16 +384,22 @@ const battleFieldReducer = (state = initialState, action) => {
           shipField: [],
           deathField: [],
           notEmptySquares: [],
+
           enemyHitedSquares: [],
           enemyMissedSquares: [],
+          notEnemyEmptySquares:[]
         },
         secondPlayer: {
           shipField: [],
           deathField: [],
           notEmptySquares: [],
+
           enemyHitedSquares: [],
           enemyMissedSquares: [],
-        }
+          notEnemyEmptySquares:[]
+        },
+        currentPlayer: true,
+        damagedShipsSquares: [],
 
       }
     }
@@ -436,16 +442,19 @@ const battleFieldReducer = (state = initialState, action) => {
           ...state,
           firstPlayer: {
             ...state.firstPlayer,
-            enemyMissedSquares: [...state.firstPlayer.enemyMissedSquares,action.id],
-            notEnemyEmptySquares: [...state.firstPlayer.notEnemyEmptySquares,action.id]
+            enemyMissedSquares: [...state.firstPlayer.enemyMissedSquares,...action.squares],
+            notEnemyEmptySquares: [...state.firstPlayer.notEnemyEmptySquares,...action.squares]
           }
         }
-        case 1:return {
-          ...state,
-          secondPlayer: {
-            ...state.secondPlayer,
-            enemyMissedSquares: [...state.secondPlayer.enemyMissedSquares,action.id],
-            notEnemyEmptySquares: [...state.secondPlayer.notEnemyEmptySquares,action.id]
+        case 1: {
+          let newEnemyMissedSquares = new Set([...state.secondPlayer.enemyMissedSquares, ...action.squares])
+          return {
+            ...state,
+            secondPlayer: {
+              ...state.secondPlayer,
+              enemyMissedSquares: [...newEnemyMissedSquares],
+              notEnemyEmptySquares: [...state.secondPlayer.notEnemyEmptySquares, ...action.squares]
+            }
           }
         }
         default: return {...state}
@@ -508,7 +517,7 @@ export const setContainerCoordinates = (x,y) => ({type:CONTAINER_COORDINATES,x,y
 
 //для сражения
 export const setHit = (id,fieldId) => ({type: SET_HIT,id,fieldId})
-export const setMiss = (id,fieldId) => ({type: SET_MISS,id,fieldId})
+export const setMiss = (squares,fieldId) => ({type: SET_MISS,squares,fieldId})
 export const changePlayer = () => ({type: CHANGE_PLAYER,})
 export const setDamageShip = (squares) => ({type: SET_DAMAGED_SHIP_SQUARES,squares})
 

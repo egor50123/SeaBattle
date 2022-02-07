@@ -1,11 +1,12 @@
 import {useRandomSquare} from "./useRandomSquare";
 import {useDestroyShipBot} from "./useDestroyShipBot";
-import {useSelector} from "react-redux";
-import {getDamagedShipsSquares} from "../selectors/selectors";
 
 export const useBotShooting = () => {
   const getRandomSquare = useRandomSquare()
   const destroyShipBot = useDestroyShipBot()
+  let totalDestroyedSingleShips = 0
+  let totalDestroyedOtherShips = 0
+  let isGameOver = false
   //const damageShipSquare = useSelector(getDamagedShipsSquares)
   // получаем обстелянные клетки корабля
   // массив диагоналей для поиска 4-палубных кораблей
@@ -34,23 +35,24 @@ export const useBotShooting = () => {
   }
   let mainDiagonalsCopy = mainDiagonals.slice()
   let otherDiagonalsCopy = otherDiagonals.slice()
-  const test = useSelector(getDamagedShipsSquares)
-  //let damagedSquaresOfShip = []
 
-  return (emptySquares,hitId=null,currentDamagedShipFunc,damageShipSquares) => {
+  return (emptySquares,hitId=null,currentDamagedShipFunc) => {
     let hitIdCopy = hitId
-    if (damageShipSquares.length !== 0) hitIdCopy = damageShipSquares[0]
     let square = null
     let isDestroyed = false
-    //damagedSquaresOfShip.push(hitId)
+    let destroyedShip = []
+
+    mainDiagonalsCopy = mainDiagonalsCopy.filter(item => emptySquares.includes(item))
+    otherDiagonalsCopy = otherDiagonalsCopy.filter(item => emptySquares.includes(item))
     if (hitIdCopy === null) {
       if (mainDiagonalsCopy.length > 0) {
         square = getRandomSquare(mainDiagonalsCopy)
-        // console.log(mainDiagonalsCopy);
         mainDiagonalsCopy.splice(mainDiagonalsCopy.indexOf(square), 1)
-      } else {
+      } else if(otherDiagonalsCopy.length > 0){
         square = getRandomSquare(otherDiagonalsCopy)
         otherDiagonalsCopy.splice(otherDiagonalsCopy.indexOf(square), 1)
+      } else {
+        square = getRandomSquare(emptySquares)
       }
     } else {
       // Получаем корабль в который мы попали
@@ -59,13 +61,18 @@ export const useBotShooting = () => {
       if (damagedShip.length === 1) {
         square = hitId
         isDestroyed = true
+        destroyedShip = damagedShip
+        totalDestroyedSingleShips++
       } else {
-        let [newSquare,newIsDestroyed] = destroyShipBot(hitIdCopy,emptySquares,damagedShip)
+        let [newSquare,newIsDestroyed,newDestroyedShip,destroyedShips] = destroyShipBot(hitIdCopy,emptySquares,damagedShip)
         square = newSquare
         isDestroyed = newIsDestroyed
+        destroyedShip = newDestroyedShip
+        totalDestroyedOtherShips = destroyedShips
       }
 
     }
-    return [square,isDestroyed]
+    if ( (totalDestroyedOtherShips + totalDestroyedSingleShips) === 10) isGameOver = true
+    return [square,isDestroyed,destroyedShip,isGameOver]
   }
 }

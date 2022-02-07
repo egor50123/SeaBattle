@@ -8,15 +8,16 @@ import {
   getSecondFieldMissedSquares, getSecondFieldNotEmptySquares,
   getSecondShipsField
 } from "../../../../selectors/selectors";
-import {changePlayer, setDamageShip, setHit, setMiss} from "../../../../redux/battleFieldReducer";
+import {changePlayer, setDamageShip, setDeathSquares, setHit, setMiss} from "../../../../redux/battleFieldReducer";
 import {useEffect, useRef, useState} from "react";
 import {useRandomSquare} from "../../../../hooks/useRandomSquare";
 import {useBotShooting} from "../../../../hooks/useBotShooting";
+import {useDeathZone} from "../../../../hooks/useDeathZone";
 
 const SimpleSquare = (props) => {
+  const TIMEOUT_DELAY = 200
   const {id, fieldId} = {...props}
   const dispatch = useDispatch()
-  const getRandom = useRandomSquare()
   const botShoot = fieldId === 2 ? props.botShoot : null
   const currentDamagedShipFunc = props.currentDamagedShip
   const ref = useRef(null)
@@ -33,10 +34,11 @@ const SimpleSquare = (props) => {
   const currentPlayer = useSelector(getCurrentPlayer)
   let emptySquaresInit = useSelector(getInitEmptySquares,shallowEqual)
 
+  const createDeathZone = useDeathZone()
+
   const damageShipSquares = useSelector(getDamagedShipsSquares)
 
   let [flag, setFlag] = useState(false)
-  let [test, settest] = useState(22)
 
 
   // Если клетка принадлежит полю/игроку 2 - присваиваем  ей классы  в соответствии с информацией  из обЪекта
@@ -57,7 +59,7 @@ const SimpleSquare = (props) => {
     if (!!shipClass) {
       dispatch(setHit(id,2))
     } else {
-      dispatch(setMiss(id,2))
+      dispatch(setMiss([id],2))
       dispatch(changePlayer())
 
       if(currentPlayer) {
@@ -66,35 +68,46 @@ const SimpleSquare = (props) => {
     }
   }
 
-    function onBotClick(id,emptySquares,damageShipSquares,isDestroyed = false) {
+    function onBotClick({id, emptySquares, isDestroyed = false,destroyedShip=[], isGameOver = false}) {
     let isHit = !!firstShipField.find(ship => ship.includes(id))
     let isShipDestroyed = isDestroyed
     let newEmptySquares = emptySquares.filter(item => item !==id)
-    if (isHit && !isShipDestroyed) {
+    if (isHit && !isShipDestroyed && !isGameOver) {
       let square = null,
-          isDestroyed = false
+          isDestroyed = false,
+          destroyedShip = [],
+          isGameOver = false
+      if (!secondFieldDamagedSquares.includes(id)) dispatch(setHit(id,1))
 
-      // if(damageShipSquares.length === 0) dispatch(setHit(id,1))
-      if(!damageShipSquares.includes(id)) dispatch(setHit(id,1))
-      //dispatch(setDamageShip(id))
-      //let newEmptySquares = emptySquares.filter(item => item !==id)
       setTimeout(() => {
-        if (emptySquares === 0) {
-          alert("game over")
-          return
+        [square,isDestroyed,destroyedShip,isGameOver] = botShoot(newEmptySquares,id,currentDamagedShipFunc)
+        let options = {
+          id:square,
+          emptySquares:newEmptySquares,
+          isDestroyed:isDestroyed,
+          destroyedShip:destroyedShip,
+          isGameOver:isGameOver
         }
-        [square,isDestroyed] = botShoot(newEmptySquares,id,currentDamagedShipFunc,damageShipSquares)
-        onBotClick(square, newEmptySquares,damageShipSquares,isDestroyed)
-      },300)
-    } else if (isShipDestroyed) {
-      dispatch(setHit(id,1))
-      setTimeout(() => {
-        let [square] = botShoot(newEmptySquares,null,[],[])
-        onBotClick(square, newEmptySquares,damageShipSquares)
-      },300)
+        onBotClick(options)
+      },TIMEOUT_DELAY)
 
+    } else if (isShipDestroyed && !isGameOver) {
+      let deathZone = createDeathZone(destroyedShip,1)
+      if (destroyedShip.length > 1) dispatch(setHit(id,1))
+      dispatch(setMiss(deathZone,1))
+      setTimeout(() => {
+        let [square] = botShoot(newEmptySquares,null,currentDamagedShipFunc)
+        let options = {
+          id:square,
+          emptySquares:newEmptySquares,
+        }
+        onBotClick(options)
+      },TIMEOUT_DELAY)
+
+    } else if (isGameOver){
+        alert("GameOver")
     } else {
-      dispatch(setMiss(id,1))
+      dispatch(setMiss([id],1))
       dispatch(changePlayer())
     }
   }
@@ -102,10 +115,6 @@ const SimpleSquare = (props) => {
 
   useEffect( () => {
     if (flag) {
-      if (secondFieldDamagedSquares.length === 20) {
-        alert("end")
-      }
-      //let emptySquares = firstShipField[0].filter( item => !firstFieldNotEmptySquares.includes(item))
       let emptySquares = emptySquaresInit.filter( item => !firstFieldNotEmptySquares.includes(item))
       let square = null
       // Если уже есть подбитый корабль
@@ -113,12 +122,16 @@ const SimpleSquare = (props) => {
         square = damageShipSquares[0]
       } // Если нет поврежденного корабля
       else {
-        [square] = botShoot(emptySquares,null,currentDamagedShipFunc,damageShipSquares)
+        [square] = botShoot(emptySquares,null,currentDamagedShipFunc)
+      }
+      let options = {
+        id:square,
+        emptySquares:emptySquares,
       }
       setTimeout ( () => {
-        onBotClick(square,emptySquares,damageShipSquares)
+        onBotClick(options)
         setFlag(false)
-      },300)
+      },TIMEOUT_DELAY)
     }
   },[flag])
 
