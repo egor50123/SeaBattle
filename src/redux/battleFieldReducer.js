@@ -326,17 +326,6 @@ const battleFieldReducer = (state = initialState, action) => {
       }
     }
     //????
-    case UPDATE_SHIP_DATA: {
-      //???????
-    let sortShips = state.firstPlayer.shipField.sort((a,b) => a-b)
-    return {
-      ...state,
-      ships: [...state.ships.map( (item,index) => {
-        item.shipSquares = sortShips[index]
-        return item
-      })],
-    }
-  }
     case UPDATE_SHIP_SQUARES: {
       let newShips = state.ships.slice()
       for(let i = 0; i<state.ships.length; i++) {
@@ -408,8 +397,8 @@ const battleFieldReducer = (state = initialState, action) => {
 
       }
     }
-
     //Для сражения
+
     case SET_HIT: {
       // Стрельба ведется !В! поле игрока с соответсвющим номером ( напрмер 2) , поэтому в обЪект для другого игрока (1) записываются клетки куда велась стрельба,
       // отмечая при этом клетки "мимо","попадание" и в которые уже стреляли
@@ -474,8 +463,19 @@ const battleFieldReducer = (state = initialState, action) => {
         damagedShipsSquares: [...action.squares]
       }
     }
-
     default: return state
+
+    case UPDATE_SHIP_DATA: {
+      //???????
+      let sortShips = state.firstPlayer.shipField.sort((a,b) => a-b)
+      return {
+        ...state,
+        ships: [...state.ships.map( (item,index) => {
+          item.shipSquares = sortShips[index]
+          return item
+        })],
+      }
+    }
   }
 }
 

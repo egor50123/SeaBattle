@@ -36,7 +36,7 @@ const SimpleSquare = (props) => {
   const damageShipSquares = useSelector(getDamagedShipsSquares)
 
   let [flag, setFlag] = useState(false)
-  let [test, settest] = useState(0)
+  let [test, settest] = useState(22)
 
 
   // Если клетка принадлежит полю/игроку 2 - присваиваем  ей классы  в соответствии с информацией  из обЪекта
@@ -70,13 +70,12 @@ const SimpleSquare = (props) => {
     let isHit = !!firstShipField.find(ship => ship.includes(id))
     let isShipDestroyed = isDestroyed
     let newEmptySquares = emptySquares.filter(item => item !==id)
-    if (isHit && !isDestroyed) {
-      debugger
+    if (isHit && !isShipDestroyed) {
       let square = null,
           isDestroyed = false
 
-      console.log("hit")
-      if(damageShipSquares.length === 0) dispatch(setHit(id,1))
+      // if(damageShipSquares.length === 0) dispatch(setHit(id,1))
+      if(!damageShipSquares.includes(id)) dispatch(setHit(id,1))
       //dispatch(setDamageShip(id))
       //let newEmptySquares = emptySquares.filter(item => item !==id)
       setTimeout(() => {
@@ -88,9 +87,12 @@ const SimpleSquare = (props) => {
         onBotClick(square, newEmptySquares,damageShipSquares,isDestroyed)
       },300)
     } else if (isShipDestroyed) {
-      debugger
-      let [square] = botShoot(newEmptySquares,null,[],[])
-      onBotClick(square, newEmptySquares,damageShipSquares)
+      dispatch(setHit(id,1))
+      setTimeout(() => {
+        let [square] = botShoot(newEmptySquares,null,[],[])
+        onBotClick(square, newEmptySquares,damageShipSquares)
+      },300)
+
     } else {
       dispatch(setMiss(id,1))
       dispatch(changePlayer())
@@ -106,16 +108,17 @@ const SimpleSquare = (props) => {
       //let emptySquares = firstShipField[0].filter( item => !firstFieldNotEmptySquares.includes(item))
       let emptySquares = emptySquaresInit.filter( item => !firstFieldNotEmptySquares.includes(item))
       let square = null
+      // Если уже есть подбитый корабль
       if ( damageShipSquares.length !== 0 ) {
         square = damageShipSquares[0]
-      } else {
+      } // Если нет поврежденного корабля
+      else {
         [square] = botShoot(emptySquares,null,currentDamagedShipFunc,damageShipSquares)
       }
       setTimeout ( () => {
-        //onBotClick(botShoot(emptySquares),emptySquares)
         onBotClick(square,emptySquares,damageShipSquares)
         setFlag(false)
-      },10)
+      },300)
     }
   },[flag])
 

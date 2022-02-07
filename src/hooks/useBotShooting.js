@@ -53,14 +53,18 @@ export const useBotShooting = () => {
         otherDiagonalsCopy.splice(otherDiagonalsCopy.indexOf(square), 1)
       }
     } else {
-      debugger
       // Получаем корабль в который мы попали
       let damagedShip = currentDamagedShipFunc(hitIdCopy)
       //получаем следующую клетку для обстрела
+      if (damagedShip.length === 1) {
+        square = hitId
+        isDestroyed = true
+      } else {
+        let [newSquare,newIsDestroyed] = destroyShipBot(hitIdCopy,emptySquares,damagedShip)
+        square = newSquare
+        isDestroyed = newIsDestroyed
+      }
 
-      let [newSquare,newIsDestroyed] = destroyShipBot(hitIdCopy,emptySquares,damagedShip,damageShipSquares)
-      square = newSquare
-      isDestroyed = newIsDestroyed
     }
     return [square,isDestroyed]
   }
