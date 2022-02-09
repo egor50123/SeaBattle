@@ -73,21 +73,14 @@ const Square = (props) => {
       }
   },[shipField])
 
-//   if (shipField.length > 0) {
-//   for (let i = 0; i < shipField.length; i++) {
-//     if (shipField[i][0] === +ref.current.id) {
-//       let x = ref.current.getBoundingClientRect().left;
-//       let y = ref.current.getBoundingClientRect().top;
-//       dispatch(setStartShipDataCoordinates(x, y, ships[i].id))
-//       break;
-//     }
-//   }
-// }
-
-
 
 
   function dragOverHandler(e,currentPart,shipSize,prevSquare,prevSuccessShip,prevUnsuccessfulShip,direction) {
+    // console.clear()
+    // console.log("currentPart " + currentPart)
+    // console.log("shipSize " + shipSize)
+    // console.log("prevSquare " + prevSquare)
+    // console.log("direction " + direction)
     e.preventDefault();
     let currentSquare = +e.target.id
     function createPotentialShip(currentPart,shipSize,currentSquare,direction) {

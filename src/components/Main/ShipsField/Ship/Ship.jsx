@@ -82,6 +82,7 @@ const Ship = React.memo((props) => {
 
 
 
+
     target.style.background = "yellow"
     setTimeout(() => target.style.display = "none",0)
     // Если корабль уже был расположен на поле , то удаляем его и запоминаем его прошое местопожение
