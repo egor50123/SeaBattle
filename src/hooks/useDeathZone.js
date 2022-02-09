@@ -1,12 +1,15 @@
 export const useDeathZone = (dnd = false) => {
   return (
       // напрвление нужно определять здесь
-    function createDeathZone (ship,direction)  {
+    function createDeathZone (ship,directionInit = null)  {
       function filterDefaultBorderValues (border,side) {
         return border.filter(item => !side.includes(item) && item<=100 && item > 0)
       }
-
+      let direction = directionInit
       ship.sort((a,b) => a-b)
+      if ( direction === null) {
+        direction = Math.abs(ship[0] - ship[1]) === 1 ? 1 : 0
+      }
 
       let borderBottomV = [ship[ship.length-1]+11,ship[ship.length-1]+10,ship[ship.length-1]+9],
           borderTopV = [ship[0]-11,ship[0]-10,ship[0]-9],
