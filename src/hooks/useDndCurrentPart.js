@@ -2,8 +2,6 @@ export const useDndCurrentPart = () => {
   return (e,direction) => {
     let shiftX = e.pageX - e.target.getBoundingClientRect().left
     let shiftY = e.clientY - e.target.getBoundingClientRect().top
-    // console.log("top - " + e.target.getBoundingClientRect().top);
-    console.log(shiftY);
     let currentPart = null;
 
     if ((shiftX <= 30 && direction === 1) || (shiftY <= 30 && direction === 0)) {

@@ -1,8 +1,7 @@
 import {useSelector} from "react-redux";
 import {getFirstShipsField, getSecondShipsField} from "../selectors/selectors";
 
-export const useIsShipKilled = (fieldId) => {
-  console.log()
+export const useGetDamagedShip = (fieldId) => {
   const shipsOfFirstField = useSelector(getFirstShipsField)
   const shipsOfSecondField = useSelector(getSecondShipsField)
     return (squareOfShipId) => {

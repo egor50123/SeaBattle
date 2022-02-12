@@ -17,10 +17,12 @@ export const getDNDPrevShipPlacement= state => state.battleField.dndSettings.pre
 export const getIsPossibleToPlacement= state => !!state.battleField.dndSettings.successShip
 export const getDNDDirection = state => state.battleField.dndSettings.direction
 
+export const getDndData = state => state.battleField.dndSettings
+
 export const getContainerX= state => state.battleField.containerCoordinates.x
 export const getContainerY= state => state.battleField.containerCoordinates.y
 
-export const ship = (state,id) => state => state.battleField.ships[id-1]
+export const getShipsData = (state) => state => state.battleField.ships
 export const getCurrentPage = (state) => state.appInit.currentPage
 
 export const getFirstShipsField = (state) => state.battleField.firstPlayer.shipField

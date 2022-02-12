@@ -23,20 +23,21 @@ const SimpleSquare = (props) => {
   const ref = useRef(null)
   let shipClass, missedClass, damagedClass
   // !!!!!!!!!!!!!НАЗВАНИЯ НОРМ СДЕЛАТЬ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  const firstShipField = useSelector(getFirstShipsField)
-  const secondShipField = useSelector(getSecondShipsField)
-  const firstFieldMissedSquares = useSelector(getFirstFieldMissedSquares)
-  const secondFieldMissedSquares = useSelector(getSecondFieldMissedSquares)
-  const firstFieldDamagedSquares = useSelector(getFirstFieldDamagedSquares)
-  const secondFieldDamagedSquares = useSelector(getSecondFieldDamagedSquares)
-  const secondFieldNotEmptySquares = useSelector(getFirstFieldNotEmptySquares)
-  const firstFieldNotEmptySquares = useSelector(getSecondFieldNotEmptySquares)
-  const currentPlayer = useSelector(getCurrentPlayer)
-  let emptySquaresInit = useSelector(getInitEmptySquares, shallowEqual)
+  const firstShipField = useSelector(getFirstShipsField),
+        secondShipField = useSelector(getSecondShipsField),
+        firstFieldMissedSquares = useSelector(getFirstFieldMissedSquares),
+        secondFieldMissedSquares = useSelector(getSecondFieldMissedSquares),
+        firstFieldDamagedSquares = useSelector(getFirstFieldDamagedSquares),
+        secondFieldDamagedSquares = useSelector(getSecondFieldDamagedSquares),
+        secondFieldNotEmptySquares = useSelector(getFirstFieldNotEmptySquares),
+        firstFieldNotEmptySquares = useSelector(getSecondFieldNotEmptySquares),
+        currentPlayer = useSelector(getCurrentPlayer),
+        damageShipSquares = useSelector(getDamagedShipsSquares)
+
+  let emptySquaresInit = useSelector(getInitEmptySquares)
 
   const createDeathZone = useDeathZone()
 
-  const damageShipSquares = useSelector(getDamagedShipsSquares)
 
   let [flag, setFlag] = useState(false)
 
@@ -116,13 +117,14 @@ const SimpleSquare = (props) => {
   }
 
   useEffect(() => {
+    //если наступает ход бота
     if (flag) {
       let emptySquares = emptySquaresInit.filter(item => !firstFieldNotEmptySquares.includes(item))
       let square = null
-      // Если уже есть подбитый корабль
+      // Если уже есть подбитый корабль - стреляем в его уже подбитую клетку
       if (damageShipSquares.length !== 0) {
         square = damageShipSquares[0]
-      } // Если нет поврежденного корабля
+      } // Если нет поврежденного корабля - выбираем клетку для стрельбы
       else {
         [square] = botShoot(emptySquares, null, currentDamagedShipFunc)
       }
@@ -137,7 +139,7 @@ const SimpleSquare = (props) => {
     }
   }, [flag])
 
-
+  console.log("!", fieldId)
   return (
       <span className={`square ${shipClass} ${missedClass} ${damagedClass}`} id={id} ref={ref} onClick={onClickHandler}>
         {id}

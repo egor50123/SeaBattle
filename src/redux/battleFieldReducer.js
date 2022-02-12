@@ -479,10 +479,10 @@ const battleFieldReducer = (state = initialState, action) => {
       let sortShips = state.firstPlayer.shipField.sort((a,b) => a-b)
       return {
         ...state,
-        ships: [...state.ships.map( (item,index) => {
+        ships: state.ships.map( (item,index) => {
           item.shipSquares = sortShips[index]
           return item
-        })],
+        }),
       }
     }
   }

@@ -1,14 +1,15 @@
 import Square from "./Square/Square";
 import Row from "./Row/Row";
 import "./BattleField.scss"
-import {useCallback, useMemo} from "react";
+import {useMemo} from "react";
 import SimpleSquare from "./SimpleSquare/SimpleSquare";
-import {useIsShipKilled} from "../../../hooks/useIsShipKilled";
+import {useGetDamagedShip} from "../../../hooks/useGetDamagedShip";
 
 const BattleField = (props) => {
   const {isBattleForPlacement, id:fieldId} = {...props}
   const botShoot = props.botShoot
-  const currentDamagedShip = useIsShipKilled(fieldId)
+  const currentDamagedShip = useGetDamagedShip(fieldId)
+
   function makeField () {
     const rowsTotal = 10;
     const columnsTotal = 10;
