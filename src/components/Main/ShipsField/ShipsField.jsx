@@ -14,7 +14,7 @@ const ShipsField = () => {
     {id:9,size:1,},
     {id:10,size:1,}]
 
-  //console.log("RENDER ShipsField")
+  console.log("RENDER ShipsField")
   return (
       <div className={"shipsField"}>
         {ships.map(item => {

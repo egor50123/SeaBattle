@@ -42,6 +42,8 @@ export const getSecondFieldNotEmptySquares = state => state.battleField.secondPl
 export const getCurrentPlayer = state => state.battleField.currentPlayer
 
 export const getDamagedShipsSquares = state => state.battleField.damagedShipsSquares
+export const getTotalDamagedShipsByPlayer = state => state.battleField.firstPlayer.totalDestroyedShips
+export const getIsGameOver = state => state.battleField.gameOver
 
 
 // ship = useSelector( state => state.battleField.ships[id-1]),

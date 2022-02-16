@@ -6,6 +6,7 @@ import {setCurrentPage} from "../../redux/appInitReducer";
 import "../Common/RoundButton.scss"
 import {clearShipsData} from "../../redux/battleFieldReducer";
 import Battle from "./Battle/Battle";
+import {Route, Routes} from "react-router-dom";
 
 const Main = () => {
   const dispatch = useDispatch()

@@ -7,9 +7,8 @@ import {useGetDamagedShip} from "../../../hooks/useGetDamagedShip";
 
 const BattleField = (props) => {
   const {isBattleForPlacement, id:fieldId} = {...props}
-  const botShoot = props.botShoot
   const currentDamagedShip = useGetDamagedShip(fieldId)
-
+  const botShoot = props.botShoot
   function makeField () {
     const rowsTotal = 10;
     const columnsTotal = 10;

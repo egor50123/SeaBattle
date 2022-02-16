@@ -1,5 +1,6 @@
 import {useRandomSquare} from "./useRandomSquare";
-
+// strictMode применяется если корабль нужно повернуть ; строится новый корабль; если его нельзя повернуть на 90 градусов в соответствии с переданными аргументами - корабль не строится (возвращается null)
+// Без strictMode : если нельзя построить корабль в соответсвии с squareId - функция запускется еще раз , но с другим squareId
 export const useShip = (strictMode = false) => {
   const getRandomSquare = useRandomSquare()
   return function createShip (squareId,size,direction,emptySquares = []) {

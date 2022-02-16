@@ -19,7 +19,6 @@ const Container = () => {
   const doRandomPlacement = useRandomPlacement()
 
 
-
   useEffect(()=> {
     if (currentPage === 'placement') {
       let x = ref.current.getBoundingClientRect().left

@@ -13,7 +13,9 @@ export const useDestroyShipBot = () => {
 
   return (hitId, emptySquares, damagedShipInit) => {
     // если попадание является первым в выбранный корабль - заносим значение в массив
-    if (damagedSquaresOfShip.length === 0) damagedSquaresOfShip.push(hitId)
+    if (damagedSquaresOfShip.length === 0) {
+      damagedSquaresOfShip.push(hitId)
+    }
     let direction = null
     let damagedSquaresShipSort = damagedSquaresOfShip.sort((a, b) => a - b)
     // если в корабль совершенно 2 и более попаданий - определяем его напрвление (1-горизональное , 0 - вертикальное)
