@@ -1,22 +1,17 @@
 import "./Menu.scss"
-import {useDispatch, useSelector} from "react-redux";
-import {getCurrentPage} from "../../../selectors/selectors";
-import {setCurrentPage} from "../../../redux/appInitReducer";
+import Button from "../../Common/Button/Button";
 
+const Menu = (props) => {
+  const nextPage = props.nextPage
 
-const Menu = () => {
-  const dispatch = useDispatch()
-  const currentPage = useSelector( getCurrentPage)
-  function onClickHandler(e) {
-    dispatch(setCurrentPage("placement"))
-  }
 
   return (
-      currentPage === "menu" ?
       <div className={"menu"}>
-        <button className={"button-menu"} onClick={onClickHandler}>Один игрок</button>
-        <button className={"button-menu"} disabled>Два игрока</button>
-      </div> : null
+        <div className={"menu__wrapper"}>
+          <Button status={true} nextPage={nextPage} text={"Один Игрок"}/>
+          <Button status={false} nextPage={nextPage} text={"Два игрока"}/>
+        </div>
+      </div>
   )
 }
 

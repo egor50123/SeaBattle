@@ -4,6 +4,7 @@ import "./BattleField.scss"
 import {useMemo} from "react";
 import SimpleSquare from "./SimpleSquare/SimpleSquare";
 import {useGetDamagedShip} from "../../../hooks/useGetDamagedShip";
+import "../Placement/placement.scss"
 
 const BattleField = (props) => {
   const {isBattleForPlacement, id:fieldId} = {...props}
@@ -30,8 +31,10 @@ const BattleField = (props) => {
 
   //console.log("RENDER_BATTLEFIELD " + fieldId)
   return (
-    <div className={'field'}>
-      {memoField}
+    <div className={'field placement__box'}>
+      <div className={"field__wrapper"}>
+        {memoField}
+      </div>
     </div>
   )
 }

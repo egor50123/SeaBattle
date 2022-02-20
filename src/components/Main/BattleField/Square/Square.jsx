@@ -21,11 +21,9 @@ const Square = (props) => {
 
   const shipField = useSelector(getFirstShipsField),
       deathField = useSelector(getFirstDeathField),
-      notEmptySquares = useSelector(getFirstNotEmptySquares)
-
-  const dndData = useSelector(getDndData, shallowEqual)
-
-  const ships = useSelector(state => state.battleField.ships)
+      notEmptySquares = useSelector(getFirstNotEmptySquares),
+      dndData = useSelector(getDndData, shallowEqual),
+      ships = useSelector(state => state.battleField.ships)
 
   let shipClass, deathClass, successShipClass, unsuccessfulShipClass
 

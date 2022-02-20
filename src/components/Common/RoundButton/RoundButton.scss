@@ -1,0 +1,57 @@
+.btn-round {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  $size: 80px;
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.54);
+  background-color: coral;
+  box-shadow: inset -5px -5px 5px 0 rgba(0, 0, 0, .5),
+  inset 5px 5px 5px 0 rgba(255, 255, 255, 0.5),
+  6px 6px 4px -2px;
+
+  &--random {
+    background-color: #270be7;
+  }
+
+  &--rotate {
+    background-color: red;
+  }
+
+  &--play {
+    background-color: #61d200;
+    $size: 110px;
+    width: $size;
+    height: $size;
+  }
+}
+
+.btn-round__inside {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  $size: 83%;
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  border: 0.18em solid rgba(0, 0, 0, 0.55);
+  box-shadow: inset -5px -5px 5px 0 rgba(0, 0, 0, .5),
+  inset 5px 5px 5px 0 rgba(255, 255, 255, 0.5);
+
+  background-color: rgba(0, 0, 0, 0.13);
+}
+
+.btn-round__wrapper {
+  display: flex;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+
+  & img {
+    width: 30px;
+    height: 30px;
+  }
+}

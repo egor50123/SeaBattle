@@ -1,6 +1,7 @@
 import "./ShipsField.scss"
 import React from 'react';
 import Ship from "./Ship/Ship";
+import "../placement.scss"
 
 const ShipsField = () => {
   const ships =  [{id:1,size:4,},
@@ -14,9 +15,9 @@ const ShipsField = () => {
     {id:9,size:1,},
     {id:10,size:1,}]
 
-  console.log("RENDER ShipsField")
+  //console.log("RENDER ShipsField")
   return (
-      <div className={"shipsField"}>
+      <div className={"placement__box shipsField"}>
         {ships.map(item => {
           return <div id={item.id} key={item.id} className={`shipWrapper shipWrapper--${item.size}`}>
               <Ship id={item.id} key={item.id} size={item.size}/>
