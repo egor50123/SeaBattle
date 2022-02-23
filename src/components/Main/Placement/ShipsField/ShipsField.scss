@@ -1,42 +1,92 @@
+@import "./src/variables.scss";
+
 .shipsField {
-  background-color: rgba(139, 0, 0, 0.59);
+  display: grid;
+  grid-template-areas: "s1 s4 "
+                        "s2 s5 "
+                        "s3 s6 ";
+  grid-template-columns: min-content min-content;
+  grid-template-rows: min-content min-content min-content min-content min-content;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .shipWrapper {
-  $defaultWidth: 30px;
   margin: 5px;
-  height: 28px;
-  background-color: coral;
-  &--1{
-    width: $defaultWidth;
+  height: $SIZE;
+
+  &--1 {
+    width: $SIZE;
   }
-  &--2{
-    width: $defaultWidth*2;
+
+  &--2 {
+    width: $SIZE*2;
   }
-  &--3{
-    width: $defaultWidth*3;
+
+  &--3 {
+    width: $SIZE*3;
   }
-  &--4{
-    width: $defaultWidth *4;
+
+  &--4 {
+    width: $SIZE *4;
+  }
+}
+
+.shipWrapper-area {
+  &--1 {
+    grid-area: s1;
+  }
+  &--2 {
+    grid-area: s2;
+  }
+  &--3 {
+    grid-area: s3;
+  }
+  &--4 {
+    grid-area: s4;
+  }
+  &--5 {
+    grid-area: s5;
+  }
+  &--6 {
+    grid-area: s6;
   }
 }
 
 .ship {
+  $SIZE_BORDER: 2px;
+  $SHIP_HEIGHT: $SIZE - $SIZE_BORDER;
+
   position: absolute;
-  color: white;
-  $defaultWidth: 30px;
-  height: 30px;
-  background-color: black;
-  &--1{
-    width: $defaultWidth;
+  transform: translateY(1px);
+  height: $SHIP_HEIGHT;
+  transform-origin: $SIZE/2 $SIZE/2;
+
+  &--startDrag {
+    animation: 0.6s infinite alternate flash;
+    animation-timing-function: ease-in-out;
   }
-  &--2{
-    width: $defaultWidth*2 ;
+  @keyframes flash {
+    from {
+      opacity: 1;
+    }
+    to{
+      opacity: 0.3;
+    }
   }
-  &--3{
-    width: $defaultWidth*3;
+
+  &--1 {
+    width: $SIZE - $SIZE_BORDER;
   }
-  &--4{
-    width: $defaultWidth *4;
+
+  &--2 {
+    width: $SIZE*2 - $SIZE_BORDER;
+  }
+
+  &--3 {
+    width: $SIZE*3 - $SIZE_BORDER;
+  }
+
+  &--4 {
+    width: $SIZE *4 - $SIZE_BORDER;
   }
 }

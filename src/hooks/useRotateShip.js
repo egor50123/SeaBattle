@@ -15,7 +15,7 @@ export const useRotateShip = () => {
   const createDeathZone = useDeathZone()
   return (options) => {
     const {id, target, notEmptySquares, allSquares, shipSquares, createStrictShip} = {...options}
-    const {width, height, direction} = getSizeAndDirectionOfShip(target),
+    const {direction} = getSizeAndDirectionOfShip(target),
         newShip = getRotatedShip({notEmptySquares, allSquares, direction, shipSquares, createStrictShip})
     // Если корабль можно повернуть - поворачиваем
     if (newShip) {
@@ -23,8 +23,7 @@ export const useRotateShip = () => {
           oldDeathZone = createDeathZone(shipSquares, direction),
           newShipDeathZone = createDeathZone(newShip, reverseDirection)
 
-      target.style.width = height + "px"
-      target.style.height = width + "px"
+      target.style.transform = `rotate(${direction === 1 ? 90 : 0}deg)`
       dispatch(deleteShipFromField(shipSquares))
       dispatch(deleteDeathZone(oldDeathZone))
       dispatch(setShipSquares([newShip]))

@@ -1,15 +1,16 @@
-import React, {useRef} from "react";
+import React, {useEffect, useRef} from "react";
 import ship4 from "../../../../../assets/img/ship4.png"
 import ship3 from "../../../../../assets/img/ship3.png"
 import ship2 from "../../../../../assets/img/ship2.png"
 import ship1 from "../../../../../assets/img/ship1.png"
 
-import {useDispatch, useSelector} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {useDeathZone} from "../../../../../hooks/useDeathZone";
 import {useShip} from "../../../../../hooks/useShip";
 import {useRotateShip} from "../../../../../hooks/useRotateShip";
-import {getContainerX, getContainerY, getDndData, getInitEmptySquares,
-  getIsPossibleToPlacement, getNotEmptySquares
+import {
+  getContainerX, getContainerY, getDndData, getInitEmptySquares,
+  getIsPossibleToPlacement, getNotEmptySquares, getShipField
 } from "../../../../../selectors/selectors";
 import {getSizeAndDirectionOfShip} from "../../../../../helpers/getSizeAndDirectionOfShip";
 import {getDndCurrentPart} from "../../../../../helpers/getDndCurrentPart";
@@ -17,6 +18,7 @@ import {
   clearDndSettings, deleteDeathZone, deleteShipFromField,
   savePrevShipPlacement, setDeathSquares,setDndSettings, setShipSquares
 } from "../../../../../redux/battleFieldReducer";
+import {SQUARE_SIZE} from "../../../../../constant/constant";
 
 const Ship = React.memo((props) => {
   const {id, key, size } = {...props}
@@ -25,6 +27,9 @@ const Ship = React.memo((props) => {
         createDeathZone = useDeathZone(),
         createStrictShip = useShip(true),
         tryToRotateShip = useRotateShip()
+
+  let animate = useRef(null)
+
 
 
   const ships = useSelector( state => state.battleField.ships),
@@ -51,12 +56,10 @@ const Ship = React.memo((props) => {
         isShipLengthMoreThenOne = ships[id-1].shipSquares.length !== 1
     //делаем корабль вертикальным если он еще не вертикальный
     if (isShipLengthMoreThenOne && isVerticalShip && width > height) {
-      ref.current.style.width = height + "px"
-      ref.current.style.height = width + "px"
+      ref.current.style.transform = `rotate(90deg)`
     } //делаем корабль горизонтальным если он еще не горизонтальный
     else if (isShipLengthMoreThenOne && isHorizontalShip && width < height) {
-      ref.current.style.height = width + "px"
-      ref.current.style.width = height + "px"
+      ref.current.style.transform = "rotate(0)"
     }
   }
 
@@ -67,28 +70,27 @@ const Ship = React.memo((props) => {
     let shipSize = ships[id-1].size,
         currentPart = getDndCurrentPart(e,direction)
 
-    target.style.background = "yellow"
-    setTimeout(() => target.style.display = "none",0)
-    // Если корабль уже был расположен на поле , то удаляем его и запоминаем его прошое местопожение
+    animate.current = "ship--startDrag"
+
+    // Если корабль уже был расположен на поле , то удаляем его и запоминаем прошое местопожение
     if (ships[id-1].hasOwnProperty('shipSquares')) {
       dispatch(savePrevShipPlacement(ships[id-1].shipSquares))
       dispatch(deleteShipFromField(ships[id-1].shipSquares))
-      dispatch(deleteDeathZone(createDeathZone(ships[id-1].shipSquares,direction)))
+      dispatch(deleteDeathZone(createDeathZone(ships[id-1].shipSquares)))
     }
     dispatch(setDndSettings(currentPart,shipSize,currentId,direction))
   }
 
   function dragEndHandler(e,dndStatus,prevShipPlacement,x,y,currentPart) {
     const target = e.target
-    console.log(target)
     let container = target.closest('.placement'),
         shiftX = container.getBoundingClientRect().left,
         shiftY = container.getBoundingClientRect().top;
-    target.style.background = "black"
     target.style.display = "block"
+    animate.current = null
     if (dndStatus) {
       target.style.top = y - shiftY + 'px'
-      target.style.left = x - shiftX - (currentPart-1)*30 + 'px';
+      target.style.left = x - shiftX - (currentPart-1)*SQUARE_SIZE + 'px';
     }
     // если в текующем месте нельзя разместить корабль - возвращаем корабль на предыдущее место (если оно было)
     if( !isPossibleToPlacement && prevShipPlacement !== null) {
@@ -104,6 +106,7 @@ const Ship = React.memo((props) => {
     const target = e.target,
         id = target.id,
         shipSquares = ships[id-1].shipSquares
+    if (shipSquares === undefined) return;
     // Если корабль однопалубный - выходим
     if (shipSquares.length === 1) return
     try {
@@ -114,7 +117,11 @@ const Ship = React.memo((props) => {
 
   }
 
-  let src = setSrc(size)
+  let shipSrc = useRef()
+
+  useEffect(() => {
+    shipSrc.current = setSrc(size)
+  })
   function setSrc (size) {
     let src
     switch (size) {
@@ -128,13 +135,19 @@ const Ship = React.memo((props) => {
     return src
   }
 
+  function dragHandler(e) {
+    e.target.style.display = "none"
+  }
+
+
   //console.log("render ship")
   return (
-    <div ref={ref} id={id} key={key} draggable={true} className={`ship ship--${size}`}
-         onClick={(e) => clickHandler(e,notEmptySquares,allSquares,createStrictShip)}
-         onDragStart={ (e) => dragStartHandler(e,ships)}
-         onDragEnd={ (e) => dragEndHandler(e,dndData.status,dndData.prevShipPlacement,dndData.x,dndData.y,dndData.currentPart) }>
-      <img src={src} alt=""/>
+    <div className={`shipWrapper shipWrapper--${size} shipWrapper-area--${id}`}>
+      <img className={`ship ship--${size} ${animate.current}`} src={shipSrc.current} alt="" ref={ref} id={id} key={key} draggable={true}
+           onClick={(e) => clickHandler(e,notEmptySquares,allSquares,createStrictShip)}
+           onDragStart={ (e) => dragStartHandler(e,ships,shipSrc.current)}
+           onDragEnd={ (e) => dragEndHandler(e,dndData.status,dndData.prevShipPlacement,dndData.x,dndData.y,dndData.currentPart) }
+          onDrag={(e) => dragHandler(e)}/>
     </div>
   )
 })

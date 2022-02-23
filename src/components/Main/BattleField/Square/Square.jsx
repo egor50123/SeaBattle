@@ -27,9 +27,9 @@ const Square = (props) => {
 
   let shipClass, deathClass, successShipClass, unsuccessfulShipClass
 
-
   if (shipField.length > 0) {
-    shipClass = shipField.find(ship => ship.includes(id)) ? "square--ship" : ''
+    // shipClass = shipField.find(ship => ship.includes(id)) ? "square--ship" : ''
+    shipClass = null
     deathClass = deathField.find(deathZone => deathZone.includes(id)) ? "square--death" : ''
   }
   if (dndData.successShip) successShipClass = dndData.successShip.includes(id) ? "square--dndSuccess" : '';

@@ -1,6 +1,6 @@
 const Row = (props) => {
   return (
-    <div>
+    <div className={"row"}>
       {props.row}
     </div>
   )

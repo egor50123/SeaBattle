@@ -1,14 +1,19 @@
+//@import "../../../variables.scss";
+@import "./src/variables.scss";
+
 .square {
   display: inline-block;
-  height: 30px;
-  width: 30px;
+  height: $SIZE;
+  width: $SIZE;
   border: 1px solid #ffffff;
   white-space: nowrap;
   cursor: pointer;
   background-color: rgba(173, 229, 255, 0.62);
+  color: rgba(255, 255, 255, 0);
+  user-select: none;
 
   &--ship {
-    background-color: rgba(0, 0, 0, 0.64);
+    background-color: rgb(255, 255, 255);
   }
 
   &--death {
@@ -44,3 +49,4 @@
 .field__wrapper {
   border: 1px solid white;
 }
+

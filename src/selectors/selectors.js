@@ -16,6 +16,7 @@ export const getDNDStatus= state => state.battleField.dndSettings.status
 export const getDNDPrevShipPlacement= state => state.battleField.dndSettings.prevShipPlacement
 export const getIsPossibleToPlacement= state => !!state.battleField.dndSettings.successShip
 export const getDNDDirection = state => state.battleField.dndSettings.direction
+export const getDNDCurrentShip = state => state.battleField.dndSettings.currentShip
 
 export const getDndData = state => state.battleField.dndSettings
 
@@ -45,18 +46,3 @@ export const getDamagedShipsSquares = state => state.battleField.damagedShipsSqu
 export const getTotalDamagedShipsByPlayer = state => state.battleField.firstPlayer.totalDestroyedShips
 export const getIsGameOver = state => state.battleField.gameOver
 
-
-// ship = useSelector( state => state.battleField.ships[id-1]),
-    // xShips = ship.x,
-    // yShips = ship.y,
-
-// if (shipField.length > 0) {
-//   for (let i = 0; i < shipField.length; i++) {
-//     if (shipField[i][0] === +ref.current.id) {
-//       let x = ref.current.getBoundingClientRect().left;
-//       let y = ref.current.getBoundingClientRect().top;
-//       dispatch(setStartShipDataCoordinates(x, y, id))
-//       break;
-//     }
-//   }
-// }

@@ -299,7 +299,6 @@ const battleFieldReducer = (state = initialState, action) => {
     }
     case DELETE_DEATH_ZONE: {
       const updateDZ = (x, y) => {
-        console.log(x, y)
         let arr = []
         let mainArr = y.slice()
         for (let i = 0; i < y.length; i++) {
