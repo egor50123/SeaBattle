@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {
-  getCurrentPlayer,
+  getCurrentPlayer, getDamagedShipsForPlayer,
   getDamagedShipsSquares,
   getFirstFieldDamagedSquares,
   getFirstFieldMissedSquares,
@@ -10,11 +10,19 @@ import {
   getSecondFieldDamagedSquares,
   getSecondFieldMissedSquares,
   getSecondFieldNotEmptySquares,
-  getSecondShipsField
+  getSecondShipsField, getTotalDamagedShipsByPlayer
 } from "../../../../selectors/selectors";
-import {changePlayer, setDamagedShipsPlayer, setHit, setMiss} from "../../../../redux/battleFieldReducer";
+import {
+  changePlayer,
+  setDamagedShipsPlayer,
+  setGameOver,
+  setHit,
+  setMiss, setTotalDestroyedShipsPlayer
+} from "../../../../redux/battleFieldReducer";
 import {useEffect, useRef, useState} from "react";
 import {useBotClick} from "../../../../hooks/useBotClick";
+import {useGetDamagedShip} from "../../../../hooks/useGetDamagedShip";
+import {useDeathZone} from "../../../../hooks/useDeathZone";
 
 const SimpleSquare = (props) => {
   const TIMEOUT_DELAY = 10
@@ -34,13 +42,16 @@ const SimpleSquare = (props) => {
         firstFieldNotEmptySquares = useSelector(getSecondFieldNotEmptySquares),
         currentPlayer = useSelector(getCurrentPlayer),
         damageShipSquares = useSelector(getDamagedShipsSquares),
-        isGameOver = useSelector(getIsGameOver)
+        isGameOver = useSelector(getIsGameOver),
+        damagedShips = useSelector(getDamagedShipsForPlayer)
 
 
+  let totalDestroeydShipsByPlayer = useSelector(getTotalDamagedShipsByPlayer)
   let emptySquaresInit = useSelector(getInitEmptySquares)
 
   const onBotClick = useBotClick({TIMEOUT_DELAY,secondFieldDamagedSquares,firstShipField,botShoot,findCurrentDamagedShip})
-
+  const getCurrentDamagedShip = (useGetDamagedShip(1))
+  const createDeathZone = useDeathZone()
   let [flag, setFlag] = useState(false)
 
   // Если клетка принадлежит полю/игроку 2 - присваиваем  ей классы  в соответствии с информацией  из обЪекта
@@ -50,7 +61,8 @@ const SimpleSquare = (props) => {
     missedClass = secondFieldMissedSquares.includes(id) ? "square--missed" : ''
     damagedClass = secondFieldDamagedSquares.includes(id) ? "square--damaged" : ''
   } else {
-    shipClass = secondShipField.find(ship => ship.includes(id)) ? "square--ship" : ''
+    //shipClass = secondShipField.find(ship => ship.includes(id)) ? "square--ship" : ''
+    shipClass = ''
     missedClass = firstFieldMissedSquares.includes(id) ? "square--missed" : ''
     damagedClass = firstFieldDamagedSquares.includes(id) ? "square--damaged" : ''
   }
@@ -60,9 +72,32 @@ const SimpleSquare = (props) => {
     // Если текующий игрок кликнул на свое поле - выходим (игрок 1 - true, игрок 2 - false)
     if (isGameOver || (fieldId === 1) || (!currentPlayer && fieldId === 2) || secondFieldNotEmptySquares.includes(targetSquare)) return
 
-    if (!!shipClass) {
+    //secondShipField.find(item => item.includes(targetSquare))
+    let isHit = !!secondShipField.find(item => item.includes(targetSquare))
+    if (isHit) {
+      let damagedCurrentShip = getCurrentDamagedShip(targetSquare)
+      let indexOfShip = secondShipField.indexOf(secondShipField.find(ship => ship.includes(targetSquare)))
       dispatch(setHit(targetSquare, 2))
-      dispatch(setDamagedShipsPlayer(id))
+
+      if (damagedCurrentShip.length === 1) {
+        let deathZone = createDeathZone(damagedCurrentShip)
+        dispatch(setMiss(deathZone,2))
+        dispatch(setTotalDestroyedShipsPlayer())
+        if(++totalDestroeydShipsByPlayer === 10) dispatch(setGameOver())
+      } else {
+        dispatch(setDamagedShipsPlayer(id))
+        let damagedShip = damagedShips.find(obj => obj.id === indexOfShip)
+
+        if (damagedShip && damagedCurrentShip.length === damagedShip.squares.length) {
+          let deathZone = createDeathZone(damagedCurrentShip)
+          dispatch(setMiss(deathZone,2))
+          dispatch(setTotalDestroyedShipsPlayer())
+          if(++totalDestroeydShipsByPlayer === 10) dispatch(setGameOver())
+        }
+      }
+
+
+
     } else {
       dispatch(setMiss([targetSquare], 2))
       dispatch(changePlayer())
@@ -73,50 +108,6 @@ const SimpleSquare = (props) => {
     }
   }
 
-  // function onBotClick({id, emptySquares, isDestroyed = false, destroyedShip = [], isGameOver = false}) {
-  //   let isHit = !!firstShipField.find(ship => ship.includes(id))
-  //   let isShipDestroyed = isDestroyed
-  //   let newEmptySquares = emptySquares.filter(item => item !== id)
-  //   if (isHit && !isShipDestroyed && !isGameOver) {
-  //     let square = null,
-  //         isDestroyed = false,
-  //         destroyedShip = [],
-  //         isGameOver = false
-  //     if (!secondFieldDamagedSquares.includes(id)) dispatch(setHit(id, 1))
-  //
-  //     setTimeout(() => {
-  //       [square, isDestroyed, destroyedShip, isGameOver] = botShoot(newEmptySquares, id, findCurrentDamagedShip)
-  //       let options = {
-  //         id: square,
-  //         emptySquares: newEmptySquares,
-  //         isDestroyed: isDestroyed,
-  //         destroyedShip: destroyedShip,
-  //         isGameOver: isGameOver
-  //       }
-  //       onBotClick(options)
-  //     }, TIMEOUT_DELAY)
-  //
-  //   } else if (isShipDestroyed && !isGameOver) {
-  //     let deathZone = createDeathZone(destroyedShip)
-  //     if (destroyedShip.length > 1) dispatch(setHit(id, 1))
-  //     dispatch(setMiss(deathZone, 1))
-  //     newEmptySquares = emptySquares.filter(item => !deathZone.includes(item))
-  //     setTimeout(() => {
-  //       let [square] = botShoot(newEmptySquares, null, findCurrentDamagedShip)
-  //       let options = {
-  //         id: square,
-  //         emptySquares: newEmptySquares,
-  //       }
-  //       onBotClick(options)
-  //     }, TIMEOUT_DELAY)
-  //
-  //   } else if (isGameOver) {
-  //     alert("GameOver")
-  //   } else {
-  //     dispatch(setMiss([id], 1))
-  //     dispatch(changePlayer())
-  //   }
-  // }
 
   useEffect(() => {
     //если наступает ход бота
@@ -142,7 +133,6 @@ const SimpleSquare = (props) => {
 
   }, [flag])
 
-  //console.log("!", fieldId)
   return (
       <span className={`square ${shipClass} ${missedClass} ${damagedClass}`} id={id} ref={ref} onClick={onClickHandler}>
         {id}

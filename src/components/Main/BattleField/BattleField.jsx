@@ -1,39 +1,26 @@
-import Square from "./Square/Square";
-import Row from "./Row/Row";
 import "./BattleField.scss"
 import {useMemo} from "react";
-import SimpleSquare from "./SimpleSquare/SimpleSquare";
 import {useGetDamagedShip} from "../../../hooks/useGetDamagedShip";
 import "../Placement/placement.scss"
+import {useMakeField} from "../../../hooks/useMakeField";
+import Rocket from "../../Common/Rocket/Rocket";
 
 const BattleField = (props) => {
-  const {isBattleForPlacement, id:fieldId} = {...props}
-  const currentDamagedShip = useGetDamagedShip(fieldId)
-  const botShoot = props.botShoot
-  function makeField () {
-    const rowsTotal = 10;
-    const columnsTotal = 10;
+  const {isBattleForPlacement, id:fieldId, setShipPlacement,botShoot} = {...props}
 
-    let field = [];
-    let currentId = 1;
-    for ( let i = 1; i <=rowsTotal;  i++) {
-      let row = [];
-      for (let j = 1; j <= columnsTotal; j++) {
-        isBattleForPlacement && row.push(<Square id={currentId} key={currentId}/>)
-        !isBattleForPlacement && row.push(<SimpleSquare id={currentId} key={currentId} fieldId={fieldId} botShoot={botShoot} currentDamagedShip={currentDamagedShip}/>)
-        currentId++;
-      }
-      field.push(<Row row={row} key={currentId}/>)
-    }
-    return field
-  }
-  const memoField = useMemo( () => makeField(),[])
+  const currentDamagedShip = useGetDamagedShip(fieldId),
+        makeField = useMakeField(isBattleForPlacement)
 
-  //console.log("RENDER_BATTLEFIELD " + fieldId)
+  let relativeClass = isBattleForPlacement ? null : "field__wrapper--relative";
+
+  const memoField = useMemo( () => makeField({fieldId, botShoot, currentDamagedShip}),[fieldId])
+
   return (
     <div className={'field placement__box'}>
-      <div className={"field__wrapper"}>
+      <div className={`field__wrapper ${relativeClass}`}>
         {memoField}
+        {setShipPlacement !== undefined && setShipPlacement()}
+        {!isBattleForPlacement && <Rocket/>}
       </div>
     </div>
   )

@@ -55,9 +55,11 @@
 .ship {
   $SIZE_BORDER: 2px;
   $SHIP_HEIGHT: $SIZE - $SIZE_BORDER;
+  $translateY: $SIZE_BORDER - 1;
+  z-index: 10;
 
   position: absolute;
-  transform: translateY(1px);
+  transform: translateY($translateY);
   height: $SHIP_HEIGHT;
   transform-origin: $SIZE/2 $SIZE/2;
 
@@ -88,5 +90,14 @@
 
   &--4 {
     width: $SIZE *4 - $SIZE_BORDER;
+  }
+
+  &--vertical {
+    transform: translateY(1px) rotate(90deg);
+  }
+
+  & img {
+    height: 100%;
+    width: 100%;
   }
 }

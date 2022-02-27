@@ -36,7 +36,11 @@ const ShipsField = () => {
            onDragOver={(e) => onDragOver(e)}
            onDragLeave={(e) => onDragLeave(e)}>
         {ships.map(item => {
-          return <Ship id={item.id} key={item.id} size={item.size}/>
+          return (
+              <div className={`shipWrapper shipWrapper--${item.size} shipWrapper-area--${item.id}`} key={item.id}>
+                <Ship id={item.id} key={item.id} size={item.size}/>
+              </div>
+          )
         })}
       </div>
   )

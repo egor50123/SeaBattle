@@ -1,11 +1,17 @@
 .battleField-container {
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  padding: 10px;
-  margin:0 auto;
   min-height: 400px;
   width: 1000px;
-  background-color: rgba(0, 0, 0, 0.2);
+  outline: 2px solid red;
+
+  height: 500px;
+  display: flex;
+  margin: 30px auto 0;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.17);
+  background-image: url("../../../assets/img/sky4.jpg");
+  border-radius: 8px;
+  box-shadow:  15px 15px 10px 0 rgba(0, 0, 0, 0.55);
 }

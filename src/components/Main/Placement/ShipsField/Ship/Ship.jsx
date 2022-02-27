@@ -4,13 +4,13 @@ import ship3 from "../../../../../assets/img/ship3.png"
 import ship2 from "../../../../../assets/img/ship2.png"
 import ship1 from "../../../../../assets/img/ship1.png"
 
-import {shallowEqual, useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useDeathZone} from "../../../../../hooks/useDeathZone";
 import {useShip} from "../../../../../hooks/useShip";
 import {useRotateShip} from "../../../../../hooks/useRotateShip";
 import {
   getContainerX, getContainerY, getDndData, getInitEmptySquares,
-  getIsPossibleToPlacement, getNotEmptySquares, getShipField
+  getIsPossibleToPlacement, getNotEmptySquares
 } from "../../../../../selectors/selectors";
 import {getSizeAndDirectionOfShip} from "../../../../../helpers/getSizeAndDirectionOfShip";
 import {getDndCurrentPart} from "../../../../../helpers/getDndCurrentPart";
@@ -64,7 +64,8 @@ const Ship = React.memo((props) => {
   }
 
   function dragStartHandler(e,ships) {
-    const target = e.target,
+    //e.preventDefault()
+    const target = e.target.closest(".ship"),
           currentId = target.id
     let {direction} = getSizeAndDirectionOfShip(target)
     let shipSize = ships[id-1].size,
@@ -82,7 +83,7 @@ const Ship = React.memo((props) => {
   }
 
   function dragEndHandler(e,dndStatus,prevShipPlacement,x,y,currentPart) {
-    const target = e.target
+    const target = e.target.closest(".ship")
     let container = target.closest('.placement'),
         shiftX = container.getBoundingClientRect().left,
         shiftY = container.getBoundingClientRect().top;
@@ -103,7 +104,7 @@ const Ship = React.memo((props) => {
   }
 
   function clickHandler(e,notEmptySquares,allSquares,createStrictShip) {
-    const target = e.target,
+    const target = e.target.closest(".ship"),
         id = target.id,
         shipSquares = ships[id-1].shipSquares
     if (shipSquares === undefined) return;
@@ -121,7 +122,7 @@ const Ship = React.memo((props) => {
 
   useEffect(() => {
     shipSrc.current = setSrc(size)
-  })
+  },[])
   function setSrc (size) {
     let src
     switch (size) {
@@ -131,24 +132,23 @@ const Ship = React.memo((props) => {
       case 4: src = ship4;break;
       default: break;
     }
-
     return src
   }
 
   function dragHandler(e) {
-    e.target.style.display = "none"
+    e.target.closest(".ship").style.display = "none"
   }
 
 
-  //console.log("render ship")
   return (
-    <div className={`shipWrapper shipWrapper--${size} shipWrapper-area--${id}`}>
-      <img className={`ship ship--${size} ${animate.current}`} src={shipSrc.current} alt="" ref={ref} id={id} key={key} draggable={true}
+      <div className={`ship ship--${size} ${animate.current}`} ref={ref} id={id} key={key} draggable={true}
            onClick={(e) => clickHandler(e,notEmptySquares,allSquares,createStrictShip)}
            onDragStart={ (e) => dragStartHandler(e,ships,shipSrc.current)}
            onDragEnd={ (e) => dragEndHandler(e,dndData.status,dndData.prevShipPlacement,dndData.x,dndData.y,dndData.currentPart) }
-          onDrag={(e) => dragHandler(e)}/>
-    </div>
+           onDrag={(e) => dragHandler(e)}>
+
+          <img src={shipSrc.current} alt="ship"/>
+      </div>
   )
 })
 

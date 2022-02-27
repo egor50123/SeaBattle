@@ -1,7 +1,7 @@
-//@import "../../../variables.scss";
 @import "./src/variables.scss";
 
 .square {
+  position: relative;
   display: inline-block;
   height: $SIZE;
   width: $SIZE;
@@ -12,9 +12,9 @@
   color: rgba(255, 255, 255, 0);
   user-select: none;
 
-  &--ship {
-    background-color: rgb(255, 255, 255);
-  }
+  //&--ship {
+  //  background-color: rgb(208, 6, 6);
+  //}
 
   &--death {
     background-color: rgba(0, 255, 255, 0.55);
@@ -29,12 +29,39 @@
   }
 
   &--damaged {
-    opacity: 0.4;
-    outline: 5px solid #0cb90c;
+    &::before {
+      $HIT_SIZE: $SIZE - 2;
+      position: absolute;
+      content: "";
+      background-image: url("../../../assets/img/Hit.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: 5px 1px;
+      display: block;
+      top: 0;
+      left: 0;
+      width: $HIT_SIZE;
+      height: $HIT_SIZE;
+      z-index: 15;
+    }
   }
 
   &--missed {
-    background-color: cadetblue;
+    &::before {
+      $HIT_SIZE: $SIZE - 2;
+      position: absolute;
+      content: "";
+      background-image: url("../../../assets/img/Miss.png");
+      background-size: $HIT_SIZE/1.5 $HIT_SIZE/1.5;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: block;
+      top: 0;
+      left: 0;
+      width: $HIT_SIZE;
+      height: $HIT_SIZE;
+      z-index: 15;
+    }
   }
 }
 
@@ -48,5 +75,10 @@
 
 .field__wrapper {
   border: 1px solid white;
+
+  &--relative {
+    position: relative;
+  }
 }
+
 

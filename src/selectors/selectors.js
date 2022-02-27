@@ -46,3 +46,5 @@ export const getDamagedShipsSquares = state => state.battleField.damagedShipsSqu
 export const getTotalDamagedShipsByPlayer = state => state.battleField.firstPlayer.totalDestroyedShips
 export const getIsGameOver = state => state.battleField.gameOver
 
+export const getDamagedShipsForPlayer = state => state.battleField.firstPlayer.damagedShips
+
