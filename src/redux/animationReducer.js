@@ -59,7 +59,7 @@ const appInitReducer = (state = initialState, action) => {
           top: 0,
           left: 0,
           rotate: 0,
-          scale: 1
+          scale: 0
         }
       }
     }

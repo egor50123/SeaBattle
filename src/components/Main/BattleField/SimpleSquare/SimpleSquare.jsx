@@ -78,7 +78,7 @@ const SimpleSquare = (props) => {
     let top = target.getBoundingClientRect().top,
         left = target.getBoundingClientRect().left
     isAnimatedOn()
-    //rocketAnimation({top,left})
+    rocketAnimation({top,left})
     //secondShipField.find(item => item.includes(targetSquare))
     let isHit = !!secondShipField.find(item => item.includes(targetSquare))
     if (isHit) {
