@@ -24,15 +24,15 @@ const Rocket = () => {
 
 
 
-  useEffect( () => {
-    window.addEventListener("resize", resize)
-
-    initCoorRef.current = ref.current.getBoundingClientRect()
-    initWindowHeightRef.current = document.documentElement.clientHeight
-    initWindowWidthRef.current = document.documentElement.clientWidth
-    dispatch(setInitRocketCoordinates(initCoorRef.current.top,initCoorRef.current.left))
-    //return window.removeEventListener("resize", resize)
-  },[initWindowHeightRef.current,initWindowWidthRef.current])
+  // useEffect( () => {
+  //   window.addEventListener("resize", resize)
+  //
+  //   initCoorRef.current = ref.current.getBoundingClientRect()
+  //   initWindowHeightRef.current = document.documentElement.clientHeight
+  //   initWindowWidthRef.current = document.documentElement.clientWidth
+  //   dispatch(setInitRocketCoordinates(initCoorRef.current.top,initCoorRef.current.left))
+  //   //return window.removeEventListener("resize", resize)
+  // },[initWindowHeightRef.current,initWindowWidthRef.current])
 
 
   if (initCoorRef.current !== undefined) {

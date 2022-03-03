@@ -1,7 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {
-  getCurrentPlayer, getDamagedShipsForPlayer,
-  getDamagedShipsSquares,
+  getCurrentPlayer, getDamagedShipsSquares,
   getFirstFieldDamagedSquares,
   getFirstFieldMissedSquares,
   getFirstFieldNotEmptySquares,
@@ -10,26 +9,17 @@ import {
   getSecondFieldDamagedSquares,
   getSecondFieldMissedSquares,
   getSecondFieldNotEmptySquares,
-  getSecondShipsField, getTotalDamagedShipsByPlayer
+  getSecondShipsField
 } from "../../../../selectors/selectors";
-import {
-  changePlayer,
-  setDamagedShipsPlayer, setDestroyedShip,
-  setGameOver,
-  setHit,
-  setMiss, setTotalDestroyedShipsPlayer
-} from "../../../../redux/battleFieldReducer";
+
 import {useEffect, useRef, useState} from "react";
 import {useBotClick} from "../../../../hooks/useBotClick";
-import {useGetDamagedShip} from "../../../../hooks/useGetDamagedShip";
-import {useDeathZone} from "../../../../hooks/useDeathZone";
 import {useRocketAnimation} from "../../../../hooks/useRocketAnimation";
-import {isAnimatedOn} from "../../../../redux/animationReducer";
+import {usePlayerClick} from "../../../../hooks/usePlayerClick";
 
 const SimpleSquare = (props) => {
   const TIMEOUT_DELAY = 10
   const {id, fieldId} = {...props}
-  const dispatch = useDispatch()
   const findCurrentDamagedShip = props.currentDamagedShip
   const botShoot = props.botShoot
   const ref = useRef(null)
@@ -44,16 +34,12 @@ const SimpleSquare = (props) => {
         firstFieldNotEmptySquares = useSelector(getSecondFieldNotEmptySquares),
         currentPlayer = useSelector(getCurrentPlayer),
         damageShipSquares = useSelector(getDamagedShipsSquares),
-        isGameOver = useSelector(getIsGameOver),
-        damagedShips = useSelector(getDamagedShipsForPlayer)
+        isGameOver = useSelector(getIsGameOver)
 
-
-  let totalDestroeydShipsByPlayer = useSelector(getTotalDamagedShipsByPlayer)
   let emptySquaresInit = useSelector(getInitEmptySquares)
 
-  const onBotClick = useBotClick({TIMEOUT_DELAY,secondFieldDamagedSquares,firstShipField,botShoot,findCurrentDamagedShip})
-  const getCurrentDamagedShip = (useGetDamagedShip(1))
-  const createDeathZone = useDeathZone()
+  const onBotClick = useBotClick({TIMEOUT_DELAY,secondFieldDamagedSquares,firstShipField,botShoot,findCurrentDamagedShip}),
+        onPlayerClick = usePlayerClick({secondShipField})
   const rocketAnimation = useRocketAnimation()
   let [flag, setFlag] = useState(false)
 
@@ -75,46 +61,12 @@ const SimpleSquare = (props) => {
     let targetSquare = +target.id
     // Если текующий игрок кликнул на свое поле - выходим (игрок 1 - true, игрок 2 - false)
     if (isGameOver || (fieldId === 1) || (!currentPlayer && fieldId === 2) || secondFieldNotEmptySquares.includes(targetSquare)) return
+
     let top = target.getBoundingClientRect().top,
         left = target.getBoundingClientRect().left
-    isAnimatedOn()
     rocketAnimation({top,left})
-    //secondShipField.find(item => item.includes(targetSquare))
-    let isHit = !!secondShipField.find(item => item.includes(targetSquare))
-    if (isHit) {
-      let damagedCurrentShip = getCurrentDamagedShip(targetSquare)
-      let indexOfShip = secondShipField.indexOf(secondShipField.find(ship => ship.includes(targetSquare)))
-      dispatch(setHit(targetSquare, 2))
-
-      if (damagedCurrentShip.length === 1) {
-        let deathZone = createDeathZone(damagedCurrentShip)
-        dispatch(setMiss(deathZone,2))
-        dispatch(setTotalDestroyedShipsPlayer())
-        if(++totalDestroeydShipsByPlayer === 10) dispatch(setGameOver())
-      } else {
-        dispatch(setDamagedShipsPlayer(id))
-        let damagedShip = damagedShips.find(obj => obj.id === indexOfShip)
-
-        if (damagedShip && damagedCurrentShip.length === damagedShip.squares.length) {
-          let deathZone = createDeathZone(damagedCurrentShip)
-          console.log("killed",damagedShip)
-          dispatch(setDestroyedShip(damagedCurrentShip,1))
-          dispatch(setMiss(deathZone,2))
-          dispatch(setTotalDestroyedShipsPlayer())
-          if(++totalDestroeydShipsByPlayer === 10) dispatch(setGameOver())
-        }
-      }
-
-
-
-    } else {
-      dispatch(setMiss([targetSquare], 2))
-      dispatch(changePlayer())
-
-      if (currentPlayer) {
-        setFlag(true)
-      }
-    }
+    let result = onPlayerClick({targetSquare,currentPlayer})
+    if (result === true) setFlag(true)
   }
 
 
