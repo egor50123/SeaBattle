@@ -3,7 +3,6 @@ import {useMemo} from "react";
 import {useGetDamagedShip} from "../../../hooks/useGetDamagedShip";
 import "../Placement/placement.scss"
 import {useMakeField} from "../../../hooks/useMakeField";
-import Rocket from "../../Common/Rocket/Rocket";
 
 const BattleField = (props) => {
   const {isBattleForPlacement, id:fieldId, setShipPlacement,botShoot} = {...props}
@@ -20,7 +19,6 @@ const BattleField = (props) => {
       <div className={`field__wrapper ${relativeClass}`}>
         {memoField}
         {setShipPlacement !== undefined && setShipPlacement()}
-        {!isBattleForPlacement && <Rocket/>}
       </div>
     </div>
   )

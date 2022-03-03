@@ -14,7 +14,7 @@ import {
 } from "../../../../selectors/selectors";
 import {
   changePlayer,
-  setDamagedShipsPlayer,
+  setDamagedShipsPlayer, setDestroyedShip,
   setGameOver,
   setHit,
   setMiss, setTotalDestroyedShipsPlayer
@@ -23,6 +23,8 @@ import {useEffect, useRef, useState} from "react";
 import {useBotClick} from "../../../../hooks/useBotClick";
 import {useGetDamagedShip} from "../../../../hooks/useGetDamagedShip";
 import {useDeathZone} from "../../../../hooks/useDeathZone";
+import {useRocketAnimation} from "../../../../hooks/useRocketAnimation";
+import {isAnimatedOn} from "../../../../redux/animationReducer";
 
 const SimpleSquare = (props) => {
   const TIMEOUT_DELAY = 10
@@ -52,6 +54,7 @@ const SimpleSquare = (props) => {
   const onBotClick = useBotClick({TIMEOUT_DELAY,secondFieldDamagedSquares,firstShipField,botShoot,findCurrentDamagedShip})
   const getCurrentDamagedShip = (useGetDamagedShip(1))
   const createDeathZone = useDeathZone()
+  const rocketAnimation = useRocketAnimation()
   let [flag, setFlag] = useState(false)
 
   // Если клетка принадлежит полю/игроку 2 - присваиваем  ей классы  в соответствии с информацией  из обЪекта
@@ -68,10 +71,14 @@ const SimpleSquare = (props) => {
   }
 
   function onClickHandler(e) {
-    let targetSquare = +e.target.id
+    let target = e.target
+    let targetSquare = +target.id
     // Если текующий игрок кликнул на свое поле - выходим (игрок 1 - true, игрок 2 - false)
     if (isGameOver || (fieldId === 1) || (!currentPlayer && fieldId === 2) || secondFieldNotEmptySquares.includes(targetSquare)) return
-
+    let top = target.getBoundingClientRect().top,
+        left = target.getBoundingClientRect().left
+    isAnimatedOn()
+    //rocketAnimation({top,left})
     //secondShipField.find(item => item.includes(targetSquare))
     let isHit = !!secondShipField.find(item => item.includes(targetSquare))
     if (isHit) {
@@ -90,6 +97,8 @@ const SimpleSquare = (props) => {
 
         if (damagedShip && damagedCurrentShip.length === damagedShip.squares.length) {
           let deathZone = createDeathZone(damagedCurrentShip)
+          console.log("killed",damagedShip)
+          dispatch(setDestroyedShip(damagedCurrentShip,1))
           dispatch(setMiss(deathZone,2))
           dispatch(setTotalDestroyedShipsPlayer())
           if(++totalDestroeydShipsByPlayer === 10) dispatch(setGameOver())

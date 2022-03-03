@@ -1,13 +1,38 @@
-.battleField-container {
+@import "src/variables";
+
+.battle {
+  outline: 5px solid green;
+  outline-offset: 5px;
+
+  display: flex;
+  flex-direction: column;
+
   position: relative;
-  min-height: 400px;
+  margin: 30px auto 0;
+  width: 1200px;
+  height: 90%;
+}
+
+
+.battle__stats {
+  display: flex;
+  justify-content: right;
+  outline: 2px solid aqua;
   width: 1000px;
+  margin: 20px auto auto;
+  height: 200px;
+
+}
+.battle__fields {
   outline: 2px solid red;
+  position: relative;
+  width: 1000px;
 
   height: 500px;
   display: flex;
-  margin: 30px auto 0;
-  justify-content: space-between;
+  margin: auto auto 20px;
+  justify-content: center;
+  gap: $BATTLEFIELD_GAP;
   align-items: center;
   padding: 15px;
   background-color: rgba(0, 0, 0, 0.17);

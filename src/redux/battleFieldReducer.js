@@ -30,6 +30,8 @@ const SET_DAMAGED_SHIPS_PLAYER = "SET_DAMAGED_SHIPS_PLAYER"
 const SET_GAME_OVER = "SET_GAME_OVER"
 const SET_TOTAL_DESTROYED_SHIPS = "SET_TOTAL_DESTROYED_SHIPS"
 
+const SET_DESTROYED_SHIP = "SET_DESTROYED_SHIP"
+
 const allSquares = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
 
 const initialState = {
@@ -51,6 +53,12 @@ const initialState = {
     x: null,
     y: null
   },
+  stats: {
+    1: 4,
+    2: 3,
+    3: 2,
+    4: 1,
+  },
   gameOver: false,
   firstPlayer: {
     shipField: [],
@@ -60,8 +68,8 @@ const initialState = {
     enemyHitedSquares: [],
     enemyMissedSquares: [],
     notEnemyEmptySquares: [],
+    enemyDestroyedShipsSquares: [],
     damagedShips: [],
-    destroyedShips: [],
     totalDestroyedShips: 0
   },
   secondPlayer: {
@@ -182,7 +190,7 @@ const battleFieldReducer = (state = initialState, action) => {
               shipField: [],
               deathField: [],
               notEmptySquares: [],
-
+              enemyDestroyedShipsSquares: [],
               enemyHitedSquares: [],
               enemyMissedSquares: [],
               notEnemyEmptySquares: [],
@@ -200,6 +208,7 @@ const battleFieldReducer = (state = initialState, action) => {
               notEmptySquares: [],
               enemyHitedSquares: [],
               enemyMissedSquares: [],
+              enemyDestroyedShipsSquares: [],
               notEnemyEmptySquares: []
             },
             damagedShipsSquares: []
@@ -408,7 +417,7 @@ const battleFieldReducer = (state = initialState, action) => {
           shipField: [],
           deathField: [],
           notEmptySquares: [],
-
+          enemyDestroyedShipsSquares:[],
           enemyHitedSquares: [],
           enemyMissedSquares: [],
           notEnemyEmptySquares: [],
@@ -420,7 +429,7 @@ const battleFieldReducer = (state = initialState, action) => {
           shipField: [],
           deathField: [],
           notEmptySquares: [],
-
+          enemyDestroyedShipsSquares:[],
           enemyHitedSquares: [],
           enemyMissedSquares: [],
           notEnemyEmptySquares: []
@@ -554,6 +563,34 @@ const battleFieldReducer = (state = initialState, action) => {
         }
       }
     }
+    case SET_DESTROYED_SHIP: {
+      switch (+action.fieldId) {
+        case 1: {
+          let newArr = [],
+              enemyDestroyedShipsSquares = state.firstPlayer.enemyDestroyedShipsSquares
+
+          newArr = enemyDestroyedShipsSquares.length > 0 ? [...enemyDestroyedShipsSquares,...action.ship] : [...action.ship]
+
+          return {
+            ...state,
+            firstPlayer: {
+              ...state.firstPlayer,
+              enemyDestroyedShipsSquares: newArr
+            }
+          }
+        }
+        case 2: {
+          return {
+            ...state,
+            secondPlayer: {
+              ...state.secondPlayer,
+              enemyDestroyedShipsSquares: [...state.secondPlayer.enemyDestroyedShipsSquares,...action.ship]
+            }
+          }
+        }
+        default: return {...state}
+      }
+    }
     default:
       return state
   }
@@ -600,5 +637,6 @@ export const setDamageShip = (squares) => ({type: SET_DAMAGED_SHIP_SQUARES, squa
 export const setDamagedShipsPlayer = (id) => ({type: SET_DAMAGED_SHIPS_PLAYER, id})
 export const setGameOver = () => ({type: SET_GAME_OVER})
 export const setTotalDestroyedShipsPlayer = () => ({type: SET_TOTAL_DESTROYED_SHIPS})
+export const setDestroyedShip = (ship,fieldId) => ({type: SET_DESTROYED_SHIP, ship,fieldId})
 
 export default battleFieldReducer

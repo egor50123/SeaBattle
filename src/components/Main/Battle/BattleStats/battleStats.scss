@@ -1,0 +1,51 @@
+@import "src/variables";
+
+.battleStats {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-right: 5px;
+  gap: 10px;
+
+}
+
+.battleStats__ship {
+  position: relative;
+  & img {
+    width: 100%;
+    height: 100%;
+  }
+  &--1 {
+    width: $SIZE;
+    height: $SIZE;
+  }
+
+  &--2 {
+    width: $SIZE *2;
+    height: $SIZE;
+  }
+
+  &--3 {
+    width: $SIZE*3;
+    height: $SIZE;
+  }
+
+  &--4 {
+    width: $SIZE*4;
+    height: $SIZE;
+  }
+
+  & span {
+    font-family: "Oswald", Arial,sans-serif;
+    position: absolute;
+    width: min-content;
+    height: min-content;
+    font-size: 1.5em;
+    color:white;
+    top: 0; bottom: 0; left: 0; right: 0;
+    margin: auto 5px auto auto;
+
+    z-index: 10;
+  }
+}
