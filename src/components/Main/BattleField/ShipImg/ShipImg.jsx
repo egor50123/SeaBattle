@@ -5,11 +5,19 @@ import ship4 from "../../../../assets/img/ship4.png"
 import "../BattleField.scss"
 import "../../Placement/ShipsField/ShipsField.scss"
 import {useMemo, useRef} from "react";
+import "../../../../App.scss"
 
 const ShipImg = (props) => {
-  const {x,y,size,direction} = {...props}
+  const {x,y,size,direction,isVisible,id,shipsId} = {...props}
   let verticalClass = direction === 0 ? "ship--vertical" : null,
-      sizeClassRef = useRef(null)
+      visibleClass = isVisible ? "" : "visuallyHidden",
+      sizeClassRef = useRef(null),
+      destroyedClass = ""
+
+  if (shipsId.includes(id)) {
+    visibleClass = ""
+    destroyedClass = "ship--destroyed"
+  }
 
   let src = useMemo(() => {
     let src = null
@@ -22,9 +30,10 @@ const ShipImg = (props) => {
     }
     return src
   },[size])
+  if (!isVisible) console.log("render",id)
 
   return (
-      <div className={`ship ${verticalClass} ${sizeClassRef.current}`} style={{left: `${x}px`, top: `${y}px`}}>
+      <div id={id} className={`ship ${verticalClass} ${sizeClassRef.current} ${visibleClass} ${destroyedClass}`} style={{left: `${x}px`, top: `${y}px`}}>
         <img src={src} alt="ship"/>
       </div>
   )

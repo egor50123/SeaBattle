@@ -1,8 +1,16 @@
 import {useSelector} from "react-redux";
 import {
-  getCurrentPlayer, getFirstFieldDamagedSquares, getFirstFieldMissedSquares,
-  getFirstFieldNotEmptySquares, getFirstShipsField, getIsGameOver,
-  getSecondFieldDamagedSquares, getSecondFieldMissedSquares, getSecondShipsField
+  getCurrentPlayer,
+  getDestroyedSquaresFirst,
+  getDestroyedSquaresSecond,
+  getFirstFieldDamagedSquares,
+  getFirstFieldMissedSquares,
+  getFirstFieldNotEmptySquares,
+  getFirstShipsField,
+  getIsGameOver,
+  getSecondFieldDamagedSquares,
+  getSecondFieldMissedSquares,
+  getSecondShipsField
 } from "../../../../selectors/selectors";
 
 import {useEffect, useRef, useState} from "react";
@@ -15,7 +23,7 @@ const SimpleSquare = (props) => {
   const {id, fieldId} = {...props}
   const botShoot = props.botShoot
   const ref = useRef(null)
-  let shipClass, missedClass, damagedClass
+  let shipClass, missedClass, damagedClass,destroyedClass
   const firstShipField = useSelector(getFirstShipsField),
       secondShipField = useSelector(getSecondShipsField),
       firstFieldMissedSquares = useSelector(getFirstFieldMissedSquares),
@@ -23,6 +31,8 @@ const SimpleSquare = (props) => {
       firstFieldDamagedSquares = useSelector(getFirstFieldDamagedSquares),
       secondFieldDamagedSquares = useSelector(getSecondFieldDamagedSquares),
       secondFieldNotEmptySquares = useSelector(getFirstFieldNotEmptySquares),
+      firstDestroyedSquares = useSelector(getDestroyedSquaresSecond),
+      secondDestroyedSquares = useSelector(getDestroyedSquaresFirst),
       currentPlayer = useSelector(getCurrentPlayer),
       isGameOver = useSelector(getIsGameOver)
 
@@ -39,9 +49,11 @@ const SimpleSquare = (props) => {
     shipClass = firstShipField.find(ship => ship.includes(id)) ? "square--ship" : ''
     missedClass = secondFieldMissedSquares.includes(id) ? "square--missed" : ''
     damagedClass = secondFieldDamagedSquares.includes(id) ? "square--damaged" : ''
+    destroyedClass = firstDestroyedSquares.includes(id) ? "square--destroyed" : ''
   } else {
     shipClass = secondShipField.find(ship => ship.includes(id)) ? "square--ship" : ''
     //shipClass = ''
+    destroyedClass = secondDestroyedSquares.includes(id) ? "square--destroyed" : ''
     missedClass = firstFieldMissedSquares.includes(id) ? "square--missed" : ''
     damagedClass = firstFieldDamagedSquares.includes(id) ? "square--damaged" : ''
   }
@@ -70,7 +82,7 @@ const SimpleSquare = (props) => {
   }, [flag])
 
   return (
-      <span className={`square ${shipClass} ${missedClass} ${damagedClass}`} id={id} ref={ref} onClick={onClickHandler}>
+      <span className={`square ${shipClass} ${missedClass} ${damagedClass} ${destroyedClass}`} id={id} ref={ref} onClick={onClickHandler}>
         {id}
       </span>
   )

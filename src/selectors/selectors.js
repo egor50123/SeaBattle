@@ -48,6 +48,11 @@ export const getIsGameOver = state => state.battleField.gameOver
 
 export const getDamagedShipsForPlayer = state => state.battleField.firstPlayer.damagedShips
 
+export const getDestroyedShipsIdFirst = state => state.battleField.firstPlayer.destroyedShipsId
+export const getDestroyedShipsIdSecond = state => state.battleField.secondPlayer.destroyedShipsId
+export const getDestroyedSquaresFirst = state => state.battleField.firstPlayer.enemyDestroyedShipsSquares
+export const getDestroyedSquaresSecond = state => state.battleField.secondPlayer.enemyDestroyedShipsSquares
+
 // анимации
 
 export const getRocketCoordinates = state => state.animation.rocket

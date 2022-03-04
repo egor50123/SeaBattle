@@ -1,4 +1,4 @@
-import {changePlayer, setGameOver, setHit, setMiss} from "../redux/battleFieldReducer";
+import {changePlayer, setDestroyedShip, setGameOver, setHit, setMiss} from "../redux/battleFieldReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {useDeathZone} from "./useDeathZone";
 import {getFirstShipsField, getSecondFieldDamagedSquares} from "../selectors/selectors";
@@ -38,8 +38,10 @@ export const useBotClick = ({TIMEOUT_DELAY, botShoot}) => {
 
     } else if (isShipDestroyed && !isGameOver) {
       let deathZone = createDeathZone(destroyedShip)
+      let indexOfShip = firstShipField.indexOf(firstShipField.find(ship => ship.includes(destroyedShip[0])))
       if (destroyedShip.length > 1) dispatch(setHit(id, 1))
       dispatch(setMiss(deathZone, 1))
+      dispatch(setDestroyedShip(destroyedShip,2,indexOfShip))
       setTimeout(() => {
         newEmptySquares = newEmptySquares.filter(item => !deathZone.includes(item))
         let [square] = botShoot(newEmptySquares, null, findCurrentDamagedShip)
