@@ -9,12 +9,12 @@
   white-space: nowrap;
   cursor: pointer;
   background-color: rgba(173, 229, 255, 0.62);
-  color: rgba(255, 255, 255, 0);
+  color: rgb(0, 0, 0);
   user-select: none;
 
-  //&--ship {
-  //  background-color: rgb(208, 6, 6);
-  //}
+  &--ship {
+    background-color: rgb(208, 6, 6);
+  }
 
   &--death {
     background-color: rgba(0, 255, 255, 0.55);

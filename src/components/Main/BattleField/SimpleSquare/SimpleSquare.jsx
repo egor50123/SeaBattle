@@ -1,45 +1,35 @@
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {
-  getCurrentPlayer, getDamagedShipsSquares,
-  getFirstFieldDamagedSquares,
-  getFirstFieldMissedSquares,
-  getFirstFieldNotEmptySquares,
-  getFirstShipsField,
-  getInitEmptySquares, getIsGameOver,
-  getSecondFieldDamagedSquares,
-  getSecondFieldMissedSquares,
-  getSecondFieldNotEmptySquares,
-  getSecondShipsField
+  getCurrentPlayer, getFirstFieldDamagedSquares, getFirstFieldMissedSquares,
+  getFirstFieldNotEmptySquares, getFirstShipsField, getIsGameOver,
+  getSecondFieldDamagedSquares, getSecondFieldMissedSquares, getSecondShipsField
 } from "../../../../selectors/selectors";
 
 import {useEffect, useRef, useState} from "react";
-import {useBotClick} from "../../../../hooks/useBotClick";
 import {useRocketAnimation} from "../../../../hooks/useRocketAnimation";
 import {usePlayerClick} from "../../../../hooks/usePlayerClick";
+import {useBotStartClick} from "../../../../hooks/useBotStartClick";
 
 const SimpleSquare = (props) => {
-  const TIMEOUT_DELAY = 10
+  const TIMEOUT_DELAY = 100
   const {id, fieldId} = {...props}
-  const findCurrentDamagedShip = props.currentDamagedShip
   const botShoot = props.botShoot
   const ref = useRef(null)
   let shipClass, missedClass, damagedClass
   const firstShipField = useSelector(getFirstShipsField),
-        secondShipField = useSelector(getSecondShipsField),
-        firstFieldMissedSquares = useSelector(getFirstFieldMissedSquares),
-        secondFieldMissedSquares = useSelector(getSecondFieldMissedSquares),
-        firstFieldDamagedSquares = useSelector(getFirstFieldDamagedSquares),
-        secondFieldDamagedSquares = useSelector(getSecondFieldDamagedSquares),
-        secondFieldNotEmptySquares = useSelector(getFirstFieldNotEmptySquares),
-        firstFieldNotEmptySquares = useSelector(getSecondFieldNotEmptySquares),
-        currentPlayer = useSelector(getCurrentPlayer),
-        damageShipSquares = useSelector(getDamagedShipsSquares),
-        isGameOver = useSelector(getIsGameOver)
+      secondShipField = useSelector(getSecondShipsField),
+      firstFieldMissedSquares = useSelector(getFirstFieldMissedSquares),
+      secondFieldMissedSquares = useSelector(getSecondFieldMissedSquares),
+      firstFieldDamagedSquares = useSelector(getFirstFieldDamagedSquares),
+      secondFieldDamagedSquares = useSelector(getSecondFieldDamagedSquares),
+      secondFieldNotEmptySquares = useSelector(getFirstFieldNotEmptySquares),
+      currentPlayer = useSelector(getCurrentPlayer),
+      isGameOver = useSelector(getIsGameOver)
 
-  let emptySquaresInit = useSelector(getInitEmptySquares)
 
-  const onBotClick = useBotClick({TIMEOUT_DELAY,secondFieldDamagedSquares,firstShipField,botShoot,findCurrentDamagedShip}),
-        onPlayerClick = usePlayerClick({secondShipField})
+  const onPlayerClick = usePlayerClick({secondShipField}),
+      onBotStartClick = useBotStartClick({TIMEOUT_DELAY, botShoot})
+
   const rocketAnimation = useRocketAnimation()
   let [flag, setFlag] = useState(false)
 
@@ -50,8 +40,8 @@ const SimpleSquare = (props) => {
     missedClass = secondFieldMissedSquares.includes(id) ? "square--missed" : ''
     damagedClass = secondFieldDamagedSquares.includes(id) ? "square--damaged" : ''
   } else {
-    //shipClass = secondShipField.find(ship => ship.includes(id)) ? "square--ship" : ''
-    shipClass = ''
+    shipClass = secondShipField.find(ship => ship.includes(id)) ? "square--ship" : ''
+    //shipClass = ''
     missedClass = firstFieldMissedSquares.includes(id) ? "square--missed" : ''
     damagedClass = firstFieldDamagedSquares.includes(id) ? "square--damaged" : ''
   }
@@ -64,8 +54,8 @@ const SimpleSquare = (props) => {
 
     let top = target.getBoundingClientRect().top,
         left = target.getBoundingClientRect().left
-    rocketAnimation({top,left})
-    let result = onPlayerClick({targetSquare,currentPlayer})
+    //rocketAnimation({top,left})
+    let result = onPlayerClick({targetSquare, currentPlayer})
     if (result === true) setFlag(true)
   }
 
@@ -73,23 +63,8 @@ const SimpleSquare = (props) => {
   useEffect(() => {
     //если наступает ход бота
     if (flag) {
-      let emptySquares = emptySquaresInit.filter(item => !firstFieldNotEmptySquares.includes(item))
-      let square = null
-      // Если уже есть подбитый корабль - стреляем в его уже подбитую клетку
-      if (damageShipSquares.length !== 0) {
-        square = damageShipSquares[0]
-      } // Если нет поврежденного корабля - выбираем клетку для стрельбы
-      else {
-        [square] = botShoot(emptySquares, null, findCurrentDamagedShip)
-      }
-      let options = {
-        id: square,
-        emptySquares: emptySquares,
-      }
-      setTimeout(() => {
-        onBotClick(options)
-        setFlag(false)
-      }, TIMEOUT_DELAY)
+      let result = onBotStartClick()
+      if (result === false) setFlag(false)
     }
 
   }, [flag])

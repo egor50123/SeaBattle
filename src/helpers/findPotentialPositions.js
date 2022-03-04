@@ -154,7 +154,7 @@ export const findPotentialPositions = ({emptySquares, hitId, damagedSquaresShipS
       }
     }
 
-    isInOneColumn = damagedSquaresShipSort[0] + 10 * (i + difference) < 100 && damagedSquaresShipSort[0] + 10 * (i + difference) > 0
+    isInOneColumn = damagedSquaresShipSort[0] + 10 * (i + difference) <= 100 && damagedSquaresShipSort[0] + 10 * (i + difference) > 0
     isNextSquareNotEmpty = !emptySquares.includes(damagedSquaresShipSort[0] + 10 * (i + difference))
     if (isDirectionVerticalOrNull && isBottomEmpty && (!isInOneColumn || isNextSquareNotEmpty)) {
       switch (i) {

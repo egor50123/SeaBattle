@@ -45,6 +45,7 @@ export const useDestroyShipBot = () => {
       nexDirection
     } = findPotentialPositions(options)
 
+
     if (nexDirection === null) {
       nexDirection = Math.floor(Math.random() * 2)
     }
@@ -61,7 +62,13 @@ export const useDestroyShipBot = () => {
     }
     // получаем потенциальную позицию корабля для обстрела
     let position = getCurrentPositionForShot(optionsForGetPosition)
-    let indexOfPrevHit = position.indexOf(0)
+    let indexOfPrevHit
+    try {
+      indexOfPrevHit = position.indexOf(0)
+    } catch (err) {
+      debugger
+    }
+    //let indexOfPrevHit = position.indexOf(0)
 
     // Выбираем следующую клетку для обстрела
     nextHit = getNextSquareForShot({indexOfPrevHit, nexDirection, damagedSquaresShipSort, difference, position})

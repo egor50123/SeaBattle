@@ -13,7 +13,7 @@ const BattleField = (props) => {
   let relativeClass = isBattleForPlacement ? null : "field__wrapper--relative";
 
   const memoField = useMemo( () => makeField({fieldId, botShoot, currentDamagedShip}),[fieldId])
-
+  console.log("render BattleFild ",fieldId)
   return (
     <div className={'field placement__box'}>
       <div className={`field__wrapper ${relativeClass}`}>

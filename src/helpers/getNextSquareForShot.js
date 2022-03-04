@@ -1,4 +1,4 @@
-export const getNextSquareForShot = ({indexOfPrevHit,nexDirection,position,damagedSquaresShipSort,difference}) => {
+export const getNextSquareForShot = ({indexOfPrevHit, nexDirection, position, damagedSquaresShipSort, difference}) => {
   let nextHit = null
   if (indexOfPrevHit !== 0 && indexOfPrevHit !== position.length - 1) {
     if (nexDirection === 1) {
@@ -13,4 +13,5 @@ export const getNextSquareForShot = ({indexOfPrevHit,nexDirection,position,damag
   }
 
   return nextHit
+
 }
