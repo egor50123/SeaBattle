@@ -3,21 +3,25 @@ import {setDamageShip} from "../redux/battleFieldReducer";
 import {getCurrentPositionForShot} from "../helpers/getCurrentPositionForShot";
 import {getNextSquareForShot} from "../helpers/getNextSquareForShot";
 import {findPotentialPositions} from "../helpers/findPotentialPositions";
+import {useRef} from "react";
 
 export const useDestroyShipBot = () => {
   const dispatch = useDispatch()
-  let damagedSquaresOfShip = []
+  //let damagedSquaresOfShip = []
+  let damagedSquaresOfShipRef = useRef([])
   let totalDestroyedShips = 0
   let totalDestroyedShipsCopy = 0
+  console.log("111")
 
 
   return (hitId, emptySquares, damagedShipInit) => {
     // если попадание является первым в выбранный корабль - заносим значение в массив
-    if (damagedSquaresOfShip.length === 0) {
-      damagedSquaresOfShip.push(hitId)
+    if (damagedSquaresOfShipRef.current.length === 0) {
+      //damagedSquaresOfShip.push(hitId)
+      damagedSquaresOfShipRef.current.push(hitId)
     }
     let direction = null
-    let damagedSquaresShipSort = damagedSquaresOfShip.sort((a, b) => a - b)
+    let damagedSquaresShipSort = damagedSquaresOfShipRef.current.sort((a, b) => a - b)
     // если в корабль совершенно 2 и более попаданий - определяем его напрвление (1-горизональное , 0 - вертикальное)
     if (damagedSquaresShipSort.length > 1) direction = Math.abs(damagedSquaresShipSort[1] - damagedSquaresShipSort[0]) === 1 ? 1 : 0
 
@@ -74,21 +78,21 @@ export const useDestroyShipBot = () => {
     nextHit = getNextSquareForShot({indexOfPrevHit, nexDirection, damagedSquaresShipSort, difference, position})
 
     // если следующий выстрел уничтожает корабль - меняем isDestroyed на true
-    let damagedSquaresOfShipNext = [...damagedSquaresOfShip, nextHit]
+    let damagedSquaresOfShipNext = [...damagedSquaresOfShipRef.current, nextHit]
     isDestroyed = damagedShipInit.filter(item => damagedSquaresOfShipNext.includes(item)).length === damagedShipInit.length
 
     //если следующий выстрел будет успешным - заносим его в массив поврежденных клеток корабля
     if (damagedShipInit.includes(nextHit)) {
-      damagedSquaresOfShip.push(nextHit)
+      damagedSquaresOfShipRef.current.push(nextHit)
     }
     // Если корабль уничтожен - обнуляем массив поврежденных кораблей, массивы неудачных выстрелов и фиксируем, что корбль был уничтожен
     if (isDestroyed) {
-      damagedSquaresOfShip = []
+      damagedSquaresOfShipRef.current = []
       totalDestroyedShips++
     }
     if (totalDestroyedShips === 6) totalDestroyedShipsCopy = totalDestroyedShips
 
-    dispatch(setDamageShip(damagedSquaresOfShip))
+    dispatch(setDamageShip(damagedSquaresOfShipRef.current))
     return {nextHit, isDestroyed, damagedShipInit, totalDestroyedShipsCopy}
   }
 }

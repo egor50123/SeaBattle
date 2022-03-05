@@ -1,4 +1,5 @@
 import {setMapDamagedShip} from "../helpers/setMapDamagedShip";
+import {setNewStats} from "../helpers/setNewStats";
 
 const FIELD_DATA = "FIELD_DATA";
 const FIELD_DEATH_ZONE = "FIELD_DEATH_ZONE";
@@ -54,10 +55,10 @@ const initialState = {
     y: null
   },
   stats: {
-    1: 4,
-    2: 3,
-    3: 2,
-    4: 1,
+    ship1: 4,
+    ship2: 3,
+    ship3: 2,
+    ship4: 1,
   },
   gameOver: false,
   firstPlayer: {
@@ -558,8 +559,11 @@ const battleFieldReducer = (state = initialState, action) => {
     }
     case SET_TOTAL_DESTROYED_SHIPS: {
       let total = state.firstPlayer.totalDestroyedShips
+      let stats = state.stats
+      let newStats = setNewStats(action.size,stats)
       return {
         ...state,
+        stats: newStats,
         firstPlayer: {
           ...state.firstPlayer,
           totalDestroyedShips: ++total
@@ -649,7 +653,7 @@ export const changePlayer = () => ({type: CHANGE_PLAYER,})
 export const setDamageShip = (squares) => ({type: SET_DAMAGED_SHIP_SQUARES, squares})
 export const setDamagedShipsPlayer = (id) => ({type: SET_DAMAGED_SHIPS_PLAYER, id})
 export const setGameOver = () => ({type: SET_GAME_OVER})
-export const setTotalDestroyedShipsPlayer = () => ({type: SET_TOTAL_DESTROYED_SHIPS})
+export const setTotalDestroyedShipsPlayer = (size) => ({type: SET_TOTAL_DESTROYED_SHIPS,size})
 export const setDestroyedShip = (ship,fieldId,shipId) => ({type: SET_DESTROYED_SHIP, ship,fieldId,shipId})
 
 export default battleFieldReducer

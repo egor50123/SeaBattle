@@ -8,19 +8,19 @@ const BattleField = (props) => {
   const {isBattleForPlacement, id:fieldId, setShipPlacement,botShoot} = {...props}
 
   const currentDamagedShip = useGetDamagedShip(fieldId),
-        makeField = useMakeField(isBattleForPlacement)
+      makeField = useMakeField(isBattleForPlacement)
 
   let relativeClass = isBattleForPlacement ? null : "field__wrapper--relative";
 
   const memoField = useMemo( () => makeField({fieldId, botShoot, currentDamagedShip}),[fieldId])
 
   return (
-    <div className={'field placement__box'}>
-      <div className={`field__wrapper ${relativeClass}`}>
-        {memoField}
-        {setShipPlacement !== undefined && setShipPlacement(fieldId)}
+      <div className={'field placement__box'}>
+        <div className={`field__wrapper ${relativeClass}`}>
+          {memoField}
+          {setShipPlacement !== undefined && setShipPlacement(fieldId)}
+        </div>
       </div>
-    </div>
   )
 }
 

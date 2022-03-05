@@ -19,7 +19,6 @@ import {usePlayerClick} from "../../../../hooks/usePlayerClick";
 import {useBotStartClick} from "../../../../hooks/useBotStartClick";
 
 const SimpleSquare = (props) => {
-  const TIMEOUT_DELAY = 100
   const {id, fieldId} = {...props}
   const botShoot = props.botShoot
   const ref = useRef(null)
@@ -38,7 +37,7 @@ const SimpleSquare = (props) => {
 
 
   const onPlayerClick = usePlayerClick({secondShipField}),
-      onBotStartClick = useBotStartClick({TIMEOUT_DELAY, botShoot})
+      onBotStartClick = useBotStartClick({botShoot})
 
   const rocketAnimation = useRocketAnimation()
   let [flag, setFlag] = useState(false)

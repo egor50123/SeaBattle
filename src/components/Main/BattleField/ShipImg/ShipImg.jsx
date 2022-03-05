@@ -30,7 +30,6 @@ const ShipImg = (props) => {
     }
     return src
   },[size])
-  if (!isVisible) console.log("render",id)
 
   return (
       <div id={id} className={`ship ${verticalClass} ${sizeClassRef.current} ${visibleClass} ${destroyedClass}`} style={{left: `${x}px`, top: `${y}px`}}>

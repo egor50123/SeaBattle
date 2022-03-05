@@ -52,6 +52,8 @@ export const getDestroyedShipsIdFirst = state => state.battleField.firstPlayer.d
 export const getDestroyedShipsIdSecond = state => state.battleField.secondPlayer.destroyedShipsId
 export const getDestroyedSquaresFirst = state => state.battleField.firstPlayer.enemyDestroyedShipsSquares
 export const getDestroyedSquaresSecond = state => state.battleField.secondPlayer.enemyDestroyedShipsSquares
+export const getDestroyedShipsStats = state => state.battleField.stats
+export const getIsBotMove = state => state.battle.isBotMove
 
 // анимации
 

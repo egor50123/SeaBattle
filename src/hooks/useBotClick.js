@@ -3,6 +3,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {useDeathZone} from "./useDeathZone";
 import {getFirstShipsField, getSecondFieldDamagedSquares} from "../selectors/selectors";
 import {useGetDamagedShip} from "./useGetDamagedShip";
+import {setBotMove} from "../redux/battleReducer";
+import {useRef} from "react";
 
 export const useBotClick = ({TIMEOUT_DELAY, botShoot}) => {
   const dispatch = useDispatch()
@@ -10,6 +12,8 @@ export const useBotClick = ({TIMEOUT_DELAY, botShoot}) => {
   const findCurrentDamagedShip = useGetDamagedShip(2)
   const firstShipField = useSelector(getFirstShipsField),
       secondFieldDamagedSquares = useSelector(getSecondFieldDamagedSquares)
+
+  let isPrevSquareHitRef = useRef(false)
 
   function onBotClick({id, emptySquares, isDestroyed = false, destroyedShip = [], isGameOver = false}) {
     let isHit = !!firstShipField.find(ship => ship.includes(id))
@@ -23,6 +27,8 @@ export const useBotClick = ({TIMEOUT_DELAY, botShoot}) => {
       if (!secondFieldDamagedSquares.includes(id)) dispatch(setHit(id, 1))
 
       setTimeout(() => {
+        setBotMove(dispatch,true,0)
+        isPrevSquareHitRef.current  = true
         newEmptySquares = newEmptySquares.filter(item => item !== id);
 
         [square, isDestroyed, destroyedShip, isGameOver] = botShoot(newEmptySquares, id, findCurrentDamagedShip)
@@ -43,6 +49,8 @@ export const useBotClick = ({TIMEOUT_DELAY, botShoot}) => {
       dispatch(setMiss(deathZone, 1))
       dispatch(setDestroyedShip(destroyedShip,2,indexOfShip))
       setTimeout(() => {
+        isPrevSquareHitRef.current  = true
+        setBotMove(dispatch,true,0)
         newEmptySquares = newEmptySquares.filter(item => !deathZone.includes(item))
         let [square] = botShoot(newEmptySquares, null, findCurrentDamagedShip)
         let options = {
@@ -55,8 +63,15 @@ export const useBotClick = ({TIMEOUT_DELAY, botShoot}) => {
     } else if (isGameOver) {
       dispatch(setGameOver())
     } else {
-      dispatch(setMiss([id], 1))
-      dispatch(changePlayer())
+      let time = isPrevSquareHitRef.current ? TIMEOUT_DELAY/2 : TIMEOUT_DELAY
+      console.log("time",time)
+      setTimeout(() => {
+        isPrevSquareHitRef.current  = false
+        setBotMove(dispatch,false,0)
+        dispatch(setMiss([id], 1))
+        dispatch(changePlayer())
+      },time)
+
     }
   }
 

@@ -3,7 +3,7 @@ import SimpleSquare from "../components/Main/BattleField/SimpleSquare/SimpleSqua
 import Row from "../components/Main/BattleField/Row/Row";
 
 export const useMakeField = (isBattleForPlacement) => {
-  return ({fieldId,botShoot,currentDamagedShip}) => {
+  return ({fieldId,botShoot}) => {
     const rowsTotal = 10;
     const columnsTotal = 10;
 
@@ -13,7 +13,7 @@ export const useMakeField = (isBattleForPlacement) => {
       let row = [];
       for (let j = 1; j <= columnsTotal; j++) {
         isBattleForPlacement && row.push(<Square id={currentId} key={currentId}/>)
-        !isBattleForPlacement && row.push(<SimpleSquare id={currentId} key={currentId} fieldId={fieldId} botShoot={botShoot} currentDamagedShip={currentDamagedShip}/>)
+        !isBattleForPlacement && row.push(<SimpleSquare id={currentId} key={currentId} fieldId={fieldId} botShoot={botShoot}/>)
         currentId++;
       }
       field.push(<Row row={row} key={currentId}/>)

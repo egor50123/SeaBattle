@@ -30,7 +30,8 @@ export const usePlayerClick = ({secondShipField}) => {
         let deathZone = createDeathZone(damagedCurrentShip)
         dispatch(setMiss(deathZone,2))
         dispatch(setDestroyedShip(damagedCurrentShip,1,indexOfShip))
-        dispatch(setTotalDestroyedShipsPlayer())
+        dispatch(setTotalDestroyedShipsPlayer(1))
+
         if(++totalDestroyedShipsByPlayer === 10) dispatch(setGameOver())
       }
       else {
@@ -41,7 +42,7 @@ export const usePlayerClick = ({secondShipField}) => {
           let deathZone = createDeathZone(damagedCurrentShip)
           dispatch(setDestroyedShip(damagedCurrentShip,1,indexOfShip))
           dispatch(setMiss(deathZone,2))
-          dispatch(setTotalDestroyedShipsPlayer())
+          dispatch(setTotalDestroyedShipsPlayer(damagedCurrentShip.length))
           if(++totalDestroyedShipsByPlayer === 10) dispatch(setGameOver())
         }
       }

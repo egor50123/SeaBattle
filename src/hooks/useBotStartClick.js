@@ -1,16 +1,20 @@
 import {useBotClick} from "./useBotClick";
 import {useGetDamagedShip} from "./useGetDamagedShip";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
   getDamagedShipsSquares,
   getInitEmptySquares,
   getSecondFieldNotEmptySquares
 } from "../selectors/selectors";
+import {TIMEOUT_DELAY} from "../constant/constant";
+import {setBotMove} from "../redux/battleReducer";
+import {useBotShooting} from "./useBotShooting";
 
-export const useBotStartClick = ({botShoot,TIMEOUT_DELAY}) => {
+export const useBotStartClick = ({botShoot}) => {
+  const dispatch = useDispatch()
   const firstFieldNotEmptySquares = useSelector(getSecondFieldNotEmptySquares)
   let emptySquaresInit = useSelector(getInitEmptySquares)
-
+  // const botShoot = useBotShooting()
 
 
   const onBotClick = useBotClick({TIMEOUT_DELAY,botShoot}),
@@ -20,6 +24,7 @@ export const useBotStartClick = ({botShoot,TIMEOUT_DELAY}) => {
 
 
   return () => {
+    setBotMove(dispatch,true)
     let emptySquares = emptySquaresInit.filter(item => !firstFieldNotEmptySquares.includes(item))
 
     let square = null
@@ -34,9 +39,11 @@ export const useBotStartClick = ({botShoot,TIMEOUT_DELAY}) => {
       id: square,
       emptySquares: emptySquares,
     }
-    setTimeout(() => {
       onBotClick(options)
       return false
-    }, TIMEOUT_DELAY)
+    // setTimeout(() => {
+    //   onBotClick(options)
+    //   return false
+    // }, TIMEOUT_DELAY)
   }
 }
