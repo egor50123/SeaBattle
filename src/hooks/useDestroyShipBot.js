@@ -11,8 +11,6 @@ export const useDestroyShipBot = () => {
   let damagedSquaresOfShipRef = useRef([])
   let totalDestroyedShips = 0
   let totalDestroyedShipsCopy = 0
-  console.log("111")
-
 
   return (hitId, emptySquares, damagedShipInit) => {
     // если попадание является первым в выбранный корабль - заносим значение в массив

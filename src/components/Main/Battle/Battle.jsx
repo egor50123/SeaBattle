@@ -10,7 +10,7 @@ const Battle =() => {
   const botShoot = useBotShooting()
 
 
-  console.log('Battle')
+  //console.log('Battle')
   return (
       <div className={"battle"}>
         <div className={"battle__stats"}>
@@ -20,7 +20,7 @@ const Battle =() => {
         <div className={"battle__fields"}>
           <BattleField isBattleForPlacement={false} id={1} setShipPlacement={setShipPlacement}/>
           <BattleField isBattleForPlacement={false} id={2} botShoot={botShoot} setShipPlacement={setShipPlacement}/>
-          {<Rocket/>}
+          {/*{<Rocket/>}*/}
         </div>
 
       </div>

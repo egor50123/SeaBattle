@@ -65,9 +65,15 @@ const SimpleSquare = (props) => {
 
     let top = target.getBoundingClientRect().top,
         left = target.getBoundingClientRect().left
-    //rocketAnimation({top,left})
-    let result = onPlayerClick({targetSquare, currentPlayer})
-    if (result === true) setFlag(true)
+    // const fieldId = 1
+    rocketAnimation({id:targetSquare,fieldId:1})
+    setTimeout (()=> {
+      let result = onPlayerClick({targetSquare, currentPlayer})
+      if (result === true) setFlag(true)
+    },1000)
+    // rocketAnimation({top,left,fieldId})
+    // let result = onPlayerClick({targetSquare, currentPlayer})
+    // if (result === true) setFlag(true)
   }
 
 

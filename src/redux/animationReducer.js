@@ -4,14 +4,23 @@ const IS_ANIMATED_ON = "IS_ANIMATED_ON"
 const CLEAR_ANIMATION = "CLEAR_ANIMATION"
 
 const initialState = {
-  rocket: {
+  rocket1: {
     top: null,
     left: null,
     rotate: null,
     scale: null,
     initTop: null,
     initLeft: null,
-    isAnimated: false
+    isAnimation: false
+  },
+  rocket2: {
+    top: null,
+    left: null,
+    rotate: null,
+    scale: null,
+    initTop: null,
+    initLeft: null,
+    isAnimation: false
   }
 }
 
@@ -20,12 +29,12 @@ const appInitReducer = (state = initialState, action) => {
     case SET_ANIMATE_ROCKET: {
       return {
         ...state,
-        rocket: {
-          ...state.rocket,
-          top: action.settings.top === undefined ? state.rocket.top :  action.settings.top,
-          left: action.settings.left === undefined ? state.rocket.left :  action.settings.left,
-          rotate: action.settings.rotate === undefined ? state.rocket.rotate :  action.settings.rotate,
-          scale: action.settings.scale === undefined ? state.rocket.scale :  action.settings.scale,
+        rocket1: {
+          ...state.rocket1,
+          top: action.settings.top === undefined ? state.rocket1.top :  action.settings.top,
+          left: action.settings.left === undefined ? state.rocket1.left :  action.settings.left,
+          rotate: action.settings.rotate === undefined ? state.rocket1.rotate :  action.settings.rotate,
+          scale: action.settings.scale === undefined ? state.rocket1.scale :  action.settings.scale,
         }
       }
     }
@@ -33,8 +42,8 @@ const appInitReducer = (state = initialState, action) => {
     case SET_INIT_ROCKET_COORDINATES: {
       return {
         ...state,
-        rocket: {
-          ...state.rocket,
+        rocket1: {
+          ...state.rocket1,
           initTop: action.top,
           initLeft: action.left
         }
@@ -44,9 +53,9 @@ const appInitReducer = (state = initialState, action) => {
     case IS_ANIMATED_ON: {
       return {
         ...state,
-        rocket: {
-          ...state.rocket,
-          isAnimated: !state.rocket.isAnimated
+        rocket1: {
+          ...state.rocket1,
+          isAnimation: action.result
         }
       }
     }
@@ -54,8 +63,8 @@ const appInitReducer = (state = initialState, action) => {
     case CLEAR_ANIMATION: {
       return {
         ...state,
-        rocket: {
-          ...state.rocket,
+        rocket1: {
+          ...state.rocket1,
           top: 0,
           left: 0,
           rotate: 0,
@@ -70,6 +79,6 @@ const appInitReducer = (state = initialState, action) => {
 
 export const setAnimateRocket = (settings) => ({type:SET_ANIMATE_ROCKET,settings})
 export const setInitRocketCoordinates = (top,left) => ({type:SET_INIT_ROCKET_COORDINATES, top,left})
-export const isAnimatedOn = () => ({type: IS_ANIMATED_ON})
+export const isAnimationOn = (result) => ({type: IS_ANIMATED_ON,result})
 export const clearAnimation = () => ({type: CLEAR_ANIMATION})
 export default appInitReducer

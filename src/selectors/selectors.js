@@ -57,7 +57,9 @@ export const getIsBotMove = state => state.battle.isBotMove
 
 // анимации
 
-export const getRocketCoordinates = state => state.animation.rocket
-export const getRocketInitCoordinatesTop = state => state.animation.rocket.initTop
-export const getRocketInitCoordinatesLeft = state => state.animation.rocket.initLeft
+export const getFirstRocketCoordinates = state => state.animation.rocket1
+export const getRocketInitCoordinatesTop = state => state.animation.rocket1.initTop
+export const getRocketInitCoordinatesLeft = state => state.animation.rocket1.initLeft
+
+export const getSecondRocketCoordinates = state => state.animation.rocket2
 

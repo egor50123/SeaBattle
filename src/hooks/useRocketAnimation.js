@@ -1,15 +1,17 @@
 import {timingFunc} from "../helpers/animation/timingFunc";
 import {useDrawMoving} from "./useDrawMoving";
 import {useDispatch} from "react-redux";
-import {clearAnimation} from "../redux/animationReducer";
+import {clearAnimation, isAnimationOn} from "../redux/animationReducer";
 
 
 
 export const useRocketAnimation = () => {
+  const TIME = 1000
   const drawMoving = useDrawMoving()
   const timingFunctions = timingFunc()
   const dispatch = useDispatch()
-  return ({top,left}) => {
+  return ({id:square,fieldId}) => {
+    dispatch(isAnimationOn(true))
     function animate ({timing,draw,duration,type}) {
       let start = performance.now();
       requestAnimationFrame(function animate(time) {
@@ -26,21 +28,22 @@ export const useRocketAnimation = () => {
         }
 
 
-        draw({progress,top,left}); // отрисовать её
+        draw({progress,fieldId,square}); // отрисовать её
 
         if (timeFraction < 1) {
           requestAnimationFrame(animate);
         } else {
+          dispatch(isAnimationOn(false))
           dispatch(clearAnimation())
         }
 
       });
     }
 
-    animate({timing: timingFunctions.quad, draw: drawMoving.moveX, duration: 1000})
-    animate( {timing: timingFunctions.back, draw: drawMoving.moveY, duration: 1000})
-    animate({timing:timingFunctions.quad,draw: drawMoving.rotate,duration:1000})
-    animate({timing:timingFunctions.sqrt,draw: drawMoving.scale,duration:1000,type:"scale"})
+    animate({timing: timingFunctions.quad, draw: drawMoving.moveX, duration: TIME})
+    animate( {timing: timingFunctions.back, draw: drawMoving.moveY, duration: TIME})
+    animate({timing:timingFunctions.quad,draw: drawMoving.rotate,duration:TIME})
+    animate({timing:timingFunctions.sqrt,draw: drawMoving.scale,duration:TIME,type:"scale"})
 
   }
 }

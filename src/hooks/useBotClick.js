@@ -5,17 +5,20 @@ import {getFirstShipsField, getSecondFieldDamagedSquares} from "../selectors/sel
 import {useGetDamagedShip} from "./useGetDamagedShip";
 import {setBotMove} from "../redux/battleReducer";
 import {useRef} from "react";
+import {useRocketAnimation} from "./useRocketAnimation";
 
 export const useBotClick = ({TIMEOUT_DELAY, botShoot}) => {
   const dispatch = useDispatch()
   const createDeathZone = useDeathZone()
   const findCurrentDamagedShip = useGetDamagedShip(2)
+  const rocketAnimation = useRocketAnimation()
   const firstShipField = useSelector(getFirstShipsField),
       secondFieldDamagedSquares = useSelector(getSecondFieldDamagedSquares)
 
   let isPrevSquareHitRef = useRef(false)
 
   function onBotClick({id, emptySquares, isDestroyed = false, destroyedShip = [], isGameOver = false}) {
+    rocketAnimation({id,fieldId:2})
     let isHit = !!firstShipField.find(ship => ship.includes(id))
     let isShipDestroyed = isDestroyed
     let newEmptySquares = emptySquares.filter(item => item !== id)
@@ -25,7 +28,6 @@ export const useBotClick = ({TIMEOUT_DELAY, botShoot}) => {
           destroyedShip = [],
           isGameOver = false
       if (!secondFieldDamagedSquares.includes(id)) dispatch(setHit(id, 1))
-
       setTimeout(() => {
         setBotMove(dispatch,true,0)
         isPrevSquareHitRef.current  = true
@@ -64,14 +66,12 @@ export const useBotClick = ({TIMEOUT_DELAY, botShoot}) => {
       dispatch(setGameOver())
     } else {
       let time = isPrevSquareHitRef.current ? TIMEOUT_DELAY/2 : TIMEOUT_DELAY
-      console.log("time",time)
       setTimeout(() => {
         isPrevSquareHitRef.current  = false
         setBotMove(dispatch,false,0)
         dispatch(setMiss([id], 1))
         dispatch(changePlayer())
       },time)
-
     }
   }
 
