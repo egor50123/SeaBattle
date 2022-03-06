@@ -7,14 +7,12 @@ import {
   getSecondFieldNotEmptySquares
 } from "../selectors/selectors";
 import {TIMEOUT_DELAY} from "../constant/constant";
-import {setBotMove} from "../redux/battleReducer";
-import {useBotShooting} from "./useBotShooting";
+import {setIsBotMove} from "../redux/battleReducer";
 
 export const useBotStartClick = ({botShoot}) => {
   const dispatch = useDispatch()
   const firstFieldNotEmptySquares = useSelector(getSecondFieldNotEmptySquares)
   let emptySquaresInit = useSelector(getInitEmptySquares)
-  // const botShoot = useBotShooting()
 
 
   const onBotClick = useBotClick({TIMEOUT_DELAY,botShoot}),
@@ -24,7 +22,7 @@ export const useBotStartClick = ({botShoot}) => {
 
 
   return () => {
-    setBotMove(dispatch,true)
+    dispatch(setIsBotMove(true))
     let emptySquares = emptySquaresInit.filter(item => !firstFieldNotEmptySquares.includes(item))
 
     let square = null
@@ -41,9 +39,6 @@ export const useBotStartClick = ({botShoot}) => {
     }
       onBotClick(options)
       return false
-    // setTimeout(() => {
-    //   onBotClick(options)
-    //   return false
-    // }, TIMEOUT_DELAY)
+
   }
 }

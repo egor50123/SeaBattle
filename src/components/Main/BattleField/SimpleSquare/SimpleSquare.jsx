@@ -71,9 +71,7 @@ const SimpleSquare = (props) => {
       let result = onPlayerClick({targetSquare, currentPlayer})
       if (result === true) setFlag(true)
     },1000)
-    // rocketAnimation({top,left,fieldId})
-    // let result = onPlayerClick({targetSquare, currentPlayer})
-    // if (result === true) setFlag(true)
+
   }
 
 

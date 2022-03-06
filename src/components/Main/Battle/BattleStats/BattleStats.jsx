@@ -9,7 +9,6 @@ import {getDestroyedShipsStats, getIsBotMove} from "../../../../selectors/select
 const BattleStats = () => {
 const stats = useSelector(getDestroyedShipsStats),
       isBotMove = useSelector(getIsBotMove)
-
   return (
       <>
         {isBotMove && <div style={{color: "white", fontSize: "60px"}}>LOADING</div>}

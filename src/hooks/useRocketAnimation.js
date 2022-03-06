@@ -21,12 +21,7 @@ export const useRocketAnimation = () => {
         if (timeFraction > 1) timeFraction = 1;
 
         // вычисление текущего состояния анимации
-        if (type === 'scale') {
-          progress = timing([timeFraction,2]);
-        } else {
-          progress = timing([timeFraction,-3]);
-        }
-
+        progress = timing([timeFraction,5]);
 
         draw({progress,fieldId,square}); // отрисовать её
 
@@ -40,7 +35,7 @@ export const useRocketAnimation = () => {
       });
     }
 
-    animate({timing: timingFunctions.quad, draw: drawMoving.moveX, duration: TIME})
+    animate({timing: timingFunctions.quad, draw: drawMoving.moveX, duration: TIME,type:"moveX"})
     animate( {timing: timingFunctions.back, draw: drawMoving.moveY, duration: TIME})
     animate({timing:timingFunctions.quad,draw: drawMoving.rotate,duration:TIME})
     animate({timing:timingFunctions.sqrt,draw: drawMoving.scale,duration:TIME,type:"scale"})
