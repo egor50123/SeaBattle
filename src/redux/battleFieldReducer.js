@@ -1,4 +1,3 @@
-import {setMapDamagedShip} from "../helpers/setMapDamagedShip";
 import {setNewStats} from "../helpers/setNewStats";
 
 const FIELD_DATA = "FIELD_DATA";
@@ -32,6 +31,7 @@ const SET_GAME_OVER = "SET_GAME_OVER"
 const SET_TOTAL_DESTROYED_SHIPS = "SET_TOTAL_DESTROYED_SHIPS"
 
 const SET_DESTROYED_SHIP = "SET_DESTROYED_SHIP"
+const SET_TOTAL_DESTROYED_BOT = "SET_TOTAL_DESTROYED_BOT"
 
 const allSquares = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
 
@@ -81,7 +81,8 @@ const initialState = {
     destroyedShipsId:[],
     enemyHitedSquares: [],
     enemyMissedSquares: [],
-    notEnemyEmptySquares: []
+    notEnemyEmptySquares: [],
+    totalDestroyedShips: 0
   },
   //true - ход первого игрока, false - второго
   currentPlayer: true,
@@ -213,7 +214,8 @@ const battleFieldReducer = (state = initialState, action) => {
               destroyedShipsId:[],
               enemyMissedSquares: [],
               enemyDestroyedShipsSquares: [],
-              notEnemyEmptySquares: []
+              notEnemyEmptySquares: [],
+              totalDestroyedShips: 0
             },
             damagedShipsSquares: []
           }
@@ -438,7 +440,8 @@ const battleFieldReducer = (state = initialState, action) => {
           destroyedShipsId:[],
           enemyHitedSquares: [],
           enemyMissedSquares: [],
-          notEnemyEmptySquares: []
+          notEnemyEmptySquares: [],
+          totalDestroyedShips: 0
         },
         //true - ход первого игрока, false - второго
         currentPlayer: true,
@@ -608,6 +611,15 @@ const battleFieldReducer = (state = initialState, action) => {
         default: return {...state}
       }
     }
+    case SET_TOTAL_DESTROYED_BOT: {
+      return {
+        ...state,
+        secondPlayer: {
+          ...state.secondPlayer,
+          totalDestroyedShips: ++state.secondPlayer.totalDestroyedShips
+        }
+      }
+    }
     default:
       return state
   }
@@ -641,7 +653,6 @@ export const setDndPrevSquare = (prevSquare) => ({type: DND_PREV_SQUARE, prevSqu
 
 export const updateShipData = () => ({type: UPDATE_SHIP_DATA})
 export const updateShipSquares = (shipId, newSquares) => ({type: UPDATE_SHIP_SQUARES, shipId, newSquares})
-export const iSRandom = () => ({type: IS_RANDOM})
 export const clearShipsData = () => ({type: CLEAR_SHIPS_DATA})
 
 export const setContainerCoordinates = (x, y) => ({type: CONTAINER_COORDINATES, x, y})
@@ -655,5 +666,6 @@ export const setDamagedShipsPlayer = (id) => ({type: SET_DAMAGED_SHIPS_PLAYER, i
 export const setGameOver = () => ({type: SET_GAME_OVER})
 export const setTotalDestroyedShipsPlayer = (size) => ({type: SET_TOTAL_DESTROYED_SHIPS,size})
 export const setDestroyedShip = (ship,fieldId,shipId) => ({type: SET_DESTROYED_SHIP, ship,fieldId,shipId})
+export const setTotalDestroyedShipsBot = () => ({type:SET_TOTAL_DESTROYED_BOT})
 
 export default battleFieldReducer

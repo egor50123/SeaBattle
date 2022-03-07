@@ -1,13 +1,20 @@
-import {changePlayer, setDestroyedShip, setGameOver, setHit, setMiss} from "../redux/battleFieldReducer";
+import {
+  changePlayer,
+  setDestroyedShip,
+  setGameOver,
+  setHit,
+  setMiss,
+  setTotalDestroyedShipsBot
+} from "../redux/battleFieldReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {useDeathZone} from "./useDeathZone";
-import {getFirstShipsField, getSecondFieldDamagedSquares} from "../selectors/selectors";
+import {getFirstShipsField, getSecondFieldDamagedSquares, getTotalDestroyedShipsBot} from "../selectors/selectors";
 import {useGetDamagedShip} from "./useGetDamagedShip";
 import {setIsBotMove} from "../redux/battleReducer";
-import {useRef} from "react";
 import {useRocketAnimation} from "./useRocketAnimation";
 
 export const useBotClick = ({TIMEOUT_DELAY, botShoot}) => {
+  let totalDestroyedShips = useSelector(getTotalDestroyedShipsBot)
   const dispatch = useDispatch()
   const createDeathZone = useDeathZone()
   const findCurrentDamagedShip = useGetDamagedShip(2)
@@ -15,15 +22,9 @@ export const useBotClick = ({TIMEOUT_DELAY, botShoot}) => {
   const firstShipField = useSelector(getFirstShipsField),
       secondFieldDamagedSquares = useSelector(getSecondFieldDamagedSquares)
 
-  let totalDestroyedShips = 0
-  let isGameOver = false
-
-  let ref = useRef(0)
-
-  const SHIPS = useSelector(getFirstShipsField)
 
   function onBotClick({id, emptySquares, isDestroyed = false, destroyedShip = [],isRepeat=false}) {
-    console.log('ref',ref.current)
+
     if (totalDestroyedShips === 10) {
       dispatch(setGameOver())
       return
@@ -38,7 +39,7 @@ export const useBotClick = ({TIMEOUT_DELAY, botShoot}) => {
 
     let isHitSingleShip = currentShip && currentShip.length === 1
 
-    if (!isHitSingleShip && isHit && !isShipDestroyed && !isGameOver) {
+    if (!isHitSingleShip && isHit && !isShipDestroyed) {
       let square = null,
           isDestroyed = false,
           destroyedShip = []
@@ -48,8 +49,11 @@ export const useBotClick = ({TIMEOUT_DELAY, botShoot}) => {
         newEmptySquares = newEmptySquares.filter(item => item !== id);
 
         [square, isDestroyed, destroyedShip] = botShoot(newEmptySquares, id, findCurrentDamagedShip)
-        if (isDestroyed) ++totalDestroyedShips
-        if (isDestroyed) ref.current++
+        if (isDestroyed) {
+          dispatch(setTotalDestroyedShipsBot())
+          ++totalDestroyedShips
+        }
+
         let options = {
           id: square,
           emptySquares: newEmptySquares,
@@ -59,11 +63,11 @@ export const useBotClick = ({TIMEOUT_DELAY, botShoot}) => {
         onBotClick(options)
       }, TIMEOUT_DELAY)
 
-    } else if ((isShipDestroyed || isHitSingleShip) && !isGameOver) {
+    } else if (isShipDestroyed || isHitSingleShip) {
       if (currentShip.length === 1) {
         destroyedShip = [id]
         ++totalDestroyedShips
-        ref.current++
+        dispatch(setTotalDestroyedShipsBot())
       }
       setTimeout(() => {
         let deathZone = createDeathZone(destroyedShip)

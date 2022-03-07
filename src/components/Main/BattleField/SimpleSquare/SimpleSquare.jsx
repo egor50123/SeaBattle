@@ -1,4 +1,4 @@
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
   getCurrentPlayer,
   getDestroyedSquaresFirst,
@@ -6,17 +6,18 @@ import {
   getFirstFieldDamagedSquares,
   getFirstFieldMissedSquares,
   getFirstFieldNotEmptySquares,
-  getFirstShipsField,
+  getFirstShipsField, getIsAnimationOn, getIsFieldDisable,
   getIsGameOver,
   getSecondFieldDamagedSquares,
   getSecondFieldMissedSquares,
-  getSecondShipsField
+  getSecondShipsField, isFieldDisable
 } from "../../../../selectors/selectors";
 
 import {useEffect, useRef, useState} from "react";
 import {useRocketAnimation} from "../../../../hooks/useRocketAnimation";
 import {usePlayerClick} from "../../../../hooks/usePlayerClick";
 import {useBotStartClick} from "../../../../hooks/useBotStartClick";
+import {disableField} from "../../../../redux/battleReducer";
 
 const SimpleSquare = (props) => {
   const {id, fieldId} = {...props}
@@ -33,12 +34,14 @@ const SimpleSquare = (props) => {
       firstDestroyedSquares = useSelector(getDestroyedSquaresSecond),
       secondDestroyedSquares = useSelector(getDestroyedSquaresFirst),
       currentPlayer = useSelector(getCurrentPlayer),
-      isGameOver = useSelector(getIsGameOver)
+      isGameOver = useSelector(getIsGameOver),
+      isFieldDisable = useSelector(getIsFieldDisable)
 
 
   const onPlayerClick = usePlayerClick({secondShipField}),
       onBotStartClick = useBotStartClick({botShoot})
 
+  const dispatch = useDispatch()
   const rocketAnimation = useRocketAnimation()
   let [flag, setFlag] = useState(false)
 
@@ -58,16 +61,17 @@ const SimpleSquare = (props) => {
   }
 
   function onClickHandler(e) {
-    let target = e.target
-    let targetSquare = +target.id
+    let targetSquare = +e.target.id
+
+    console.log("isFieldDisable",isFieldDisable)
     // Если текующий игрок кликнул на свое поле - выходим (игрок 1 - true, игрок 2 - false)
     if (isGameOver || (fieldId === 1) || (!currentPlayer && fieldId === 2) || secondFieldNotEmptySquares.includes(targetSquare)) return
+    // отключаем поле на время анимации
+    if (isFieldDisable) {return} else {dispatch(disableField(true))}
 
-    let top = target.getBoundingClientRect().top,
-        left = target.getBoundingClientRect().left
-    // const fieldId = 1
     rocketAnimation({id:targetSquare,fieldId:1})
     setTimeout (()=> {
+      dispatch(disableField(false))
       let result = onPlayerClick({targetSquare, currentPlayer})
       if (result === true) setFlag(true)
     },1000)

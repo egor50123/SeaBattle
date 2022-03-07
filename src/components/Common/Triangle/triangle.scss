@@ -1,0 +1,12 @@
+@import "src/variables";
+
+.triangle {
+  color: #61d200;
+  width: $TRIANGLE_WIDTH;
+  height: $TRIANGLE_WIDTH;
+
+  &--bot {
+    color: red;
+    transform: scaleX(-1);
+  }
+}

@@ -1,6 +1,6 @@
 import {useDispatch} from "react-redux";
 import {setAnimateRocket} from "../redux/animationReducer";
-import {SQUARE_SIZE} from "../constant/constant";
+import {BATTLEFIELD_GAP, SQUARE_SIZE, TRIANGLE_WIDTH} from "../constant/constant";
 
 export const useDrawMoving = () => {
   const dispatch = useDispatch()
@@ -15,7 +15,7 @@ export const useDrawMoving = () => {
       let col = square % 10,
           newx = col !== 0 ?  (col-1) * SQUARE_SIZE : 9 * SQUARE_SIZE,
           nnn = col !== 0 ?  (11 - col) * SQUARE_SIZE : SQUARE_SIZE
-      let left = fieldId === 1 ? progress * (470+newx - 20 -200) : -progress * (70 + nnn +20 + 200)
+      let left = fieldId === 1 ? progress * (400 + BATTLEFIELD_GAP + TRIANGLE_WIDTH +newx - 20 -200) : -progress * (BATTLEFIELD_GAP + TRIANGLE_WIDTH + nnn +20 + 200)
       if (x0 === null) {
         x0 = left
       } else {

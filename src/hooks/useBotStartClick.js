@@ -8,13 +8,11 @@ import {
 } from "../selectors/selectors";
 import {TIMEOUT_DELAY} from "../constant/constant";
 import {setIsBotMove} from "../redux/battleReducer";
-import {useRef} from "react";
 
 export const useBotStartClick = ({botShoot}) => {
   const dispatch = useDispatch()
   const firstFieldNotEmptySquares = useSelector(getSecondFieldNotEmptySquares)
   let emptySquaresInit = useSelector(getInitEmptySquares)
-
 
 
   const onBotClick = useBotClick({TIMEOUT_DELAY,botShoot}),

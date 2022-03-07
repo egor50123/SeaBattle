@@ -1,7 +1,9 @@
 const SET_IS_BOT_MOVE = "SET_IS_BOT_MOVE"
+const DISABLE_FIELD = "DISABLE_FIELD"
 
 const initialState = {
-    isBotMove: false
+    isBotMove: false,
+    isFieldDisabled: false,
 }
 
 const battleReducer = (state = initialState, action) => {
@@ -12,11 +14,18 @@ const battleReducer = (state = initialState, action) => {
         isBotMove: action.result,
       }
     }
+    case DISABLE_FIELD: {
+      return {
+        ...state,
+        isFieldDisabled: action.result
+      }
+    }
     default: return state
   }
 
 }
 
 export const setIsBotMove = (result) => ({type:SET_IS_BOT_MOVE,result})
+export const disableField = (result) => ({type: DISABLE_FIELD,result})
 
 export default battleReducer

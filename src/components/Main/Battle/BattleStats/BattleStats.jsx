@@ -2,6 +2,9 @@ import ship1 from "../../../../assets/img/ship1.png"
 import ship2 from "../../../../assets/img/ship2.png"
 import ship3 from "../../../../assets/img/ship3.png"
 import ship4 from "../../../../assets/img/ship4.png"
+import time from "../../../../assets/img/time.png"
+import rocket from "../../../../assets/img/Rocket.png"
+
 import "./battleStats.scss"
 import {useSelector} from "react-redux";
 import {getDestroyedShipsStats, getIsBotMove} from "../../../../selectors/selectors";
@@ -9,9 +12,16 @@ import {getDestroyedShipsStats, getIsBotMove} from "../../../../selectors/select
 const BattleStats = () => {
 const stats = useSelector(getDestroyedShipsStats),
       isBotMove = useSelector(getIsBotMove)
+
+  const rocketRotate = isBotMove ? 0 : -35
   return (
       <>
-        {isBotMove && <div style={{color: "white", fontSize: "60px"}}>LOADING</div>}
+        <div className={"battle__waiting"}>
+          <div className={"battle__waiting-box"} style={{ transform: `rotate(${rocketRotate}deg)`}}>
+            {isBotMove && <img src={time} alt=""/>}
+            {!isBotMove && <img src={rocket} alt=""/>}
+          </div>
+        </div>
         <div className={"battleStats"}>
           {stats.ship1 === 0 || <div className={"battleStats__ship battleStats__ship--1"}>
             <img src={ship1} alt=""/>

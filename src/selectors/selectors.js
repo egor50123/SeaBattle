@@ -54,12 +54,16 @@ export const getDestroyedSquaresFirst = state => state.battleField.firstPlayer.e
 export const getDestroyedSquaresSecond = state => state.battleField.secondPlayer.enemyDestroyedShipsSquares
 export const getDestroyedShipsStats = state => state.battleField.stats
 export const getIsBotMove = state => state.battle.isBotMove
+export const getIsFieldDisable = state => state.battle.isFieldDisabled
+
+export const getTotalDestroyedShipsBot = state => state.battleField.secondPlayer.totalDestroyedShips
 
 // анимации
 
 export const getFirstRocketCoordinates = state => state.animation.rocket1
 export const getRocketInitCoordinatesTop = state => state.animation.rocket1.initTop
 export const getRocketInitCoordinatesLeft = state => state.animation.rocket1.initLeft
+export const getIsAnimationOn = state => state.animation.rocket1.isAnimation
 
 export const getSecondRocketCoordinates = state => state.animation.rocket2
 
