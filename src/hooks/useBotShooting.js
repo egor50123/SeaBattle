@@ -8,10 +8,6 @@ export const useBotShooting = () => {
   const destroyShipBot = useDestroyShipBot()
   const {mainDiagonals, otherDiagonals} = makeDiagonals()
 
-  let totalDestroyedSingleShips = 0,
-      totalDestroyedOtherShips = 0,
-      isGameOver = false
-
   // массив диагоналей для поиска 4-палубных кораблей
   let mainDiagonalsCopy = mainDiagonals.slice(),
       otherDiagonalsCopy = otherDiagonals.slice()
@@ -31,26 +27,17 @@ export const useBotShooting = () => {
       // Получаем корабль в который мы попали
       let damagedShip = currentDamagedShipFunc(hitIdCopy)
       //получаем следующую клетку для обстрела
-      if (damagedShip.length === 1) {
-        square = hitId
-        isDestroyed = true
-        destroyedShip = damagedShip
-        totalDestroyedSingleShips++
-      } else {
-        let {
-          nextHit: newSquare,
-          isDestroyed: newIsDestroyed,
-          damagedShipInit: newDestroyedShip,
-          totalDestroyedShipsCopy: destroyedShips
-        } = destroyShipBot(hitIdCopy, emptySquares, damagedShip)
-        square = newSquare
-        isDestroyed = newIsDestroyed
-        destroyedShip = newDestroyedShip
-        totalDestroyedOtherShips = destroyedShips
-      }
-
+      let {
+        nextHit: newSquare,
+        isDestroyed: newIsDestroyed,
+        damagedShipInit: newDestroyedShip,
+        totalDestroyedShipsCopy: destroyedShips
+      } = destroyShipBot(hitIdCopy, emptySquares, damagedShip)
+      square = newSquare
+      isDestroyed = newIsDestroyed
+      destroyedShip = newDestroyedShip
     }
-    if ((totalDestroyedOtherShips + totalDestroyedSingleShips) === 10) isGameOver = true
-    return [square, isDestroyed, destroyedShip, isGameOver]
+
+    return [square, isDestroyed, destroyedShip]
   }
 }

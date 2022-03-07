@@ -1,15 +1,16 @@
 import rocket from "../../../assets/img/Rocket.png"
 import "./rocket.scss"
 import {useSelector} from "react-redux";
-import {getCurrentPlayer, getFirstRocketCoordinates} from "../../../selectors/selectors";
+import {getCurrentPlayer, getFirstRocketCoordinates, getIsBotMove} from "../../../selectors/selectors";
 
 const Rocket = (props) => {
   const fieldId = props.fieldId
   const rocketData = useSelector(getFirstRocketCoordinates)
 
   const currentPlayer = useSelector(getCurrentPlayer)
+  const isBotMove = useSelector(getIsBotMove)
   let curPlayerNum = 1
-  if (currentPlayer === false) curPlayerNum = 2
+  if (isBotMove === true) curPlayerNum = 2
 
   // let startCoordinates = curPlayerNum === 1 ? {initTop: 200,} : {b:1}
 

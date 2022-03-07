@@ -6,7 +6,7 @@ import {clearAnimation, isAnimationOn} from "../redux/animationReducer";
 
 
 export const useRocketAnimation = () => {
-  const TIME = 1000
+  const TIME = 900
   const drawMoving = useDrawMoving()
   const timingFunctions = timingFunc()
   const dispatch = useDispatch()

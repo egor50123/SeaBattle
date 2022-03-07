@@ -10,7 +10,7 @@ const Battle =() => {
   const botShoot = useBotShooting()
 
 
-  //console.log('Battle')
+  console.log('Battle')
   return (
       <div className={"battle"}>
         <div className={"battle__stats"}>
