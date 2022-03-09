@@ -1,40 +1,60 @@
+@import "src/variables";
+
 .savedPlacementMenu {
   position: fixed;
+  display: grid;
+  grid-template-columns: min-content min-content;
+  align-content: flex-start;
   height: 100%;
   width: 0;
-  background-color: rgba(24, 24, 24, 0.2);
+  background-color: white;
+  box-shadow: -10px 0 20px 0;
   top: 0;
   right: 0;
-  padding-top: 6vh;
-  padding-left: 0;
-  transition-property: width, padding-left;
-  transition-duration: 1s,0.7s;
-  transition-timing-function: ease-out, ease-out;
-  transition-delay: 0s,0.3s;
+  padding-top: calc(5vh + 30px);
+  transition: width 1s ease-out;
 
   &--open {
-    width: 25%;
-    padding-left: 10px;
+    width: $PLACEMENT_LIST_WIDTH;
   }
 
   &--close {
     width: 0;
-    padding-left: 0;
+  }
+
+  & span {
+    font-size: 30px;
+    font-family: "Oswald", Arial,sans-serif;
+    padding-left: 20px;
+    white-space: nowrap;
   }
 }
 
 .savedPlacementMenu__item {
+  margin-left: 24px;
+  margin-bottom: 24px;
   position: relative;
   font-size: 0;
-  color: rgba(255, 255, 255, 0);
-  width: 200px;
+  color: rgba(255, 255, 255, 0.02);
+  width: min-content;
   height: 150px;
-  background-color: rgb(0, 0, 0);
 }
 
 .savedPlacementMenu__btn-close {
+  z-index: 50;
+  cursor: pointer;
+  background-color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  //box-shadow: 3px 3px 5px 0 black;
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -16px;
+  right: -22px;
   margin-right: 4px;
+  transition: transform 0.4s ease-out;
+  &:hover {
+    transform: scale(1.2);
+  }
 }

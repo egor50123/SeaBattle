@@ -18,7 +18,7 @@ export const useMakeField = ({isBattleForPlacement, isLocal = false}) => {
         isLocal && row.push(<SquareLocal id={currentId} key={currentId} shipsData={shipsData}/>)
         currentId++;
       }
-      field.push(<Row row={row} key={currentId}/>)
+      field.push(<Row row={row} key={currentId} isLocal={isLocal}/>)
     }
     return field
   }

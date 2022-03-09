@@ -1,0 +1,10 @@
+@import "src/variables";
+
+.row {
+  display: flex;
+  width: min-content;
+
+  &--local:first-child {
+    border-top: $BORDER_SAVED;
+  }
+}

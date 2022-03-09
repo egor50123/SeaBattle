@@ -5,6 +5,7 @@ import {useDeathZone} from "../../../hooks/useDeathZone";
 import {useMakeField} from "../../../hooks/useMakeField";
 import {getCountOfSavedShips, getIsSavedPlacementOpen} from "../../../selectors/selectors";
 import {setCountOfSavedShips} from "../../../redux/appInitReducer";
+import close from "../../../assets/img/close.svg"
 
 const SavedPlacementMenu = () => {
   const dispatch = useDispatch()
@@ -44,21 +45,24 @@ const SavedPlacementMenu = () => {
 
 
   function deleteSavedField(e) {
-    let targetId = e.target.id
+    let targetId = e.target.closest(".savedPlacementMenu__btn-close").id
     localStorage.removeItem(targetId)
     dispatch(setCountOfSavedShips())
   }
 
   return (
       <div className={`savedPlacementMenu ${openClass}`}>
-        {fields.map((shipsData) =>
+
+        { fields.length > 0 ? fields.map((shipsData) =>
             <div className={"savedPlacementMenu__item"} key={shipsData.id}>
-              <div  id={shipsData.id} className={""} onClick={(e) => getSavedField(shipsData.ships)}>
+              <div  id={shipsData.id} className={"savedPlacementMenu__field"} onClick={(e) => getSavedField(shipsData.ships)}>
                 {makeField({shipsData: shipsData.ships})}
               </div>
-              <button key={shipsData.id} id={shipsData.id} className={"savedPlacementMenu__btn-close"} onClick={(e) => deleteSavedField(e)}>del</button>
+              <button key={shipsData.id} id={shipsData.id} className={"savedPlacementMenu__btn-close"} onClick={(e) => deleteSavedField(e)}>
+                <img src={close} alt=""/>
+              </button>
             </div>
-            )}
+            ) : <span>Нет сохранённых расстановок</span>}
       </div>
   )
 }

@@ -1,3 +1,5 @@
+@import "src/variables";
+
 .main {
   position: relative;
   background-image: url("../../assets/img/sea.jpg");
@@ -12,7 +14,7 @@
   }
 
   &--compressed{
-    width: 75%;
+    width: calc(100% - 400px);
   }
 }
 
