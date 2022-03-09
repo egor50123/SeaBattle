@@ -1,6 +1,26 @@
 .header {
+  display: flex;
+  justify-content: right;
   height:5vh;
   width: 100%;
   background-color: #000000;
   color: bisque;
+}
+
+.header__btn-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: brown;
+  z-index: 100;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+
+  & img {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+  }
 }

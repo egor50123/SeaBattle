@@ -12,6 +12,14 @@
   color: rgb(0, 0, 0);
   user-select: none;
 
+  &--local {
+    border: 1px solid #ffffff;
+    height: 15px;
+    width: 15px;
+    margin-right: -1px;
+    margin-top: -1px;
+  }
+
   &--ship {
     background-color: rgb(208, 6, 6);
   }

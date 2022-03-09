@@ -4,6 +4,16 @@
   background-repeat: no-repeat;
   background-size: cover;
   height: 95vh;
+  width: 100%;
+  transition: width 1s ease-out;
+
+  &--open {
+    width: 100%;
+  }
+
+  &--compressed{
+    width: 75%;
+  }
 }
 
 .main__btns-wrapper {

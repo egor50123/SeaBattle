@@ -17,8 +17,8 @@
     background-color: #270be7;
   }
 
-  &--rotate {
-    background-color: red;
+  &--save {
+    background-color: rgb(255, 0, 0);
   }
 
   &--play {
@@ -26,6 +26,10 @@
     $size: 110px;
     width: $size;
     height: $size;
+  }
+
+  &--disable {
+    background-color: rgba(102, 102, 102, 0.8);
   }
 }
 

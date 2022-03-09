@@ -5,13 +5,15 @@ import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {getFirstShipsField} from "../../../selectors/selectors";
 import {setContainerCoordinates, updateShipData} from "../../../redux/battleFieldReducer";
 import {useRandomPlacement} from "../../../hooks/useRandomPlacement";
-import {setCurrentPage} from "../../../redux/appInitReducer";
+import {setCountOfSavedShips, setCurrentPage} from "../../../redux/appInitReducer";
 import ShipsField from "./ShipsField/ShipsField";
 
 import '../../Common/RoundButton/RoundButton.scss'
 import RoundButton from "../../Common/RoundButton/RoundButton";
 import random from "../../../assets/img/random.svg"
 import play from "../../../assets/img/play.svg"
+import save from "../../../assets/img/save.svg"
+import {getUnique} from "../../../helpers/getUnique";
 
 
 const Placement = (props) => {
@@ -20,6 +22,8 @@ const Placement = (props) => {
   const ref = useRef(null)
   const dispatch = useDispatch()
   const doRandomPlacement = useRandomPlacement()
+
+  let isDisable = firstShipField.length !== 10
 
 
   useEffect(() => {
@@ -38,6 +42,13 @@ const Placement = (props) => {
     doRandomPlacement(2)
   }
 
+  function onSavePlacement() {
+    if (!isDisable) {
+      localStorage.setItem(`ship${getUnique()}`, JSON.stringify(firstShipField))
+      dispatch(setCountOfSavedShips())
+    }
+  }
+
   //console.log("RENDER CONTAINER")
   return (
       <div ref={ref} className={"placement"}>
@@ -47,8 +58,8 @@ const Placement = (props) => {
         </div>
         <div className={"placement__buttons"}>
           <RoundButton src={random} type={"random"} text={"random"} func={onClickRandom}/>
-          <RoundButton type={"rotate"} text={"rotate"}/>
-          <RoundButton src={play} text={'play'} type={"play"} func={onClickPlay}/>
+          <RoundButton src={save} type={"save"}  text={"save"} disable={isDisable} func={onSavePlacement}/>
+          <RoundButton src={play} type={"play"} text={'play'} disable={isDisable} func={onClickPlay}/>
         </div>
 
       </div>

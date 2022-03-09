@@ -9,7 +9,7 @@ const BattleField = (props) => {
   const {isBattleForPlacement, id:fieldId, setShipPlacement,botShoot} = {...props}
 
   const currentDamagedShip = useGetDamagedShip(fieldId),
-        makeField = useMakeField(isBattleForPlacement)
+        makeField = useMakeField({isBattleForPlacement})
 
 
   let relativeClass = isBattleForPlacement ? null : "field__wrapper--relative";

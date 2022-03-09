@@ -25,6 +25,8 @@ export const getContainerY= state => state.battleField.containerCoordinates.y
 
 export const getShipsData = (state) => state => state.battleField.ships
 export const getCurrentPage = (state) => state.appInit.currentPage
+export const getIsSavedPlacementOpen = state => state.appInit.isPlacementOpen
+export const getCountOfSavedShips = state => state.appInit.countOfSavedShips
 
 export const getFirstShipsField = (state) => state.battleField.firstPlayer.shipField
 export const getFirstDeathField = (state) => state.battleField.firstPlayer.deathField
