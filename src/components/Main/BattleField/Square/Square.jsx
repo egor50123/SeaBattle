@@ -82,7 +82,7 @@ const Square = (props) => {
       let shipDeathZone = createDeathZone(successShip, direction)
       dispatch(setShipSquares([successShip]))
       dispatch(setDeathSquares([shipDeathZone]))
-      dispatch(dndDropCoordinates(x, y))
+      //dispatch(dndDropCoordinates(x, y))
       dispatch(setDndStatus(successShip))
 
     }

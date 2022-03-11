@@ -82,4 +82,6 @@ export const getShipData8 = state => state.battleField.ships[7]
 export const getShipData9 = state => state.battleField.ships[8]
 export const getShipData10 = state => state.battleField.ships[9]
 
+export const getShipCoor1 = state => state.battleField.ships[0].x
+
 
