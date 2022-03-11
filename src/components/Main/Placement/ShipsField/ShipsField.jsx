@@ -16,25 +16,9 @@ const ShipsField = () => {
     {id: 10, size: 1,}]
   const ref = useRef()
 
-  function onDrop(e) {
-    console.log("currentShip");
-  }
-
-  function onDragOver(e) {
-    // const target = e.target.closest(".shipsField")
-    // target.style.backgroundColor = "rgba(0,0,0,0.2)"
-  }
-
-  function onDragLeave(e) {
-    // const target = e.target.closest(".shipsField")
-    // target.style.backgroundColor = "rgba(0,0,0,0.1)"
-  }
-
   //console.log("RENDER ShipsField")
   return (
-      <div ref={ref} className={"placement__box shipsField"} onDrop={(e) => onDrop(e)}
-           onDragOver={(e) => onDragOver(e)}
-           onDragLeave={(e) => onDragLeave(e)}>
+      <div ref={ref} className={"placement__box shipsField"} >
         {ships.map(item => {
           return (
               <div className={`shipWrapper shipWrapper--${item.size} shipWrapper-area--${item.id}`} key={item.id}>

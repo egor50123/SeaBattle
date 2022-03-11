@@ -1,4 +1,5 @@
 import {setNewStats} from "../helpers/setNewStats";
+import {SQUARE_SIZE} from "../constant/constant";
 
 const FIELD_DATA = "FIELD_DATA";
 const FIELD_DEATH_ZONE = "FIELD_DEATH_ZONE";
@@ -33,6 +34,9 @@ const SET_TOTAL_DESTROYED_SHIPS = "SET_TOTAL_DESTROYED_SHIPS"
 const SET_DESTROYED_SHIP = "SET_DESTROYED_SHIP"
 const SET_TOTAL_DESTROYED_BOT = "SET_TOTAL_DESTROYED_BOT"
 const SET_SAVED_PLACEMENT = "SET_SAVED_PLACEMENT"
+const SET_PLACEMENT_FIELD_COORDINATES = "SET_PLACEMENT_FIELD_COORDINATES"
+const SET_PLACEMENT_SHIP_COORDINATES = "SET_PLACEMENT_SHIP_COORDINATES"
+const SET_SHIP_COORDINATES = "SET_SHIP_COORDINATES"
 
 const allSquares = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
 
@@ -55,6 +59,17 @@ const initialState = {
     x: null,
     y: null
   },
+
+  placementCoordinates: {
+    shipsCoorInit: [],
+    battleFieldCoor: {
+      x: null,
+      y: null,
+    },
+    shipsCoor: [],
+    status:  false,
+  },
+
   stats: {
     ship1: 4,
     ship2: 3,
@@ -392,6 +407,66 @@ const battleFieldReducer = (state = initialState, action) => {
         }
       }
     }
+    case SET_PLACEMENT_FIELD_COORDINATES: {
+      return {
+        ...state,
+        placementCoordinates: {
+          ...state.placementCoordinates,
+          battleFieldCoor: {
+            x: action.coordinates.x,
+            y: action.coordinates.y,
+          },
+          status: true
+        }
+      }
+    }
+    case SET_SHIP_COORDINATES: {
+      let baseWidthDif = state.placementCoordinates.battleFieldCoor.x - state.placementCoordinates.shipsCoorInit[action.id-1].coordinates.x
+      let baseHeighttDif = state.placementCoordinates.battleFieldCoor.y - state.placementCoordinates.shipsCoorInit[action.id-1].coordinates.y
+
+      let col = action.square % 10,
+          dopx = col !== 0 ?  (col-1) * SQUARE_SIZE : 9 * SQUARE_SIZE
+
+      let row = Math.ceil(action.square/10),
+          dopy = (row-1) * SQUARE_SIZE
+
+      let left = baseWidthDif + dopx
+      let top = baseHeighttDif + dopy
+
+      return {
+        ...state,
+        ships: state.ships.map( (item,index) => {
+          if (index === action.id-1) {
+            item.x = left
+            item.y = top
+          }
+          return item
+        })
+      }
+    }
+    case SET_PLACEMENT_SHIP_COORDINATES: {
+      let newShipsCoor = []
+      let shipData = {
+        id: action.id,
+        coordinates: {
+          x: action.coordinates.x,
+          y: action.coordinates.y,
+        }
+      }
+      if (state.placementCoordinates.shipsCoorInit.length === 0) {
+        newShipsCoor = [shipData]
+      } else {
+        newShipsCoor = [...state.placementCoordinates.shipsCoorInit,shipData]
+      }
+
+      return {
+        ...state,
+        placementCoordinates: {
+          ...state.placementCoordinates,
+          shipsCoorInit: newShipsCoor
+        }
+      }
+    }
       //???????????
     case IS_RANDOM: {
       return {
@@ -657,6 +732,9 @@ export const updateShipSquares = (shipId, newSquares) => ({type: UPDATE_SHIP_SQU
 export const clearShipsData = () => ({type: CLEAR_SHIPS_DATA})
 
 export const setContainerCoordinates = (x, y) => ({type: CONTAINER_COORDINATES, x, y})
+export const setPlacementFieldCoordinates = (coordinates) => ({type: SET_PLACEMENT_FIELD_COORDINATES,coordinates})
+export const setPlacementShipCoordinates = (coordinates,id) => ({type: SET_PLACEMENT_SHIP_COORDINATES,coordinates,id})
+export const setShipCoordinates = (id,square) => ({type: SET_SHIP_COORDINATES,id,square})
 
 //получить сохраненную расстановку
 export const setSavedPlacement = (ships) => ({type: SET_SAVED_PLACEMENT, ships})

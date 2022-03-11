@@ -2,7 +2,7 @@ import BattleField from "../BattleField/BattleField";
 import "./placement.scss"
 import React, {useEffect, useRef} from 'react';
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
-import {getFirstShipsField} from "../../../selectors/selectors";
+import {getCurrentPage, getFirstShipsField} from "../../../selectors/selectors";
 import {setContainerCoordinates, updateShipData} from "../../../redux/battleFieldReducer";
 import {useRandomPlacement} from "../../../hooks/useRandomPlacement";
 import {setCountOfSavedShips, setCurrentPage} from "../../../redux/appInitReducer";
@@ -18,19 +18,14 @@ import {getUnique} from "../../../helpers/getUnique";
 
 const Placement = (props) => {
   const battle = props.nextPage
-  const firstShipField = useSelector(getFirstShipsField,shallowEqual)
+  const firstShipField = useSelector(getFirstShipsField,shallowEqual),
+        currentPage = useSelector(getCurrentPage)
   const ref = useRef(null)
   const dispatch = useDispatch()
   const doRandomPlacement = useRandomPlacement()
 
   let isDisable = firstShipField.length !== 10
 
-
-  useEffect(() => {
-    let x = ref.current.getBoundingClientRect().left
-    let y = ref.current.getBoundingClientRect().top
-    dispatch(setContainerCoordinates(x, y))
-  }, [firstShipField])
 
   function onClickRandom() {
     doRandomPlacement(1)
@@ -54,7 +49,7 @@ const Placement = (props) => {
       <div ref={ref} className={"placement"}>
         <div className={"placement__wrapper"}>
           <ShipsField isDraggable={true}/>
-          <BattleField isBattleForPlacement={true}/>
+          <BattleField isBattleForPlacement={true} currentPage={currentPage}/>
         </div>
         <div className={"placement__buttons"}>
           <RoundButton src={random} type={"random"} text={"random"} func={onClickRandom}/>

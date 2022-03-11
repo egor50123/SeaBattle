@@ -37,16 +37,16 @@ const Square = (props) => {
 
   useEffect(() => {
     // Если номер квадррата соответсвует первой клетке корабля , то диспатчим координаты квадата для последующего размещения кораблей
-    for (let i = 0; i < 10; i++) {
-      if (ships[i].shipSquares && ships[i].shipSquares[0] === +ref.current.id) {
-        let x = ref.current.getBoundingClientRect().left;
-        let y = ref.current.getBoundingClientRect().top;
-        // если координаты не изменились - выходим из цикла
-        if (ships[i].x === x && ships[i].y === y) return
-        dispatch(setStartShipDataCoordinates(x, y, ships[i].id))
-        return;
-      }
-    }
+    // for (let i = 0; i < 10; i++) {
+    //   if (ships[i].shipSquares && ships[i].shipSquares[0] === +ref.current.id) {
+    //     let x = ref.current.getBoundingClientRect().left;
+    //     let y = ref.current.getBoundingClientRect().top;
+    //     // если координаты не изменились - выходим из цикла
+    //     if (ships[i].x === x && ships[i].y === y) return
+    //     dispatch(setStartShipDataCoordinates(x, y, ships[i].id))
+    //     return;
+    //   }
+    // }
   }, [ships])
 
   function dragOverHandler(options) {
