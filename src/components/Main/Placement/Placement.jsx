@@ -1,9 +1,9 @@
 import BattleField from "../BattleField/BattleField";
 import "./placement.scss"
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {getCurrentPage, getFirstShipsField} from "../../../selectors/selectors";
-import {setContainerCoordinates, updateShipData} from "../../../redux/battleFieldReducer";
+import {updateShipData} from "../../../redux/battleFieldReducer";
 import {useRandomPlacement} from "../../../hooks/useRandomPlacement";
 import {setCountOfSavedShips, setCurrentPage} from "../../../redux/appInitReducer";
 import ShipsField from "./ShipsField/ShipsField";

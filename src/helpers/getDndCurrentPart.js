@@ -2,7 +2,6 @@ import {SQUARE_SIZE} from "../constant/constant"
 
 export const getDndCurrentPart = (e, direction ) => {
   const defaultSize = SQUARE_SIZE
-  // !!!!!!!!
   let shiftX = e.pageX - e.target.getBoundingClientRect().left
   let shiftY = e.clientY - e.target.getBoundingClientRect().top
   let currentPart = null;

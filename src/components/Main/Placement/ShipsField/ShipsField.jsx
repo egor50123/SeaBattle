@@ -1,5 +1,5 @@
 import "./ShipsField.scss"
-import React, {useCallback, useRef} from 'react';
+import React, {useCallback} from 'react';
 import Ship from "./Ship/Ship";
 import "../placement.scss"
 import ship1 from "../../../../assets/img/ship1.png";
@@ -7,7 +7,7 @@ import ship2 from "../../../../assets/img/ship2.png";
 import ship3 from "../../../../assets/img/ship3.png";
 import ship4 from "../../../../assets/img/ship4.png";
 
-const ShipsField = () => {
+const ShipsField = React.memo(() => {
   const ships = [{id: 1, size: 4,},
     {id: 2, size: 3,},
     {id: 3, size: 3,},
@@ -30,19 +30,8 @@ const ShipsField = () => {
       }
       return src
     },[])
-  // function setSrc (size) {
-  //   let src
-  //   switch (size) {
-  //     case 1: src = ship1;break;
-  //     case 2: src = ship2;break;
-  //     case 3: src = ship3;break;
-  //     case 4: src = ship4;break;
-  //     default: break;
-  //   }
-  //   return src
-  // }
 
-  //console.log("RENDER ShipsField")
+  console.log("RENDER ShipsField")
   return (
       <div className={"placement__box shipsField"} >
         {ships.map(item => {
@@ -54,6 +43,6 @@ const ShipsField = () => {
         })}
       </div>
   )
-}
+})
 
 export default ShipsField

@@ -23,7 +23,7 @@ export const getDndData = state => state.battleField.dndSettings
 export const getContainerX= state => state.battleField.containerCoordinates.x
 export const getContainerY= state => state.battleField.containerCoordinates.y
 
-export const getShipsData = (state) => state => state.battleField.ships
+export const getShipsData = state => state.battleField.ships
 export const getCurrentPage = (state) => state.appInit.currentPage
 export const getIsSavedPlacementOpen = state => state.appInit.isPlacementOpen
 export const getCountOfSavedShips = state => state.appInit.countOfSavedShips
