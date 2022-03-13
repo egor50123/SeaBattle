@@ -7,55 +7,57 @@ import GameOverModal from "../Common/GameOverModal/GameOverModal";
 import "./Main.scss"
 import RoundButton from "../Common/RoundButton/RoundButton";
 import back from "../../assets/img/back.svg"
+import settings from "../../assets/img/settings.svg"
 import {clearShipsData} from "../../redux/battleFieldReducer";
-import {isSavedPlacementOpen, setCurrentPage} from "../../redux/appInitReducer";
+import {isSavedPlacementOpen, setCurrentPage, setSettingsOpen} from "../../redux/appInitReducer";
 import {useCallback} from "react";
 import SavedPlacementMenu from "./SavedPlacementList/SavedPlacementMenu";
+import {BATTLE_PAGE, MENU_PAGE, PLACEMENT_PAGE} from "../../constant/constant";
 
 const Main = () => {
   const currentPage = useSelector(getCurrentPage),
         gameOver = useSelector(getIsGameOver),
         isListOpen = useSelector(getIsSavedPlacementOpen)
-
-  const menu = "menu",
-        placement = "placement",
-        battle = "battle"
-
   const dispatch = useDispatch()
 
   let openClass = !isListOpen ? "main--open" : "main--compressed";
-
-  if (currentPage !== placement) openClass = "main--open"
+  let placementClass = currentPage === PLACEMENT_PAGE ? "main--placement" : ""
+  if (currentPage !== PLACEMENT_PAGE) openClass = "main--open"
 
 
   const onPrevPage = useCallback((() => {
     dispatch(isSavedPlacementOpen(false))
     switch (currentPage) {
-      case placement: {
+      case PLACEMENT_PAGE: {
         dispatch(clearShipsData())
-        dispatch(setCurrentPage(menu));
+        dispatch(setCurrentPage(MENU_PAGE));
         break
       }
-      case battle: {
+      case BATTLE_PAGE: {
         dispatch(clearShipsData())
-        dispatch(setCurrentPage(placement));
+        dispatch(setCurrentPage(PLACEMENT_PAGE));
         break
       }
       default: break
     }
   }),[currentPage])
 
-  //localStorage.setItem('test', "someInfo");
+  const onSettingsOpen = useCallback(() => {
+    dispatch(setSettingsOpen(true))
+  },[])
+
   return (
-      <div className={`main ${openClass}`}>
+      <div className={`main ${openClass} ${placementClass}`}>
         <div className={"main__btns-wrapper"}>
-          <RoundButton src={back} text={"назад"} func={onPrevPage}/>
+          <RoundButton src={back} type={"back"} text={"назад"} func={onPrevPage}/>
+          <RoundButton src={settings} type={"settings"} text={"settings"} func={onSettingsOpen}/>
         </div>
-        {currentPage === menu && <Menu nextPage={placement}/>}
-        {currentPage === placement && <Placement nextPage={battle}/>}
-        {currentPage === placement && <SavedPlacementMenu/>}
-        {currentPage === battle && <Battle/>}
-        {gameOver && <GameOverModal/>}
+        {currentPage === MENU_PAGE && <Menu nextPage={PLACEMENT_PAGE}/>}
+        {currentPage === PLACEMENT_PAGE && <Placement nextPage={BATTLE_PAGE}/>}
+        {currentPage === PLACEMENT_PAGE && <SavedPlacementMenu/>}
+        {currentPage === BATTLE_PAGE && <Battle/>}
+        {/*{gameOver && <GameOverModal/>}*/}
+        {/*<GameOverModal/>*/}
       </div>
   )
 }

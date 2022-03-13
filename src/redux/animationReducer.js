@@ -13,15 +13,6 @@ const initialState = {
     initLeft: null,
     isAnimation: false
   },
-  rocket2: {
-    top: null,
-    left: null,
-    rotate: null,
-    scale: null,
-    initTop: null,
-    initLeft: null,
-    isAnimation: false
-  }
 }
 
 const appInitReducer = (state = initialState, action) => {

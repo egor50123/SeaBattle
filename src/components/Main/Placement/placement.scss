@@ -1,26 +1,62 @@
 .placement {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  padding: 20px;
+  align-items: center;
+  height: 95vh;
   position: relative;
-  margin:0 auto;
-  width: 800px;
+  padding: 120px 20px 20px;
+  width: 100%;
   background-color: rgba(0, 0, 0, 0);
 }
 
 .placement__wrapper {
+  margin-top: 15px;
+  position: relative;
   width: 800px;
   height: 500px;
   display: flex;
-  margin-top: 30px;
   justify-content: space-between;
   align-items: center;
   padding: 15px;
+  padding-top: 45px;
   background-color: rgba(0, 0, 0, 0.17);
   background-image: url("../../../assets/img/sky4.jpg");
   border-radius: 8px;
   box-shadow:  15px 15px 10px 0 rgba(0, 0, 0, 0.55);
+}
+
+.placement__name {
+  display: flex;
+  $HEIGHT: 70px;
+  min-width: 180px;
+  width: 40%;
+  height: $HEIGHT;
+  position: absolute;
+  top: -$HEIGHT/2;
+  right: 0; left: 0;
+  margin: 0 auto;
+  background: linear-gradient(#81e1ee, #98eaf8);
+  border-radius: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.58);
+  box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.58);
+  padding: 15px;
+  justify-content: center;
+  align-items: center;
+
+  & span {
+    font-weight: 600;
+    text-transform: uppercase;
+    color: white;
+    font-size: 25px;
+    letter-spacing: 2px;
+  }
+}
+
+.placement__btn-menu {
+  right: 20px;
+  top: 15px;
+  position: absolute;
+  z-index: 100;
 }
 
 .placement__box {
@@ -30,11 +66,13 @@
 }
 
 .placement__buttons {
+  padding: 10px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  width: 400px;
+  width: 500px;
   margin: 50px auto 0;
-  border: 1px solid black;
-  border-radius: 7px;
+  background-color: rgba(255, 255, 255, 0.48);
+  border-radius: 15px;
+  box-shadow:  5px 5px 3px 0 rgba(0, 0, 0, 0.55);
 }

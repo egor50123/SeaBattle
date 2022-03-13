@@ -53,12 +53,6 @@ const initialState = {
     {id: 9, size: 1,},
     {id: 10, size: 1,}],
 
-  iSRandom: false,
-
-  containerCoordinates: {
-    x: null,
-    y: null
-  },
 
   placementCoordinates: {
     shipsCoorInit: [],
@@ -77,6 +71,8 @@ const initialState = {
     ship4: 1,
   },
   gameOver: false,
+  isWin:false,
+
   firstPlayer: {
     shipField: [],
     deathField: [],
@@ -398,15 +394,6 @@ const battleFieldReducer = (state = initialState, action) => {
         })],
       }
     }
-    case CONTAINER_COORDINATES: {
-      return {
-        ...state,
-        containerCoordinates: {
-          x: action.x,
-          y: action.y
-        }
-      }
-    }
     case SET_PLACEMENT_FIELD_COORDINATES: {
       return {
         ...state,
@@ -425,10 +412,10 @@ const battleFieldReducer = (state = initialState, action) => {
       let baseHeighttDif = state.placementCoordinates.battleFieldCoor.y - state.placementCoordinates.shipsCoorInit[action.id-1].coordinates.y
 
       let col = action.square % 10,
-          dopx = col !== 0 ?  (col-1) * SQUARE_SIZE : 9 * SQUARE_SIZE
+          dopx = col !== 0 ?  (col-1) * SQUARE_SIZE + 2 : 9 * SQUARE_SIZE + 3
 
       let row = Math.ceil(action.square/10),
-          dopy = (row-1) * SQUARE_SIZE
+          dopy = (row-1) * SQUARE_SIZE + 3
 
       let left = baseWidthDif + dopx
       let top = baseHeighttDif + dopy
@@ -487,32 +474,31 @@ const battleFieldReducer = (state = initialState, action) => {
           {id: 8, size: 1,},
           {id: 9, size: 1,},
           {id: 10, size: 1,}],
-
-        iSRandom: false,
-
-        containerCoordinates: {
-          x: null,
-          y: null
+        stats: {
+          ship1: 4,
+          ship2: 3,
+          ship3: 2,
+          ship4: 1,
         },
         gameOver: false,
+        isWin:false,
         firstPlayer: {
           shipField: [],
           deathField: [],
           notEmptySquares: [],
-          enemyDestroyedShipsSquares:[],
+
           enemyHitedSquares: [],
-          destroyedShipsId:[],
           enemyMissedSquares: [],
           notEnemyEmptySquares: [],
+          enemyDestroyedShipsSquares: [],
+          destroyedShipsId:[],
           damagedShips: [],
-          totalDestroyedShips: 0,
-          destroyedShips: [],
+          totalDestroyedShips: 0
         },
         secondPlayer: {
           shipField: [],
           deathField: [],
           notEmptySquares: [],
-          enemyDestroyedShipsSquares:[],
           destroyedShipsId:[],
           enemyHitedSquares: [],
           enemyMissedSquares: [],
@@ -622,7 +608,8 @@ const battleFieldReducer = (state = initialState, action) => {
     case SET_GAME_OVER: {
       return {
         ...state,
-        gameOver: true
+        gameOver: true,
+        isWin: action.isWin,
       }
     }
     case UPDATE_SHIP_DATA: {
@@ -746,7 +733,7 @@ export const setMiss = (squares, fieldId) => ({type: SET_MISS, squares, fieldId}
 export const changePlayer = () => ({type: CHANGE_PLAYER,})
 export const setDamageShip = (squares) => ({type: SET_DAMAGED_SHIP_SQUARES, squares})
 export const setDamagedShipsPlayer = (id) => ({type: SET_DAMAGED_SHIPS_PLAYER, id})
-export const setGameOver = () => ({type: SET_GAME_OVER})
+export const setGameOver = (isWin) => ({type: SET_GAME_OVER,isWin})
 export const setTotalDestroyedShipsPlayer = (size) => ({type: SET_TOTAL_DESTROYED_SHIPS,size})
 export const setDestroyedShip = (ship,fieldId,shipId) => ({type: SET_DESTROYED_SHIP, ship,fieldId,shipId})
 export const setTotalDestroyedShipsBot = () => ({type:SET_TOTAL_DESTROYED_BOT})

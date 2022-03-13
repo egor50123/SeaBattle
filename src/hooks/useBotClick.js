@@ -8,13 +8,18 @@ import {
 } from "../redux/battleFieldReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {useDeathZone} from "./useDeathZone";
-import {getFirstShipsField, getSecondFieldDamagedSquares, getTotalDestroyedShipsBot} from "../selectors/selectors";
+import {
+  getFirstShipsField, getIsAnimationActive,
+  getSecondFieldDamagedSquares,
+  getTotalDestroyedShipsBot
+} from "../selectors/selectors";
 import {useGetDamagedShip} from "./useGetDamagedShip";
 import {setIsBotMove} from "../redux/battleReducer";
 import {useRocketAnimation} from "./useRocketAnimation";
 
 export const useBotClick = ({TIMEOUT_DELAY, botShoot}) => {
-  let totalDestroyedShips = useSelector(getTotalDestroyedShipsBot)
+  let totalDestroyedShips = useSelector(getTotalDestroyedShipsBot),
+      isAnimationOn = useSelector(getIsAnimationActive)
   const dispatch = useDispatch()
   const createDeathZone = useDeathZone()
   const findCurrentDamagedShip = useGetDamagedShip(2)
@@ -26,10 +31,10 @@ export const useBotClick = ({TIMEOUT_DELAY, botShoot}) => {
   function onBotClick({id, emptySquares, isDestroyed = false, destroyedShip = [],isRepeat=false}) {
 
     if (totalDestroyedShips === 10) {
-      dispatch(setGameOver())
+      dispatch(setGameOver(false))
       return
     }
-    if (!isRepeat) rocketAnimation({id,fieldId:2})
+    if (!isRepeat && isAnimationOn) rocketAnimation({id,fieldId:2})
 
     let currentShip  = firstShipField.find(ship => ship.includes(id)),
         isHit = !!currentShip

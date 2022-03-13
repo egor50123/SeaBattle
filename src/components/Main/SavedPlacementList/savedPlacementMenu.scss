@@ -1,6 +1,7 @@
 @import "src/variables";
 
 .savedPlacementMenu {
+  overflow-y: scroll;
   position: fixed;
   display: grid;
   grid-template-columns: min-content min-content;

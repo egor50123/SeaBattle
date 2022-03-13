@@ -1,23 +1,19 @@
 @import "src/variables";
 
 .battle {
-  outline: 5px solid green;
-  outline-offset: 5px;
-
   display: flex;
   flex-direction: column;
-
   position: relative;
   margin: 30px auto 0;
   width: 1200px;
   height: 90%;
+  z-index: 30;
 }
 
 
 .battle__stats {
   display: flex;
   justify-content: space-between;
-  outline: 2px solid aqua;
   width: 1000px;
   margin: 20px auto auto;
   height: 200px;
@@ -33,17 +29,44 @@
 }
 
 .battle__waiting-box {
-  width: 100px;
-  height: 100px;
+  vertical-align: bottom;
+  white-space: nowrap;
 
-  & img {
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
+  & span {
+    color: white;
+    font-family: "Oswald", Arial, sans-serif;
+    font-size: 50px;
   }
 }
+
+.battle__name {
+  display: flex;
+  $HEIGHT: 70px;
+  min-width: 180px;
+  width: 30%;
+  height: $HEIGHT;
+  position: absolute;
+  top: -$HEIGHT/2;
+  right: 0; left: 0;
+  margin: 0 auto;
+  background: linear-gradient(#81e1ee, #98eaf8);
+  border-radius: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.58);
+  box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.58);
+  padding: 15px;
+  justify-content: center;
+  align-items: center;
+
+  & span {
+    font-weight: 600;
+    text-transform: uppercase;
+    color: white;
+    font-size: 25px;
+    letter-spacing: 2px;
+  }
+}
+
 .battle__fields {
-  outline: 2px solid red;
   position: relative;
   width: 1000px;
 
@@ -53,7 +76,7 @@
   justify-content: center;
   gap: $BATTLEFIELD_GAP;
   align-items: center;
-  padding: 15px;
+  padding: 45px 15px 15px;
   background-color: rgba(0, 0, 0, 0.17);
   background-image: url("../../../assets/img/sky4.jpg");
   border-radius: 8px;

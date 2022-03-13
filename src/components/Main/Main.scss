@@ -2,12 +2,12 @@
 
 .main {
   position: relative;
-  background-image: url("../../assets/img/sea.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
   height: 95vh;
   width: 100%;
-  transition: width 1s ease-out;
+
+  &--placement {
+    transition: width 1s ease-out;
+  }
 
   &--open {
     width: 100%;
@@ -20,7 +20,8 @@
 
 .main__btns-wrapper {
   display: flex;
-  top: 1em;
+  gap: 20px;
+  top: 15px;
   left: 1em;
   position: absolute;
   width: min-content;

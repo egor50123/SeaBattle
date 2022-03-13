@@ -1,5 +1,25 @@
 .menu {
-  margin: 100px auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu__text {
+  margin-top: 40px;
+  color: white;
+
+  & p {
+    text-transform: uppercase;
+    text-shadow: #0bd200 2px 2px 4px;
+    font-family: "Oswald", Arial, sans-serif;
+    letter-spacing: 5px;
+    font-size: 40px;
+    text-align: center;
+  }
+}
+
+.menu__list {
+  margin-top: 80px;
   display: flex;
   flex-direction: column;
   justify-content: center;

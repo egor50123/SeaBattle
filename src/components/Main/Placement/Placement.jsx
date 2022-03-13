@@ -5,14 +5,11 @@ import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {getCurrentPage, getFirstShipsField} from "../../../selectors/selectors";
 import {updateShipData} from "../../../redux/battleFieldReducer";
 import {useRandomPlacement} from "../../../hooks/useRandomPlacement";
-import {setCountOfSavedShips, setCurrentPage} from "../../../redux/appInitReducer";
+import {isSavedPlacementOpen, setCountOfSavedShips, setCurrentPage} from "../../../redux/appInitReducer";
 import ShipsField from "./ShipsField/ShipsField";
 
 import '../../Common/RoundButton/RoundButton.scss'
 import RoundButton from "../../Common/RoundButton/RoundButton";
-import random from "../../../assets/img/random.svg"
-import play from "../../../assets/img/play.svg"
-import save from "../../../assets/img/save.svg"
 import {getUnique} from "../../../helpers/getUnique";
 
 
@@ -44,17 +41,26 @@ const Placement = (props) => {
     }
   }
 
+  function openMenu () {
+    dispatch(isSavedPlacementOpen())
+  }
+
   //console.log("RENDER CONTAINER")
   return (
-      <div ref={ref} className={"placement"}>
+      <div ref={ref} className={"placement"} >
+        <div className={"placement__btn-menu"}>
+          <RoundButton type={"placementMenu"} func={openMenu}/>
+        </div>
+
         <div className={"placement__wrapper"}>
+          <div className={"placement__name"}><span>Расстановка</span></div>
           <ShipsField isDraggable={true}/>
           <BattleField isBattleForPlacement={true} currentPage={currentPage}/>
         </div>
         <div className={"placement__buttons"}>
-          <RoundButton src={random} type={"random"} text={"random"} func={onClickRandom}/>
-          <RoundButton src={save} type={"save"}  text={"save"} disable={isDisable} func={onSavePlacement}/>
-          <RoundButton src={play} type={"play"} text={'play'} disable={isDisable} func={onClickPlay}/>
+          <RoundButton type={"random"} text={"random"} func={onClickRandom}/>
+          <RoundButton type={"save"}  text={"save"} disable={isDisable} func={onSavePlacement}/>
+          <RoundButton type={"play"} text={'play'} disable={isDisable} func={onClickPlay}/>
         </div>
 
       </div>

@@ -1,18 +1,25 @@
 import "./RoundButton.scss"
 
 const RoundButton = (props) => {
-  const {text, src, type, func,disable} = {...props}
+  const {text, src, type, func,disable,status} = {...props}
 
   let btnClass = null
+  let toggleClass = ""
 
   switch (type) {
     case "play": btnClass = "btn-round--play";break;
     case "random": btnClass = "btn-round--random";break;
     case "save": btnClass = "btn-round--save";break;
+    case "music": btnClass = "btn-round--music";break;
+    case "sound": btnClass = "btn-round--sound";break;
+    case "animation": btnClass = "btn-round--animation";break;
+    case "placementMenu": btnClass = "btn-round--placementMenu";break;
+    case "back": btnClass = "btn-round--back";break;
+    case "settings": btnClass = "btn-round--settings";break;
     default: btnClass = null;
   }
 
-  //if (disable) btnClass = "btn-round--disable"
+  if (status !== undefined && !status) { toggleClass = "btn-round--off"}
 
   function onClickHandler(func) {
     if ( typeof func === "function") {
@@ -20,13 +27,13 @@ const RoundButton = (props) => {
     }
   }
   return (
-      <div className={`btn-round ${btnClass} ${disable && "btn-round--disable"}`} onClick={(e) => onClickHandler(func)}>
+      <button tabIndex={0} className={`btn-round ${btnClass} ${disable && "btn-round--disable"} ${toggleClass}`} onClick={(e) => onClickHandler(func)}>
         <div className={"btn-round__inside"}>
           <div className={"btn-round__wrapper"}>
-            <img src={src} alt={text}/>
+            {/*<img src={src} alt={text}/>*/}
           </div>
         </div>
-      </div>
+      </button>
   )
 }
 

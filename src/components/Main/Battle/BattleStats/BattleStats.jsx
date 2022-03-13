@@ -13,13 +13,12 @@ const BattleStats = () => {
 const stats = useSelector(getDestroyedShipsStats),
       isBotMove = useSelector(getIsBotMove)
 
-  const rocketRotate = isBotMove ? 0 : -35
   return (
       <>
         <div className={"battle__waiting"}>
-          <div className={"battle__waiting-box"} style={{ transform: `rotate(${rocketRotate}deg)`}}>
-            {isBotMove && <img src={time} alt=""/>}
-            {!isBotMove && <img src={rocket} alt=""/>}
+          <div className={"battle__waiting-box"}>
+            {isBotMove && <span>Ход противника</span>}
+            {!isBotMove && <span> Ваш ход</span>}
           </div>
         </div>
         <div className={"battleStats"}>

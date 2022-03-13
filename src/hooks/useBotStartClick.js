@@ -27,8 +27,8 @@ export const useBotStartClick = ({botShoot}) => {
     for (let i = 0; i<SHIPS.length; i++) {
       test = test.concat(SHIPS[i])
     }
-    let emptySquares = emptySquaresInit.filter(item => !firstFieldNotEmptySquares.includes(item))
-    //let emptySquares = test.filter(item => !firstFieldNotEmptySquares.includes(item))
+    //let emptySquares = emptySquaresInit.filter(item => !firstFieldNotEmptySquares.includes(item))
+    let emptySquares = test.filter(item => !firstFieldNotEmptySquares.includes(item))
     let delay = TIMEOUT_DELAY
     let square = null
     let isRepeat = false

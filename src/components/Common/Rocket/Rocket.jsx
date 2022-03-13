@@ -7,12 +7,10 @@ const Rocket = (props) => {
   const fieldId = props.fieldId
   const rocketData = useSelector(getFirstRocketCoordinates)
 
-  const currentPlayer = useSelector(getCurrentPlayer)
   const isBotMove = useSelector(getIsBotMove)
   let curPlayerNum = 1
   if (isBotMove === true) curPlayerNum = 2
 
-  // let startCoordinates = curPlayerNum === 1 ? {initTop: 200,} : {b:1}
 
   let animateSettings = {
     top: `${200 + rocketData.top}px`,

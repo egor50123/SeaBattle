@@ -9,8 +9,44 @@
   background-color: rgba(4, 184, 0, 0.77);
   box-shadow: inset -5px -5px 5px 0 rgba(0, 0, 0, .5),
   inset 5px 5px 5px 0 rgba(255, 255, 255, 0.5),
-  6px 6px 4px -2px;
+  6px 6px 4px -2px black;
   cursor: pointer;
+
+  &:active {
+    box-shadow: inset -5px -5px 5px 0 rgba(0, 0, 0, .5),
+    inset 5px 5px 5px 0 rgba(255, 255, 255, 0.5);
+    background-color: rgb(255, 212, 0);
+    transform: translateX(6px) translateY(6px);
+    opacity: 0.75;
+  }
+
+  &:hover{
+    background-color: rgb(255, 212, 0);
+  }
+
+  &--close {
+    letter-spacing: 3px;
+    font-weight: 600;
+    background: linear-gradient(#1c2f5f, #2b4996);
+    color: white;
+  }
+
+  &--disable{
+    background-color: rgba(102, 102, 102, 0.8);
+    &:hover{
+      background-color: rgb(102, 102, 102);
+    }
+  }
+
+  &--gameOver{
+    width: 160px;
+    height: 60px;
+    & .button__inside span {
+      font-size: 16px;
+    }
+  }
+
+
 }
 
 .button__inside {

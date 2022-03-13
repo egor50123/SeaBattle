@@ -5,28 +5,18 @@ export const getNotEmptySquares = state => state.battleField.firstPlayer.notEmpt
 export const getInitEmptySquares = state => state.battleField.squares
 
 // Селеторы для DND
-export const getDNDSuccessShip = state => state.battleField.dndSettings.successShip
-export const getDNDUnsuccessfulShip = state => state.battleField.dndSettings.unsuccessfulShip
-export const getDNDCurrentPart = state => state.battleField.dndSettings.currentPart
-export const getDNDShipSize = state => state.battleField.dndSettings.shipSize
-export const getDNDPrevSquare= state => state.battleField.dndSettings.prevSquare
-export const getDNDx= state => state.battleField.dndSettings.x
-export const getDNDy= state => state.battleField.dndSettings.y
-export const getDNDStatus= state => state.battleField.dndSettings.status
-export const getDNDPrevShipPlacement= state => state.battleField.dndSettings.prevShipPlacement
 export const getIsPossibleToPlacement= state => !!state.battleField.dndSettings.successShip
-export const getDNDDirection = state => state.battleField.dndSettings.direction
-export const getDNDCurrentShip = state => state.battleField.dndSettings.currentShip
 
 export const getDndData = state => state.battleField.dndSettings
 
-export const getContainerX= state => state.battleField.containerCoordinates.x
-export const getContainerY= state => state.battleField.containerCoordinates.y
+
 
 export const getShipsData = state => state.battleField.ships
 export const getCurrentPage = (state) => state.appInit.currentPage
+export const getSettingsOpen = state => state.appInit.isSettingsOpen
 export const getIsSavedPlacementOpen = state => state.appInit.isPlacementOpen
 export const getCountOfSavedShips = state => state.appInit.countOfSavedShips
+export const getIsAnimationActive = state => state.appInit.isAnimationOn
 
 export const getFirstShipsField = (state) => state.battleField.firstPlayer.shipField
 export const getFirstDeathField = (state) => state.battleField.firstPlayer.deathField
@@ -47,6 +37,7 @@ export const getCurrentPlayer = state => state.battleField.currentPlayer
 export const getDamagedShipsSquares = state => state.battleField.damagedShipsSquares
 export const getTotalDamagedShipsByPlayer = state => state.battleField.firstPlayer.totalDestroyedShips
 export const getIsGameOver = state => state.battleField.gameOver
+export const getIsWin = state => state.battleField.isWin
 
 export const getDamagedShipsForPlayer = state => state.battleField.firstPlayer.damagedShips
 

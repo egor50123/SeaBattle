@@ -4,6 +4,7 @@ import {useBotShooting} from "../../../hooks/useBotShooting";
 import {useStaticShipsPlacement} from "../../../hooks/useStaticShipsPlacement";
 import BattleStats from "./BattleStats/BattleStats";
 import Triangle from "../../Common/Triangle/Triangle";
+import React from "react";
 
 const Battle =() => {
   const setShipPlacement = useStaticShipsPlacement()
@@ -17,6 +18,7 @@ const Battle =() => {
         </div>
 
         <div className={"battle__fields"}>
+          <div className={"battle__name"}><span>Сражение</span></div>
           <BattleField isBattleForPlacement={false} id={1} setShipPlacement={setShipPlacement}/>
           <Triangle/>
           <BattleField isBattleForPlacement={false} id={2} botShoot={botShoot} setShipPlacement={setShipPlacement}/>

@@ -1,19 +1,27 @@
-import {setCurrentPage} from "../../../redux/appInitReducer";
-import {useDispatch} from "react-redux";
 import "./Button.scss"
 
-const Button = (props) => {
-  const dispatch = useDispatch()
-  const {text,nextPage,status} = {...props}
+const Button = ({text,params,type,func}) => {
 
-  function onClickHandler(e) {
-    dispatch(setCurrentPage(nextPage))
+  let btnClass = ""
+
+  switch (type) {
+    case "close": btnClass = "button--close";break;
+    case "disable": btnClass = "button--disable";break;
+    case "gameOver": btnClass = "button--gameOver"
+    default: break;
+  }
+
+
+  function onClickHandler() {
+    if ( typeof func === "function") {
+      func(params)
+    }
   }
 
   return (
-      <div className={"button"} onClick={onClickHandler}>
-        <div className={"button__inside"}><span>{text}</span></div>
-      </div>
+      <button className={`button ${btnClass}`} onClick={onClickHandler}>
+        <span className={"button__inside"}><span>{text}</span></span>
+      </button>
   )
 }
 

@@ -6,7 +6,7 @@ import {
   getFirstFieldDamagedSquares,
   getFirstFieldMissedSquares,
   getFirstFieldNotEmptySquares,
-  getFirstShipsField, getIsAnimationOn, getIsFieldDisable,
+  getFirstShipsField, getIsAnimationActive, getIsAnimationOn, getIsFieldDisable,
   getIsGameOver,
   getSecondFieldDamagedSquares,
   getSecondFieldMissedSquares,
@@ -18,6 +18,7 @@ import {useRocketAnimation} from "../../../../hooks/useRocketAnimation";
 import {usePlayerClick} from "../../../../hooks/usePlayerClick";
 import {useBotStartClick} from "../../../../hooks/useBotStartClick";
 import {disableField} from "../../../../redux/battleReducer";
+import {TIMEOUT_DELAY} from "../../../../constant/constant";
 
 const SimpleSquare = (props) => {
   const {id, fieldId} = {...props}
@@ -35,7 +36,8 @@ const SimpleSquare = (props) => {
       secondDestroyedSquares = useSelector(getDestroyedSquaresFirst),
       currentPlayer = useSelector(getCurrentPlayer),
       isGameOver = useSelector(getIsGameOver),
-      isFieldDisable = useSelector(getIsFieldDisable)
+      isFieldDisable = useSelector(getIsFieldDisable),
+      isAnimationOn = useSelector(getIsAnimationActive)
 
 
   const onPlayerClick = usePlayerClick({secondShipField}),
@@ -48,7 +50,6 @@ const SimpleSquare = (props) => {
   // Если клетка принадлежит полю/игроку 2 - присваиваем  ей классы  в соответствии с информацией  из обЪекта
   // игрока 1 о вражеских клетках
   if (fieldId === 1) {
-    shipClass = firstShipField.find(ship => ship.includes(id)) ? "square--ship" : ''
     missedClass = secondFieldMissedSquares.includes(id) ? "square--missed" : ''
     damagedClass = secondFieldDamagedSquares.includes(id) ? "square--damaged" : ''
     destroyedClass = firstDestroyedSquares.includes(id) ? "square--destroyed" : ''
@@ -62,19 +63,19 @@ const SimpleSquare = (props) => {
 
   function onClickHandler(e) {
     let targetSquare = +e.target.id
-
-    console.log("isFieldDisable",isFieldDisable)
+    let delay = TIMEOUT_DELAY
     // Если текующий игрок кликнул на свое поле - выходим (игрок 1 - true, игрок 2 - false)
     if (isGameOver || (fieldId === 1) || (!currentPlayer && fieldId === 2) || secondFieldNotEmptySquares.includes(targetSquare)) return
     // отключаем поле на время анимации
     if (isFieldDisable) {return} else {dispatch(disableField(true))}
 
-    rocketAnimation({id:targetSquare,fieldId:1})
+    isAnimationOn && rocketAnimation({id:targetSquare,fieldId:1})
+    if (!isAnimationOn) delay = 0
     setTimeout (()=> {
       dispatch(disableField(false))
       let result = onPlayerClick({targetSquare, currentPlayer})
       if (result === true) setFlag(true)
-    },1000)
+    },delay)
 
   }
 

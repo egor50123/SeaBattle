@@ -3,17 +3,18 @@ import {useDrawMoving} from "./useDrawMoving";
 import {useDispatch} from "react-redux";
 import {clearAnimation, isAnimationOn} from "../redux/animationReducer";
 import {getRandomFromRange} from "../helpers/getRandomFromRange";
+import {TIMEOUT_DELAY} from "../constant/constant";
 
 
 
 export const useRocketAnimation = () => {
-  const TIME = 900
+  const TIME = TIMEOUT_DELAY - 100
   const drawMoving = useDrawMoving()
   const timingFunctions = timingFunc()
   const dispatch = useDispatch()
   return ({id:square,fieldId}) => {
     dispatch(isAnimationOn(true))
-    let k = getRandomFromRange(-10,10)
+    let k = getRandomFromRange(-3,3)
     function animate ({timing,draw,duration,type}) {
       let start = performance.now();
       requestAnimationFrame(function animate(time) {
