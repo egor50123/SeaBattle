@@ -1,7 +1,8 @@
-import {useRandomSquare} from "./useRandomSquare";
+import {useRandomSquare} from "../useRandomSquare";
 import {useDestroyShipBot} from "./useDestroyShipBot";
-import {makeDiagonals} from "../helpers/makeDiagonals";
-import {getRandomSquareForShot} from "../helpers/getRandomSquareForShot";
+import {makeDiagonals} from "../../helpers/battle/makeDiagonals";
+import {getRandomSquareForShot} from "../../helpers/battle/getRandomSquareForShot";
+
 
 export const useBotShooting = () => {
   const getRandomSquare = useRandomSquare()

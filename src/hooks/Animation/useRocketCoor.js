@@ -1,5 +1,5 @@
 import {useSelector} from "react-redux";
-import {getFirstRocketCoordinates, getSecondRocketCoordinates} from "../selectors/selectors";
+import {getFirstRocketCoordinates, getSecondRocketCoordinates} from "../../selectors/selectors";
 
 export const useRocketCoor = (fieldId) => {
   const firstRocketCoor = useSelector(getFirstRocketCoordinates)

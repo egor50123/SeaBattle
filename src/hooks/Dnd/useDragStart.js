@@ -1,5 +1,3 @@
-import {getSizeAndDirectionOfShip} from "../../helpers/getSizeAndDirectionOfShip";
-import {getDndCurrentPart} from "../../helpers/getDndCurrentPart";
 import {
   deleteDeathZone,
   deleteShipFromField,
@@ -9,6 +7,8 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {getShipsData} from "../../selectors/selectors";
 import {useDeathZone} from "../useDeathZone";
+import {getSizeAndDirectionOfShip} from "../../helpers/DndHelpers/getSizeAndDirectionOfShip";
+import {getDndCurrentPart} from "../../helpers/DndHelpers/getDndCurrentPart";
 
 export const useDragStart = () => {
   const ShipsInfo = useSelector(getShipsData)

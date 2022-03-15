@@ -1,4 +1,4 @@
-import {SQUARE_SIZE} from "../constant/constant"
+import {SQUARE_SIZE} from "../../constant/constant";
 
 export const getDndCurrentPart = (e, direction ) => {
   const defaultSize = SQUARE_SIZE

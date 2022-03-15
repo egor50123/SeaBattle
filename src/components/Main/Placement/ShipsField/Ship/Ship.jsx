@@ -1,5 +1,4 @@
 import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
-
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {useShip} from "../../../../../hooks/useShip";
 import {useRotateShip} from "../../../../../hooks/useRotateShip";
@@ -7,7 +6,7 @@ import {
   getFirstShipsField, getInitEmptySquares, getNotEmptySquares, getShipsData, getStatusInitCoordinates
 } from "../../../../../selectors/selectors";
 import {setPlacementShipCoordinates} from "../../../../../redux/battleFieldReducer";
-import {useSetShipCoordinates} from "../../../../../hooks/useSetShipCoordinates";
+import {useSetShipCoordinates} from "../../../../../hooks/Dnd/useSetShipCoordinates";
 import {useDragStart} from "../../../../../hooks/Dnd/useDragStart";
 import {useDragEnd} from "../../../../../hooks/Dnd/useDragEnd";
 
@@ -66,6 +65,7 @@ const Ship = React.memo((props) => {
   }
 
   useEffect(() => {
+    //запомниаем исходные координаты кораблей
     if (initCoorStatus) return
     let shipCoordinates = ref.current.getBoundingClientRect()
     dispatch(setPlacementShipCoordinates(shipCoordinates,id))
@@ -74,6 +74,7 @@ const Ship = React.memo((props) => {
   useLayoutEffect( () => {
     dispatchShipCoordinates()
     let coordinates = setShip()
+    // устанавливаем корабль на нужные координаты, если они есть
     if (coordinates) {
       let [x,y,direction] = coordinates
       ref.current.style.left = x + "px"
@@ -88,7 +89,6 @@ const Ship = React.memo((props) => {
            onDragStart={ (e) => dragStartHandler(e)}
            onDragEnd={ (e) => dragEndHandler(e) }
            onDrag={(e) => dragHandler(e)}>
-
           <img src={setSrc(size)} alt="ship"/>
       </div>
   )

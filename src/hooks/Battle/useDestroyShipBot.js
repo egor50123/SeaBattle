@@ -1,8 +1,8 @@
 import {useDispatch} from "react-redux";
-import {setDamageShip} from "../redux/battleFieldReducer";
-import {getCurrentPositionForShot} from "../helpers/getCurrentPositionForShot";
-import {getNextSquareForShot} from "../helpers/getNextSquareForShot";
-import {findPotentialPositions} from "../helpers/findPotentialPositions";
+import {setDamageShip} from "../../redux/battleFieldReducer";
+import {getCurrentPositionForShot} from "../../helpers/battle/getCurrentPositionForShot";
+import {getNextSquareForShot} from "../../helpers/battle/getNextSquareForShot";
+import {findPotentialPositions} from "../../helpers/battle/findPotentialPositions";
 import {useRef} from "react";
 
 export const useDestroyShipBot = () => {

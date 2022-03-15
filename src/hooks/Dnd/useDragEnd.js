@@ -1,8 +1,8 @@
-import {getSizeAndDirectionOfShip} from "../../helpers/getSizeAndDirectionOfShip";
 import {clearDndSettings, setDeathSquares, setShipSquares} from "../../redux/battleFieldReducer";
 import {useDeathZone} from "../useDeathZone";
 import {useDispatch, useSelector} from "react-redux";
 import {getDndData, getIsPossibleToPlacement} from "../../selectors/selectors";
+import {getSizeAndDirectionOfShip} from "../../helpers/DndHelpers/getSizeAndDirectionOfShip";
 
 export const useDragEnd = () => {
   const createDeathZone = useDeathZone(true),

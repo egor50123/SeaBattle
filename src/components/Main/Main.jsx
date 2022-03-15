@@ -1,9 +1,8 @@
 import Menu from "./Menu/Menu";
 import {useDispatch, useSelector} from "react-redux";
-import {getCurrentPage, getIsGameOver, getIsSavedPlacementOpen} from "../../selectors/selectors";
+import {getCurrentPage, getIsSavedPlacementOpen} from "../../selectors/selectors";
 import Battle from "./Battle/Battle";
 import Placement from "./Placement/Placement";
-import GameOverModal from "../Common/GameOverModal/GameOverModal";
 import "./Main.scss"
 import RoundButton from "../Common/RoundButton/RoundButton";
 import back from "../../assets/img/back.svg"
@@ -16,14 +15,12 @@ import {BATTLE_PAGE, MENU_PAGE, PLACEMENT_PAGE} from "../../constant/constant";
 
 const Main = () => {
   const currentPage = useSelector(getCurrentPage),
-        gameOver = useSelector(getIsGameOver),
         isListOpen = useSelector(getIsSavedPlacementOpen)
   const dispatch = useDispatch()
 
   let openClass = !isListOpen ? "main--open" : "main--compressed";
   let placementClass = currentPage === PLACEMENT_PAGE ? "main--placement" : ""
   if (currentPage !== PLACEMENT_PAGE) openClass = "main--open"
-
 
   const onPrevPage = useCallback((() => {
     dispatch(isSavedPlacementOpen(false))

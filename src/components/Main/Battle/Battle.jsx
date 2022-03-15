@@ -1,7 +1,7 @@
 import BattleField from "../BattleField/BattleField";
 import "./Battle.scss"
-import {useBotShooting} from "../../../hooks/useBotShooting";
-import {useStaticShipsPlacement} from "../../../hooks/useStaticShipsPlacement";
+import {useBotShooting} from "../../../hooks/Battle/useBotShooting";
+import {useStaticShipsPlacement} from "../../../hooks/Battle/useStaticShipsPlacement";
 import BattleStats from "./BattleStats/BattleStats";
 import Triangle from "../../Common/Triangle/Triangle";
 import React from "react";
@@ -10,7 +10,6 @@ const Battle =() => {
   const setShipPlacement = useStaticShipsPlacement()
   const botShoot = useBotShooting()
 
-  //console.log('Battle')
   return (
       <div className={"battle"}>
         <div className={"battle__stats"}>

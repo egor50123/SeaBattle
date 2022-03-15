@@ -1,6 +1,6 @@
 import "./BattleField.scss"
 import {useEffect, useMemo, useRef} from "react";
-import {useGetDamagedShip} from "../../../hooks/useGetDamagedShip";
+import {useGetDamagedShip} from "../../../hooks/Battle/useGetDamagedShip";
 import "../Placement/placement.scss"
 import {useMakeField} from "../../../hooks/useMakeField";
 import Rocket from "../../Common/Rocket/Rocket";
@@ -17,7 +17,6 @@ const BattleField = (props) => {
   const initCoorStatus = useSelector(getStatusInitCoordinates)
 
 
-
   let relativeClass = isBattleForPlacement ? null : "field__wrapper--relative";
 
   const memoField = useMemo( () => makeField({fieldId, botShoot, currentDamagedShip}),[fieldId])
@@ -27,7 +26,7 @@ const BattleField = (props) => {
     let coordinates = ref.current.getBoundingClientRect()
     dispatch(setPlacementFieldCoordinates(coordinates))
   },[])
-  //console.log("battleField")
+
   return (
       <div ref={ref} className={'field placement__box'}>
         <div className={`field__wrapper ${relativeClass}`}>

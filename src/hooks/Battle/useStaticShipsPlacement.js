@@ -1,10 +1,10 @@
-import ShipImg from "../components/Main/BattleField/ShipImg/ShipImg";
-import {SQUARE_SIZE} from "../constant/constant"
+import ShipImg from "../../components/Main/BattleField/ShipImg/ShipImg";
+import {SQUARE_SIZE} from "../../constant/constant"
 import {shallowEqual, useSelector} from "react-redux";
 import {
   getDestroyedShipsIdFirst, getDestroyedShipsIdSecond,
   getFirstShipsField, getSecondShipsField
-} from "../selectors/selectors";
+} from "../../selectors/selectors";
 
 export const useStaticShipsPlacement = () => {
   const shipFieldFirst = useSelector(getFirstShipsField),

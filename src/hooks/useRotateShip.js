@@ -1,4 +1,3 @@
-import {getSizeAndDirectionOfShip} from "../helpers/getSizeAndDirectionOfShip";
 import {getRotatedShip} from "../helpers/getRotatedShip";
 import {
   deleteDeathZone,
@@ -9,6 +8,7 @@ import {
 } from "../redux/battleFieldReducer";
 import {useDispatch} from "react-redux";
 import {useDeathZone} from "./useDeathZone";
+import {getSizeAndDirectionOfShip} from "../helpers/DndHelpers/getSizeAndDirectionOfShip";
 
 export const useRotateShip = () => {
   const dispatch = useDispatch()

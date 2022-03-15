@@ -5,11 +5,11 @@ import {
   setHit,
   setMiss,
   setTotalDestroyedShipsPlayer
-} from "../redux/battleFieldReducer";
+} from "../../redux/battleFieldReducer";
 import {useDispatch, useSelector} from "react-redux";
-import {useDeathZone} from "./useDeathZone";
+import {useDeathZone} from "../useDeathZone";
 import {useGetDamagedShip} from "./useGetDamagedShip";
-import {getDamagedShipsForPlayer, getTotalDamagedShipsByPlayer} from "../selectors/selectors";
+import {getDamagedShipsForPlayer, getTotalDamagedShipsByPlayer} from "../../selectors/selectors";
 
 export const usePlayerClick = ({secondShipField}) => {
   const dispatch = useDispatch()

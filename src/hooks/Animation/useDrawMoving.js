@@ -1,6 +1,6 @@
 import {useDispatch} from "react-redux";
-import {setAnimateRocket} from "../redux/animationReducer";
-import {BATTLEFIELD_GAP, SQUARE_SIZE, TRIANGLE_WIDTH} from "../constant/constant";
+import {setAnimateRocket} from "../../redux/animationReducer";
+import {BATTLEFIELD_GAP, SQUARE_SIZE, TRIANGLE_WIDTH} from "../../constant/constant";
 
 export const useDrawMoving = () => {
   const dispatch = useDispatch()

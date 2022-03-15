@@ -1,26 +1,13 @@
 import "./RoundButton.scss"
+import {setRoundButtonClass} from "../../../helpers/buttons/setRoundButtonClass";
 
 const RoundButton = (props) => {
-  const {text, src, type, func,disable,status} = {...props}
+  const {type, func,disable,status} = {...props}
 
-  let btnClass = null;
-  let toggleClass = ""
+  let btnClass = setRoundButtonClass(type)
+  let toggleClass = (status !== undefined && !status) ? "btn-round--off" : ""
   let disableClass = disable ? "btn-round--disable" : ""
 
-  switch (type) {
-    case "play": btnClass = "btn-round--play";break;
-    case "random": btnClass = "btn-round--random";break;
-    case "save": btnClass = "btn-round--save";break;
-    case "music": btnClass = "btn-round--music";break;
-    case "sound": btnClass = "btn-round--sound";break;
-    case "animation": btnClass = "btn-round--animation";break;
-    case "placementMenu": btnClass = "btn-round--placementMenu";break;
-    case "back": btnClass = "btn-round--back";break;
-    case "settings": btnClass = "btn-round--settings";break;
-    default: btnClass = null;
-  }
-
-  if (status !== undefined && !status) { toggleClass = "btn-round--off"}
 
   function onClickHandler(func) {
     if ( typeof func === "function") {

@@ -5,9 +5,9 @@ import {
   getDamagedShipsSquares, getFirstShipsField,
   getInitEmptySquares, getIsAnimationActive,
   getSecondFieldNotEmptySquares
-} from "../selectors/selectors";
-import {TIMEOUT_DELAY} from "../constant/constant";
-import {setIsBotMove} from "../redux/battleReducer";
+} from "../../selectors/selectors";
+import {TIMEOUT_DELAY} from "../../constant/constant";
+import {setIsBotMove} from "../../redux/battleReducer";
 
 export const useBotStartClick = ({botShoot}) => {
   const dispatch = useDispatch()
@@ -49,7 +49,6 @@ export const useBotStartClick = ({botShoot}) => {
       emptySquares: emptySquares,
       isRepeat: isRepeat
     }
-    //rocketAnimation({id:square,fieldId:2})
       setTimeout(() => onBotClick(options),delay)
       return false
 

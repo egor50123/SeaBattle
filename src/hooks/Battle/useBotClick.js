@@ -5,17 +5,17 @@ import {
   setHit,
   setMiss,
   setTotalDestroyedShipsBot
-} from "../redux/battleFieldReducer";
+} from "../../redux/battleFieldReducer";
 import {useDispatch, useSelector} from "react-redux";
-import {useDeathZone} from "./useDeathZone";
+import {useDeathZone} from "../useDeathZone";
 import {
   getFirstShipsField, getIsAnimationActive,
   getSecondFieldDamagedSquares,
   getTotalDestroyedShipsBot
-} from "../selectors/selectors";
+} from "../../selectors/selectors";
 import {useGetDamagedShip} from "./useGetDamagedShip";
-import {setIsBotMove} from "../redux/battleReducer";
-import {useRocketAnimation} from "./useRocketAnimation";
+import {setIsBotMove} from "../../redux/battleReducer";
+import {useRocketAnimation} from "../Animation/useRocketAnimation";
 
 export const useBotClick = ({delay:TIMEOUT_DELAY, botShoot}) => {
   let totalDestroyedShips = useSelector(getTotalDestroyedShipsBot),

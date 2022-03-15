@@ -1,9 +1,9 @@
-import {timingFunc} from "../helpers/animation/timingFunc";
+import {timingFunc} from "../../helpers/animation/timingFunc";
 import {useDrawMoving} from "./useDrawMoving";
 import {useDispatch} from "react-redux";
-import {clearAnimation, isAnimationOn} from "../redux/animationReducer";
-import {getRandomFromRange} from "../helpers/getRandomFromRange";
-import {TIMEOUT_DELAY} from "../constant/constant";
+import {clearAnimation, isAnimationOn} from "../../redux/animationReducer";
+import {getRandomFromRange} from "../../helpers/getRandomFromRange";
+import {TIMEOUT_DELAY} from "../../constant/constant";
 
 
 

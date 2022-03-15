@@ -31,7 +31,6 @@ const ShipsField = React.memo(() => {
       return src
     },[])
 
-  console.log("RENDER ShipsField")
   return (
       <div className={"placement__box shipsField"} >
         {ships.map(item => {

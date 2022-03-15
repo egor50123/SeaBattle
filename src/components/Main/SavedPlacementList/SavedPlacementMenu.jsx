@@ -23,7 +23,6 @@ const SavedPlacementMenu = () => {
       let key = localStorage.key(i);
       if (!key.includes("ship")) continue
       fields.push({id:key,ships:JSON.parse(localStorage.getItem(key))})
-
     }
     return fields
   }
@@ -50,7 +49,6 @@ const SavedPlacementMenu = () => {
 
   return (
       <div className={`savedPlacementMenu ${openClass}`}>
-
         { fields.length > 0 ? fields.map((shipsData) =>
             <div className={"savedPlacementMenu__item"} key={shipsData.id}>
               <div  id={shipsData.id} className={"savedPlacementMenu__field"} onClick={(e) => getSavedField(shipsData.ships)}>

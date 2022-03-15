@@ -1,5 +1,6 @@
-import {setNewStats} from "../helpers/setNewStats";
+
 import {SQUARE_SIZE} from "../constant/constant";
+import {setNewStats} from "../helpers/battle/setNewStats";
 
 const FIELD_DATA = "FIELD_DATA";
 const FIELD_DEATH_ZONE = "FIELD_DEATH_ZONE";

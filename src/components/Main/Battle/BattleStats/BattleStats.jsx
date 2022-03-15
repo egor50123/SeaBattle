@@ -2,15 +2,12 @@ import ship1 from "../../../../assets/img/ship1.png"
 import ship2 from "../../../../assets/img/ship2.png"
 import ship3 from "../../../../assets/img/ship3.png"
 import ship4 from "../../../../assets/img/ship4.png"
-import time from "../../../../assets/img/time.png"
-import rocket from "../../../../assets/img/Rocket.png"
-
 import "./battleStats.scss"
 import {useSelector} from "react-redux";
 import {getDestroyedShipsStats, getIsBotMove} from "../../../../selectors/selectors";
 
 const BattleStats = () => {
-const stats = useSelector(getDestroyedShipsStats),
+  const stats = useSelector(getDestroyedShipsStats),
       isBotMove = useSelector(getIsBotMove)
 
   return (
@@ -40,7 +37,6 @@ const stats = useSelector(getDestroyedShipsStats),
           </div>}
         </div>
       </>
-
   )
 }
 

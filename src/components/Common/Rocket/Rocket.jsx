@@ -1,7 +1,7 @@
 import rocket from "../../../assets/img/Rocket.png"
 import "./rocket.scss"
 import {useSelector} from "react-redux";
-import {getCurrentPlayer, getFirstRocketCoordinates, getIsBotMove} from "../../../selectors/selectors";
+import {getFirstRocketCoordinates, getIsBotMove} from "../../../selectors/selectors";
 
 const Rocket = (props) => {
   const fieldId = props.fieldId
