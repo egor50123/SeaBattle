@@ -1,16 +1,9 @@
 import "./Button.scss"
+import {setButtonClass} from "../../../helpers/buttons/setButtonClass";
 
 const Button = ({text,params,type,func}) => {
 
-  let btnClass = ""
-
-  switch (type) {
-    case "close": btnClass = "button--close";break;
-    case "disable": btnClass = "button--disable";break;
-    case "gameOver": btnClass = "button--gameOver"
-    default: break;
-  }
-
+  let btnClass = setButtonClass(type)
 
   function onClickHandler() {
     if ( typeof func === "function") {

@@ -5,6 +5,7 @@ import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
 import Settings from "./components/Common/Settings/Settings";
 import GameOverModal from "./components/Common/GameOverModal/GameOverModal";
+import {ModalConfirm} from "./components/Common/ModalConfirm/ModalConfirm";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Main/>
         <Settings/>
         <GameOverModal/>
+        <ModalConfirm/>
       </div>
     </Provider>
   );

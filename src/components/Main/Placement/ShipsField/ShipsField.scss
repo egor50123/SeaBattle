@@ -63,11 +63,18 @@
   transform: translateY($translateY);
   height: $SHIP_HEIGHT;
   transform-origin: $SIZE/2 - 2 $SIZE/2;
+  transition: opacity 0.2s ease-in;
+
+  &--error {
+    opacity: 0.5;
+  }
 
   &--startDrag {
     animation: 0.6s infinite alternate flash;
     animation-timing-function: ease-in-out;
   }
+
+
   @keyframes flash {
     from {
       opacity: 1;

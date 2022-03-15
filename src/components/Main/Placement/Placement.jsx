@@ -30,8 +30,11 @@ const Placement = (props) => {
   }
 
   function onClickPlay() {
-    dispatch(setCurrentPage(battle))
-    doRandomPlacement(2)
+    if (firstShipField.length === 10)  {
+      dispatch(setCurrentPage(battle))
+      doRandomPlacement(2)
+    }
+
   }
 
   function onSavePlacement() {

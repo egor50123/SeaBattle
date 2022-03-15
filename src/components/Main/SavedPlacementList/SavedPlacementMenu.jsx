@@ -29,8 +29,6 @@ const SavedPlacementMenu = () => {
   }
 
   let fields = makeList()
-  console.log(fields)
-
 
   function getSavedField(shipsData) {
     let deathZone = []

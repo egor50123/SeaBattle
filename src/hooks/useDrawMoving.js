@@ -13,9 +13,9 @@ export const useDrawMoving = () => {
   return {
     moveX({progress,fieldId,square}) {
       let col = square % 10,
-          newx = col !== 0 ?  (col-1) * SQUARE_SIZE : 9 * SQUARE_SIZE,
-          nnn = col !== 0 ?  (11 - col) * SQUARE_SIZE : SQUARE_SIZE
-      let left = fieldId === 1 ? progress * (400 + BATTLEFIELD_GAP + TRIANGLE_WIDTH +newx - 20 -200) : -progress * (BATTLEFIELD_GAP + TRIANGLE_WIDTH + nnn +20 + 200)
+          newx1 = col !== 0 ?  (col-1) * SQUARE_SIZE : 9 * SQUARE_SIZE,
+          newx2 = col !== 0 ?  (11 - col) * SQUARE_SIZE : SQUARE_SIZE
+      let left = fieldId === 1 ? progress * (SQUARE_SIZE*10 + BATTLEFIELD_GAP + TRIANGLE_WIDTH +newx1 - 20 -200) : -progress * (BATTLEFIELD_GAP + TRIANGLE_WIDTH + newx2 +20 + 200)
       if (x0 === null) {
         x0 = left
       } else {

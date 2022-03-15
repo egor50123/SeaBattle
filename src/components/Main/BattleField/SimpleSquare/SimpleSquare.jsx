@@ -54,8 +54,8 @@ const SimpleSquare = (props) => {
     damagedClass = secondFieldDamagedSquares.includes(id) ? "square--damaged" : ''
     destroyedClass = firstDestroyedSquares.includes(id) ? "square--destroyed" : ''
   } else {
-    shipClass = secondShipField.find(ship => ship.includes(id)) ? "square--ship" : ''
-    //shipClass = ''
+    //shipClass = secondShipField.find(ship => ship.includes(id)) ? "square--ship" : ''
+    shipClass = ''
     destroyedClass = secondDestroyedSquares.includes(id) ? "square--destroyed" : ''
     missedClass = firstFieldMissedSquares.includes(id) ? "square--missed" : ''
     damagedClass = firstFieldDamagedSquares.includes(id) ? "square--damaged" : ''

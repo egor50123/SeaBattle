@@ -1,10 +1,8 @@
-//!!!!!!!!!!!!!!!!!!!!
 export const getShipField = state => state.battleField.firstPlayer.shipField
 export const getDeathField = state => state.battleField.firstPlayer.deathField
 export const getNotEmptySquares = state => state.battleField.firstPlayer.notEmptySquares
 export const getInitEmptySquares = state => state.battleField.squares
 
-// Селеторы для DND
 export const getIsPossibleToPlacement= state => !!state.battleField.dndSettings.successShip
 
 export const getDndData = state => state.battleField.dndSettings
@@ -17,6 +15,7 @@ export const getSettingsOpen = state => state.appInit.isSettingsOpen
 export const getIsSavedPlacementOpen = state => state.appInit.isPlacementOpen
 export const getCountOfSavedShips = state => state.appInit.countOfSavedShips
 export const getIsAnimationActive = state => state.appInit.isAnimationOn
+export const getIsExit = state => state.appInit.isExit
 
 export const getFirstShipsField = (state) => state.battleField.firstPlayer.shipField
 export const getFirstDeathField = (state) => state.battleField.firstPlayer.deathField
@@ -56,8 +55,6 @@ export const getStatusInitCoordinates = state => state.battleField.placementCoor
 // анимации
 
 export const getFirstRocketCoordinates = state => state.animation.rocket1
-export const getRocketInitCoordinatesTop = state => state.animation.rocket1.initTop
-export const getRocketInitCoordinatesLeft = state => state.animation.rocket1.initLeft
 export const getIsAnimationOn = state => state.animation.rocket1.isAnimation
 
 export const getSecondRocketCoordinates = state => state.animation.rocket2
@@ -72,7 +69,5 @@ export const getShipData7 = state => state.battleField.ships[6]
 export const getShipData8 = state => state.battleField.ships[7]
 export const getShipData9 = state => state.battleField.ships[8]
 export const getShipData10 = state => state.battleField.ships[9]
-
-export const getShipCoor1 = state => state.battleField.ships[0].x
 
 

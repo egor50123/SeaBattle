@@ -9,7 +9,7 @@ import RoundButton from "../Common/RoundButton/RoundButton";
 import back from "../../assets/img/back.svg"
 import settings from "../../assets/img/settings.svg"
 import {clearShipsData} from "../../redux/battleFieldReducer";
-import {isSavedPlacementOpen, setCurrentPage, setSettingsOpen} from "../../redux/appInitReducer";
+import {isSavedPlacementOpen, setCurrentPage, setIsExit, setSettingsOpen} from "../../redux/appInitReducer";
 import {useCallback} from "react";
 import SavedPlacementMenu from "./SavedPlacementList/SavedPlacementMenu";
 import {BATTLE_PAGE, MENU_PAGE, PLACEMENT_PAGE} from "../../constant/constant";
@@ -34,8 +34,7 @@ const Main = () => {
         break
       }
       case BATTLE_PAGE: {
-        dispatch(clearShipsData())
-        dispatch(setCurrentPage(PLACEMENT_PAGE));
+        dispatch(setIsExit(true))
         break
       }
       default: break
@@ -56,8 +55,6 @@ const Main = () => {
         {currentPage === PLACEMENT_PAGE && <Placement nextPage={BATTLE_PAGE}/>}
         {currentPage === PLACEMENT_PAGE && <SavedPlacementMenu/>}
         {currentPage === BATTLE_PAGE && <Battle/>}
-        {/*{gameOver && <GameOverModal/>}*/}
-        {/*<GameOverModal/>*/}
       </div>
   )
 }

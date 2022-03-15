@@ -1,9 +1,17 @@
 .header {
+  padding-left: 22px;
+  padding-right: 22px;
   z-index: 100;
   display: flex;
-  justify-content: right;
+  justify-content: left;
+  align-items: center;
   height:5vh;
   width: 100%;
   background-color: #000000;
   color: bisque;
+}
+
+.header__logo {
+  height: 3vh;
+  width: 3vh;
 }

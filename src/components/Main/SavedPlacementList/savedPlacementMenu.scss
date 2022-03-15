@@ -1,6 +1,7 @@
 @import "src/variables";
 
 .savedPlacementMenu {
+  z-index: 70;
   overflow-y: scroll;
   position: fixed;
   display: grid;
@@ -14,13 +15,23 @@
   right: 0;
   padding-top: calc(5vh + 30px);
   transition: width 1s ease-out;
+  overflow-x: hidden;
+
+
 
   &--open {
     width: $PLACEMENT_LIST_WIDTH;
+    @media (max-width: 1240px) {
+      width: $PLACEMENT_LIST_WIDTH / 2;
+      grid-template-columns: min-content;
+    }
   }
 
   &--close {
     width: 0;
+    @media (max-width: 1240px) {
+      grid-template-columns: min-content;
+    }
   }
 
   & span {
@@ -28,6 +39,11 @@
     font-family: "Oswald", Arial,sans-serif;
     padding-left: 20px;
     white-space: nowrap;
+    @media (max-width: 1240px) {
+      min-width: 160px;
+      font-size: 20px;
+      white-space:normal;
+    }
   }
 }
 
@@ -39,6 +55,9 @@
   color: rgba(255, 255, 255, 0.02);
   width: min-content;
   height: 150px;
+  @media (max-width: 1240px) {
+    margin-left: 13px;
+  }
 }
 
 .savedPlacementMenu__btn-close {
@@ -49,7 +68,6 @@
   height: 30px;
   border-radius: 50%;
   border: 1px solid rgba(0, 0, 0, 0.25);
-  //box-shadow: 3px 3px 5px 0 black;
   position: absolute;
   top: -16px;
   right: -22px;

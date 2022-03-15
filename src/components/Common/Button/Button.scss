@@ -31,6 +31,14 @@
     color: white;
   }
 
+  &--modalExit {
+    width: 140px;
+    height: 70px;
+    & .button__inside span {
+      font-size: 17px;
+    }
+  }
+
   &--disable{
     background-color: rgba(102, 102, 102, 0.8);
     &:hover{

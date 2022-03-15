@@ -4,15 +4,13 @@ import {useDispatch, useSelector} from "react-redux";
 import "../../../App.scss"
 import "./Settings.scss"
 import {getIsAnimationActive, getSettingsOpen} from "../../../selectors/selectors";
-import animation from "../../../assets/img/video.svg"
-import music from "../../../assets/img/music.svg"
-import sound from "../../../assets/img/sound.svg"
 import {useCallback} from "react";
 import {setIsAnimationOn, setSettingsOpen} from "../../../redux/appInitReducer";
 
 const Settings = () => {
   const isSettingsOpen = useSelector(getSettingsOpen)
   const dispatch = useDispatch()
+
 
   const closeModal = useCallback((params) => {
     dispatch(setSettingsOpen(params))
@@ -23,7 +21,6 @@ const Settings = () => {
   },[])
 
   const isAnimationActive = useSelector(getIsAnimationActive)
-
 
   return (
       isSettingsOpen && <div className={"modalOverlay"}>
@@ -36,14 +33,14 @@ const Settings = () => {
                   <div className={"settings__btns-box"}>
                     <h2>Звуки</h2>
                     <div>
-                      <RoundButton src={music} type={"music"}/>
-                      <RoundButton src={sound} type={"sound"}/>
+                      <RoundButton type={"music"} disable={true}/>
+                      <RoundButton type={"sound"} disable={true}/>
                     </div>
                   </div>
                   <div className={"settings__btns-box"}>
                     <h2>Анимация</h2>
                     <div>
-                      <RoundButton src={animation} type={"animation"} func={setAnimationActive} status={isAnimationActive}/>
+                      <RoundButton type={"animation"} func={setAnimationActive} status={isAnimationActive}/>
                     </div>
                   </div>
                 </div>

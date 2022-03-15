@@ -13,7 +13,7 @@
   margin-top: 15px;
   position: relative;
   width: 800px;
-  height: 500px;
+  height: 440px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -23,6 +23,10 @@
   background-image: url("../../../assets/img/sky4.jpg");
   border-radius: 8px;
   box-shadow:  15px 15px 10px 0 rgba(0, 0, 0, 0.55);
+
+  @media (max-width: 1240px) {
+
+  }
 }
 
 .placement__name {
@@ -61,7 +65,7 @@
 
 .placement__box {
   min-width: 300px;
-  height: 400px;
+  height: 350px;
 
 }
 

@@ -3,6 +3,7 @@ const IS_SAVED_PLACEMENT_OPEN = "IS_SAVED_PLACEMENT_OPEN"
 const SET_COUNT_OF_SAVED_SHIPS = "SET_COUNT_OF_SAVED_SHIPS"
 const SET_SETTINGS_OPEN = "SET_SETTINGS_OPEN"
 const SET_ANIMATION = "SET_ANIMATION"
+const SET_EXIT_OPEN = "SET_EXIT_OPEN"
 
 const initialState = {
   test:1,
@@ -11,6 +12,7 @@ const initialState = {
   countOfSavedShips: 0,
   isSettingsOpen: false,
   isAnimationOn: true,
+  isExit:false,
 }
 
 const appInitReducer = (state = initialState, action) => {
@@ -46,8 +48,16 @@ const appInitReducer = (state = initialState, action) => {
         isAnimationOn: !state.isAnimationOn
       }
     }
+
+    case SET_EXIT_OPEN: {
+      return {
+        ...state,
+        isExit: action.result
+      }
+    }
     default: return state
   }
+
 
 }
 
@@ -56,6 +66,7 @@ export const isSavedPlacementOpen = (result) => ({type: IS_SAVED_PLACEMENT_OPEN,
 export const setCountOfSavedShips = (count = 1) => ({type: SET_COUNT_OF_SAVED_SHIPS, count})
 export const setSettingsOpen = (result) => ({type:SET_SETTINGS_OPEN, result})
 export const setIsAnimationOn = () => ({type:SET_ANIMATION})
+export const setIsExit = (result) => ({type:SET_EXIT_OPEN,result})
 
 
 export default appInitReducer

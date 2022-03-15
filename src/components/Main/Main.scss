@@ -15,6 +15,9 @@
 
   &--compressed{
     width: calc(100% - 400px);
+    @media (max-width: 1240px) {
+      width: calc(100% - 200px);
+    }
   }
 }
 

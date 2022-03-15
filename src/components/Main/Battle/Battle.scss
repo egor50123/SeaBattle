@@ -1,9 +1,12 @@
 @import "src/variables";
 
+$width: 850px;
+
 .battle {
   display: flex;
   flex-direction: column;
   position: relative;
+  align-items: center;
   margin: 30px auto 0;
   width: 1200px;
   height: 90%;
@@ -14,10 +17,9 @@
 .battle__stats {
   display: flex;
   justify-content: space-between;
-  width: 1000px;
-  margin: 20px auto auto;
-  height: 200px;
-
+  width: $width;
+  margin-top: 90px;
+  height: 150px;
 }
 
 .battle__waiting {
@@ -68,11 +70,12 @@
 
 .battle__fields {
   position: relative;
-  width: 1000px;
+  width: $width;
 
-  height: 500px;
+  height: 420px;
   display: flex;
-  margin: auto auto 20px;
+  margin-top: 40px;
+
   justify-content: center;
   gap: $BATTLEFIELD_GAP;
   align-items: center;

@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useRef} from "react";
+import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {useShip} from "../../../../../hooks/useShip";
@@ -29,6 +29,8 @@ const Ship = React.memo((props) => {
         shipsData = useSelector(getFirstShipsField,shallowEqual),
         initCoorStatus = useSelector(getStatusInitCoordinates)
 
+  let [isError,setError] = useState(false)
+
   function dragStartHandler(e) {
     dragStart(e,id)
   }
@@ -46,6 +48,9 @@ const Ship = React.memo((props) => {
     e.target.closest(".ship").style.display = "none"
   }
 
+  let errorClass = isError ? "ship--error" : ""
+  if (errorClass === "ship--error") setTimeout(() => setError(false),200)
+
   function clickHandler(e,notEmptySquares,allSquares,createStrictShip) {
     const target = e.target.closest(".ship"),
         id = target.id,
@@ -56,14 +61,12 @@ const Ship = React.memo((props) => {
     try {
       tryToRotateShip({target,id,notEmptySquares,allSquares,createStrictShip,shipSquares})
     } catch (err) {
-      alert(err.message)
+      setError(true)
     }
-
   }
 
   useEffect(() => {
     if (initCoorStatus) return
-
     let shipCoordinates = ref.current.getBoundingClientRect()
     dispatch(setPlacementShipCoordinates(shipCoordinates,id))
   },[])
@@ -77,12 +80,10 @@ const Ship = React.memo((props) => {
       ref.current.style.top = y + "px"
       if (direction !== undefined) ref.current.style.transform = direction === 0 ? "rotate(90deg)" : "rotate(0)"
     }
-
   },[shipsData])
 
-  //console.log("ship")
   return (
-      <div className={`ship ship--${size} ${animate.current}`} ref={ref} id={id} key={key} draggable={true}
+      <div className={`ship ship--${size} ${animate.current} ${errorClass}`} ref={ref} id={id} key={key} draggable={true}
            onClick={(e) => clickHandler(e,notEmptySquares,allSquares,createStrictShip)}
            onDragStart={ (e) => dragStartHandler(e)}
            onDragEnd={ (e) => dragEndHandler(e) }

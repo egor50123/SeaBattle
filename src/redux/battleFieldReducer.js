@@ -643,8 +643,6 @@ const battleFieldReducer = (state = initialState, action) => {
         case 1: {
           let enemyDestroyedShipsSquares = state.firstPlayer.enemyDestroyedShipsSquares,
               shipsId = state.firstPlayer.destroyedShipsId
-
-
           newArr = enemyDestroyedShipsSquares.length > 0 ? [...enemyDestroyedShipsSquares,...action.ship] : [...action.ship]
           newShipsId = shipsId.length > 0 ? [...shipsId,action.shipId] : [action.shipId];
           return {
@@ -659,7 +657,6 @@ const battleFieldReducer = (state = initialState, action) => {
         case 2: {
           let enemyDestroyedShipsSquares = state.secondPlayer.enemyDestroyedShipsSquares,
           shipsId = state.secondPlayer.destroyedShipsId
-
           newArr = enemyDestroyedShipsSquares.length > 0 ? [...enemyDestroyedShipsSquares,...action.ship] : [...action.ship]
           newShipsId = shipsId.length > 0 ? [...shipsId,action.shipId] : [action.shipId];
           return {
@@ -689,7 +686,6 @@ const battleFieldReducer = (state = initialState, action) => {
 }
 
 //action для клеточек с корабликами
-export const changeFieldData = (id, status) => ({type: FIELD_DATA, id, status,})
 export const setDeathSquares = (field, fieldId = 1) => ({type: FIELD_DEATH_ZONE, field, fieldId})
 export const setShipSquares = (field, fieldId = 1) => ({type: FIELD_SHIPS_ZONE, field, fieldId})
 export const clearField = (fieldId) => ({type: CLEAR_FIELD, fieldId})
@@ -697,8 +693,6 @@ export const clearField = (fieldId) => ({type: CLEAR_FIELD, fieldId})
 export const savePrevShipPlacement = (ship) => ({type: SAVE_PREV_SHIP_PLACEMENT, ship})
 export const deleteShipFromField = (ship, fieldId = 1) => ({type: DELETE_SHIP, ship, fieldId})
 export const deleteDeathZone = (field) => ({type: DELETE_DEATH_ZONE, field})
-
-export const setStartShipDataCoordinates = (x, y, shipId) => ({type: START_SHIP_DATA_COORDINATES, x, y, shipId})
 
 export const setDndSettings = (currentPart, shipSize, currentShip, direction) => ({
   type: DND_SETTINGS,
@@ -711,20 +705,17 @@ export const setDndPotentialShip = (ship, isPossible) => ({type: DND_SETTINGS_PO
 export const deleteDndPrevPotentialShip = () => ({type: DELETE_DND_PREV_POTENTIAL_SHIP})
 export const clearDndSettings = () => ({type: CLEAR_DND})
 export const setDndStatus = (ship) => ({type: DND_STATUS, ship})
-export const dndDropCoordinates = (x, y) => ({type: DND_DROP_COORDINATES, x, y})
 export const setDndPrevSquare = (prevSquare) => ({type: DND_PREV_SQUARE, prevSquare})
 
 export const updateShipData = () => ({type: UPDATE_SHIP_DATA})
 export const updateShipSquares = (shipId, newSquares) => ({type: UPDATE_SHIP_SQUARES, shipId, newSquares})
 export const clearShipsData = () => ({type: CLEAR_SHIPS_DATA})
 
-export const setContainerCoordinates = (x, y) => ({type: CONTAINER_COORDINATES, x, y})
 export const setPlacementFieldCoordinates = (coordinates) => ({type: SET_PLACEMENT_FIELD_COORDINATES,coordinates})
 export const setPlacementShipCoordinates = (coordinates,id) => ({type: SET_PLACEMENT_SHIP_COORDINATES,coordinates,id})
 export const setShipCoordinates = (id,square) => ({type: SET_SHIP_COORDINATES,id,square})
 
 //получить сохраненную расстановку
-export const setSavedPlacement = (ships) => ({type: SET_SAVED_PLACEMENT, ships})
 
 //для сражения
 

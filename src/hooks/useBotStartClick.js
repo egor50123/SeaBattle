@@ -3,7 +3,7 @@ import {useGetDamagedShip} from "./useGetDamagedShip";
 import {useDispatch, useSelector} from "react-redux";
 import {
   getDamagedShipsSquares, getFirstShipsField,
-  getInitEmptySquares,
+  getInitEmptySquares, getIsAnimationActive,
   getSecondFieldNotEmptySquares
 } from "../selectors/selectors";
 import {TIMEOUT_DELAY} from "../constant/constant";
@@ -13,11 +13,14 @@ export const useBotStartClick = ({botShoot}) => {
   const dispatch = useDispatch()
   const firstFieldNotEmptySquares = useSelector(getSecondFieldNotEmptySquares)
   let emptySquaresInit = useSelector(getInitEmptySquares)
+  const isAnimationOn = useSelector(getIsAnimationActive)
 
+  let delay = isAnimationOn ? TIMEOUT_DELAY : 700
 
-  const onBotClick = useBotClick({TIMEOUT_DELAY,botShoot}),
+  const onBotClick = useBotClick({delay,botShoot}),
         findCurrentDamagedShip = useGetDamagedShip(),
         damageShipSquares = useSelector(getDamagedShipsSquares)
+
 
 
   const SHIPS = useSelector(getFirstShipsField)
@@ -27,9 +30,9 @@ export const useBotStartClick = ({botShoot}) => {
     for (let i = 0; i<SHIPS.length; i++) {
       test = test.concat(SHIPS[i])
     }
-    //let emptySquares = emptySquaresInit.filter(item => !firstFieldNotEmptySquares.includes(item))
-    let emptySquares = test.filter(item => !firstFieldNotEmptySquares.includes(item))
-    let delay = TIMEOUT_DELAY
+    let emptySquares = emptySquaresInit.filter(item => !firstFieldNotEmptySquares.includes(item))
+    //let emptySquares = test.filter(item => !firstFieldNotEmptySquares.includes(item))
+    let delay = isAnimationOn ? TIMEOUT_DELAY : 400
     let square = null
     let isRepeat = false
     // Если уже есть подбитый корабль - стреляем в его уже подбитую клетку

@@ -17,7 +17,7 @@ import {useGetDamagedShip} from "./useGetDamagedShip";
 import {setIsBotMove} from "../redux/battleReducer";
 import {useRocketAnimation} from "./useRocketAnimation";
 
-export const useBotClick = ({TIMEOUT_DELAY, botShoot}) => {
+export const useBotClick = ({delay:TIMEOUT_DELAY, botShoot}) => {
   let totalDestroyedShips = useSelector(getTotalDestroyedShipsBot),
       isAnimationOn = useSelector(getIsAnimationActive)
   const dispatch = useDispatch()

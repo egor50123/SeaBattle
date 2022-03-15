@@ -3,8 +3,9 @@ import "./RoundButton.scss"
 const RoundButton = (props) => {
   const {text, src, type, func,disable,status} = {...props}
 
-  let btnClass = null
+  let btnClass = null;
   let toggleClass = ""
+  let disableClass = disable ? "btn-round--disable" : ""
 
   switch (type) {
     case "play": btnClass = "btn-round--play";break;
@@ -27,10 +28,9 @@ const RoundButton = (props) => {
     }
   }
   return (
-      <button tabIndex={0} className={`btn-round ${btnClass} ${disable && "btn-round--disable"} ${toggleClass}`} onClick={(e) => onClickHandler(func)}>
+      <button tabIndex={0} className={`btn-round ${btnClass} ${disableClass} ${toggleClass}`} onClick={(e) => onClickHandler(func)}>
         <div className={"btn-round__inside"}>
           <div className={"btn-round__wrapper"}>
-            {/*<img src={src} alt={text}/>*/}
           </div>
         </div>
       </button>

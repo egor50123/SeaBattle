@@ -31,12 +31,18 @@
 
   &--random {
     background-color: rgb(0, 166, 255);
+    $size: 90px;
+    width: $size;
+    height: $size;
     & .btn-round__wrapper {
       background-image: url("../../../assets/img/random.svg");
     }
   }
 
   &--save {
+    $size: 90px;
+    width: $size;
+    height: $size;
     background-color: rgb(0, 166, 255);
     & .btn-round__wrapper {
       background-image: url("../../../assets/img/save.svg");
@@ -45,7 +51,7 @@
 
   &--play {
     background-color: #61d200;
-    $size: 130px;
+    $size: 120px;
     width: $size;
     height: $size;
     & .btn-round__wrapper {
