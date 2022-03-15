@@ -1,0 +1,34 @@
+{
+  "files": {
+    "main.css": "/SeaBattle/static/css/main.734dc070.css",
+    "main.js": "/SeaBattle/static/js/main.e3b4a853.js",
+    "static/js/787.016dd43c.chunk.js": "/SeaBattle/static/js/787.016dd43c.chunk.js",
+    "static/media/sea.jpg": "/SeaBattle/static/media/sea.49160c4b4078f5eeba48.jpg",
+    "static/media/sky4.jpg": "/SeaBattle/static/media/sky4.51d8c259a5a4b17d1928.jpg",
+    "static/media/Oswald-VariableFont_wght.woff": "/SeaBattle/static/media/Oswald-VariableFont_wght.5ce0503a208dc2b47bc9.woff",
+    "static/media/Oswald-VariableFont_wght.woff2": "/SeaBattle/static/media/Oswald-VariableFont_wght.9b256af80dd1a84952cd.woff2",
+    "static/media/ship4.png": "/SeaBattle/static/media/ship4.5b50ff9e90e9e7b956ef.png",
+    "static/media/ship3.png": "/SeaBattle/static/media/ship3.7fd0d0fe597e163f1fe4.png",
+    "static/media/ship2.png": "/SeaBattle/static/media/ship2.f54a6285f059263be2bf.png",
+    "static/media/Rocket.png": "/SeaBattle/static/media/Rocket.cecf89ce0002526d9d3c.png",
+    "static/media/settings.svg": "/SeaBattle/static/media/settings.ce1d2c4f11266daaf102ba7db170b3d7.svg",
+    "static/media/pirate.svg": "/SeaBattle/static/media/pirate.60cbcb5295c537a7c23666827bdb291b.svg",
+    "static/media/random.svg": "/SeaBattle/static/media/random.4b1e93974384c957a47f.svg",
+    "static/media/sound.svg": "/SeaBattle/static/media/sound.26f1c45ef5ea4443eaec.svg",
+    "index.html": "/SeaBattle/index.html",
+    "static/media/save.svg": "/SeaBattle/static/media/save.597674729ae8acde3ff3.svg",
+    "static/media/close.svg": "/SeaBattle/static/media/close.fb0676aff5702b07ca0dda6546e8d555.svg",
+    "static/media/music.svg": "/SeaBattle/static/media/music.d5ee809590a4b255418c.svg",
+    "static/media/video.svg": "/SeaBattle/static/media/video.997d22c0362a303342a7.svg",
+    "static/media/play.svg": "/SeaBattle/static/media/play.1c09ac9f068b9dd784b6.svg",
+    "static/media/back.svg": "/SeaBattle/static/media/back.3ff155b76da8f4c555ac49b319898af9.svg",
+    "static/media/bookmark.svg": "/SeaBattle/static/media/bookmark.b9b4881a044f2b27a420.svg",
+    "main.734dc070.css.map": "/SeaBattle/static/css/main.734dc070.css.map",
+    "main.e3b4a853.js.map": "/SeaBattle/static/js/main.e3b4a853.js.map",
+    "787.016dd43c.chunk.js.map": "/SeaBattle/static/js/787.016dd43c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.734dc070.css",
+    "static/js/main.e3b4a853.js"
+  ]
+}
