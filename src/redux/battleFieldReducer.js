@@ -1,4 +1,3 @@
-
 import {SQUARE_SIZE} from "../constant/constant";
 import {setNewStats} from "../helpers/battle/setNewStats";
 
@@ -17,13 +16,10 @@ const DELETE_DEATH_ZONE = "DELETE_DEATH_ZONE";
 const SAVE_PREV_SHIP_PLACEMENT = "SAVE_PREV_SHIP_PLACEMENT";
 const DND_PREV_SQUARE = "DND_PREV_SQUARE";
 const START_SHIP_DATA_COORDINATES = "START_SHIP_DATA_COORDINATES";
-const CONTAINER_COORDINATES = "CONTAINER_COORDINATES";
 const UPDATE_SHIP_DATA = "UPDATE_SHIP_DATA";
 const UPDATE_SHIP_SQUARES = "UPDATE_SHIP_SQUARES"
-const IS_RANDOM = "IS_RANDOM";
 const DELETE_DND_PREV_POTENTIAL_SHIP = "DELETE_DND_PREV_POTENTIAL_SHIP";
 const CLEAR_SHIPS_DATA = "CLEAR_SHIPS_DATA";
-
 const SET_HIT = "SET_HIT";
 const SET_MISS = "SET_MISS";
 const CHANGE_PLAYER = "CHANGE_PLAYER";
@@ -31,10 +27,8 @@ const SET_DAMAGED_SHIP_SQUARES = "SET_DAMAGED_SHIP_SQUARES";
 const SET_DAMAGED_SHIPS_PLAYER = "SET_DAMAGED_SHIPS_PLAYER"
 const SET_GAME_OVER = "SET_GAME_OVER"
 const SET_TOTAL_DESTROYED_SHIPS = "SET_TOTAL_DESTROYED_SHIPS"
-
 const SET_DESTROYED_SHIP = "SET_DESTROYED_SHIP"
 const SET_TOTAL_DESTROYED_BOT = "SET_TOTAL_DESTROYED_BOT"
-const SET_SAVED_PLACEMENT = "SET_SAVED_PLACEMENT"
 const SET_PLACEMENT_FIELD_COORDINATES = "SET_PLACEMENT_FIELD_COORDINATES"
 const SET_PLACEMENT_SHIP_COORDINATES = "SET_PLACEMENT_SHIP_COORDINATES"
 const SET_SHIP_COORDINATES = "SET_SHIP_COORDINATES"
@@ -110,15 +104,12 @@ const initialState = {
     successShip: null,
     unsuccessfulShip: null,
     status: null,
-    x: null,
-    y: null,
     direction: null
   },
 }
 
 const battleFieldReducer = (state = initialState, action) => {
   switch (action.type) {
-      //??????????????
     case FIELD_DATA:
       return {
         ...state,
@@ -369,7 +360,6 @@ const battleFieldReducer = (state = initialState, action) => {
         }
       }
     }
-      //????
     case UPDATE_SHIP_SQUARES: {
       let newShips = state.ships.slice()
       for (let i = 0; i < state.ships.length; i++) {
@@ -455,13 +445,7 @@ const battleFieldReducer = (state = initialState, action) => {
         }
       }
     }
-      //???????????
-    case IS_RANDOM: {
-      return {
-        ...state,
-        isRandom: !state.isRandom,
-      }
-    }
+
     case CLEAR_SHIPS_DATA: {
       return {
         ...state,
@@ -512,12 +496,8 @@ const battleFieldReducer = (state = initialState, action) => {
 
       }
     }
-
-      //Для сражения
+    //Для сражения
     case SET_HIT: {
-      // Стрельба ведется !В! поле игрока с соответсвющим номером ( напрмер 2) , поэтому в обЪект для другого игрока (1) записываются клетки куда велась стрельба,
-      // отмечая при этом клетки "мимо","попадание" и в которые уже стреляли
-      // В какое поле стреляют?
       switch (+action.fieldId) {
         case 2: {
 
@@ -545,10 +525,6 @@ const battleFieldReducer = (state = initialState, action) => {
 
     }
     case SET_MISS: {
-      // Стрельба ведется !В! поле игрока с соответсвющим номером ( напрмер 2) , поэтому в обЪект для другого игрока (1) записываются клетки куда велась стрельба,
-      // отмечая при этом клетки "мимо","попадание" и в которые уже стреляли
-
-      // В какое поле стреляют?
       switch (+action.fieldId) {
         case 2:
           return {
@@ -614,7 +590,6 @@ const battleFieldReducer = (state = initialState, action) => {
       }
     }
     case UPDATE_SHIP_DATA: {
-      //???????
       let sortShips = state.firstPlayer.shipField.sort((a, b) => a - b)
       return {
         ...state,
@@ -686,7 +661,6 @@ const battleFieldReducer = (state = initialState, action) => {
   }
 }
 
-//action для клеточек с корабликами
 export const setDeathSquares = (field, fieldId = 1) => ({type: FIELD_DEATH_ZONE, field, fieldId})
 export const setShipSquares = (field, fieldId = 1) => ({type: FIELD_SHIPS_ZONE, field, fieldId})
 export const clearField = (fieldId) => ({type: CLEAR_FIELD, fieldId})
@@ -716,10 +690,7 @@ export const setPlacementFieldCoordinates = (coordinates) => ({type: SET_PLACEME
 export const setPlacementShipCoordinates = (coordinates,id) => ({type: SET_PLACEMENT_SHIP_COORDINATES,coordinates,id})
 export const setShipCoordinates = (id,square) => ({type: SET_SHIP_COORDINATES,id,square})
 
-//получить сохраненную расстановку
-
 //для сражения
-
 export const setHit = (id, fieldId) => ({type: SET_HIT, id, fieldId})
 export const setMiss = (squares, fieldId) => ({type: SET_MISS, squares, fieldId})
 export const changePlayer = () => ({type: CHANGE_PLAYER,})
